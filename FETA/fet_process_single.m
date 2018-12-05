@@ -1,49 +1,14 @@
-function fet_process_single(fn,strFr,ms3D,trackingDir,outDir,normFunc,res,IOD,lmSS,descFunc,patchSize,saveNormVideo,saveNormLandmarks,saveVideoLandmarks)
-
-% clc;
-% 
-% fprintf('Feature Extraction Toolbox - batch version\n');
-% fprintf('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n');
-% 
-% load('pdm1024_low_forehead.mat');
-% 
-% ms3D = [pdm1024.meanShape(1:3:end),pdm1024.meanShape(2:3:end),pdm1024.meanShape(3:3:end)];
-% 
-% % IOD normalization
-% e1 = mean(ms3D(37:42,:));
-% e2 = mean(ms3D(43:48,:));
-% d = dist3D(e1,e2);
-% ms3D = ms3D * (IOD/d) + res/2;
-% 
-
-% 
-% fprintf('input list:\t%s\n',inFile);
-% fprintf('tracking dir:\t%s\n',trackingDir);
-% fprintf('output dir:\t%s\n',outDir);
-% fprintf('norm. function:\t%s\n',normFunc);
-% fprintf('desc. function:\t%s\n',descFunc);
-% fprintf('\n');
-% 
-% fprintf('reading list: ');
-% fid = fopen(inFile);
-% C = textscan(fid,'%q%q');
-% fprintf('found %d item(s) to process\n\n',length(C{1,1}));
-% fclose(fid);
-% 
-% C{1,1} = C{1,1}(actN:maxN:end);
-% nItems = length(C{1,1});
-% % hPB = progressbar('Files','Frames');
-% dataPB = cell(1,maxN*2);
-
-% for i = 1:nItems
-%     fn = C{1,1}{i,1};
+function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,res,IOD,lmSS,descFunc,patchSize,saveNormVideo,saveNormLandmarks,saveVideoLandmarks)
 
     descExt = [];
     [~,fnName,~] = fileparts(fn);
     fprintf('processing "%s"\n',fn);    
     
-    if exist(fn,'file') 
-        if exist([trackingDir '\' fnName '_fit.mat'],'file')         
+    %if exist(fn,'file') 
+    %    if exist([trackingDir '\' fnName '_fit.mat'],'file')         
+    if isfile(fn)
+        fit_file = [fnName '_fit.mat'];
+        if isfile(fit_file)
 
             fprintf('- loading tracking: ');
             fitOld = load([trackingDir '\' fnName '_fit.mat']);
