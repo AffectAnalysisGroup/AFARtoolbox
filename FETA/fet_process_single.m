@@ -4,14 +4,13 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
     [~,fnName,~] = fileparts(fn);
     fprintf('processing "%s"\n',fn);    
     
-    %if exist(fn,'file') 
-    %    if exist([trackingDir '\' fnName '_fit.mat'],'file')         
     if isfile(fn)
         fit_file = [fnName '_fit.mat'];
         if isfile(fit_file)
 
             fprintf('- loading tracking: ');
-            fitOld = load([trackingDir '\' fnName '_fit.mat']);
+            fitOld_path = fullfile(fit_dir,fit_file);
+            fitOld = load(fitOld_path);
             fprintf('done!\n');
             fitOld = fitOld.fit;
             fitOldRange = cell2mat({fitOld(:).frame}');
@@ -19,12 +18,9 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
             fprintf('- opening video: ');
             vo = VideoReader(fn);
             fprintf('done!\n');
-            
+
             fprintf('- reading last frame: ');
-            fprintf('skipped (%d frames)\n',vo.NumberOfFrames); 
-%             read(vo,inf);
-%             fprintf('done! (%d frames)\n',vo.NumberOfFrames); 
-            
+            fprintf('skipped (%d frames)\n',vo.NumberOfFra 
             if isempty(strFr)
                 strFr = 'all frames';
                 fr = 1:vo.NumberOfFrames;
@@ -34,17 +30,20 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
             end                        
 
             if saveNormVideo
-                vwNorm = VideoWriter([outDir '\' sprintf('(%.4d)_%s_norm.mp4',i,fnName)],'MPEG-4');
+                out_video_fn = sprintf('(%.4d)_%s_norm.mp4',i,fnName);
+                out_video_path = fullfile(outDir,out_video_fn);
+                vwNorm = VideoWriter(out_video_path,'MPEG-4');
                 vwNorm.FrameRate = vo.FrameRate;
                 open(vwNorm);
             end
 
             if saveVideoLandmarks
-                vwNormLand = VideoWriter([outDir '\' sprintf('(%.4d)_%s_norm_annotated.mp4',i,fnName)],'MPEG-4');
+                out_annotated_fn = sprintf('(%.4d)_%s_norm_annotated.mp4',i,fnName); 
+                out_annotated_path = fullfile(outDir,out_annotated_path); 
+                vwNormLand = VideoWriter(out_annotated_path,'MPEG-4');
                 vwNormLand.FrameRate = vo.FrameRate;
                 open(vwNormLand);
             end
-
 
             fprintf('processing %s: ',strFr);
             nFrames = length(fr);
@@ -60,7 +59,6 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
             fitNorm = struct([]);
             fitNorm(1).pars = pars;
             for j = 1:nFrames
-        %         fr(j)
                 l = true;
                 try
                     I = read(vo,fr(j));
@@ -69,7 +67,6 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
                 end
 
                 pts = [];
-                %if (length(fitOld) >= fr(j)) && (l)
                 ndx = find(fitOldRange == fr(j));
                 if (~isempty(ndx)) && (~isempty(fitOld(ndx).pts_2d)) && (l)
                     pts = fitOld(ndx).pts_2d;
@@ -90,18 +87,12 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
                 end
 
                 if (~isempty(ndx)) && (l)
-                    %fitNorm(j).frame = fitOld(fr(j)).frame;
                     fitNorm(j).frame = fitOld(ndx).frame;
-                    %fitNorm(j).isTracked = fitOld(fr(j)).isTracked;
                     fitNorm(j).isTracked = fitOld(ndx).isTracked;
                     fitNorm(j).pts_2d = pts_AS;
-
-                    %feat(j).frame = fitOld(fr(j)).frame;
                     feat(j).frame = fitOld(ndx).frame;
-                    %feat(j).isTracked = fitOld(fr(j)).isTracked;
                     feat(j).isTracked = fitOld(ndx).isTracked;
                     feat(j).feature = phi;
-
                     if saveNormVideo
                         writeVideo(vwNorm,I_AS);
                     end
@@ -111,29 +102,24 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
                         writeVideo(vwNormLand,I_AS);
                     end
                 end
-
-        %         dataPB{2*actN-1} = (i-1)/nItems;
-        %         dataPB{2*actN} = j/nFrames;
-        %         progressbar(dataPB{:});
-        %         progressbar((i-1)/nItems,j/nFrames);
             end
             fprintf('done!\n');
-
             fprintf('saving tracking result: ');
-
             if saveNormVideo
                 close(vwNorm);
             end    
-
             if saveVideoLandmarks
                 close(vwNormLand);
             end      
-
             if saveNormLandmarks
-                save([outDir '\' sprintf('(%.4d)_%s_fitNorm.mat',i,fnName)],'fitNorm');
+                out_fit_norm_fn = sprintf('(%.4d)_%s_fitNorm.mat',i,fnName)]);
+                out_fit_norm_path = fullfile(outDir,out_fit_norm_fn);
+                save(out_fit_norm_path,'fitNorm');
             end
 
-            save([outDir '\' sprintf('(%.4d)_%s_feat.mat',i,fnName)],'feat');
+            out_feat_fn = sprintf('(%.4d)_%s_feat.mat',i,fnName)]);
+            out_feat_path = fullfile(outDir,out_feat_fn);
+            save(out_feat_path,'feat');
             fprintf('done!\n\n');    
         else
             fprintf('skipped! can''t find tracking file\n\n');    
@@ -141,15 +127,5 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
     else
         fprintf('skipped! can''t find video file\n\n');    
     end
-    
 end
 
-% dataPB{2*actN-1} = 1;
-% dataPB{2*actN} = 1;
-% progressbar(dataPB{:});
-
-% progressbar(1,1);
-
-% msgbox('Tracking finished without errors!','zface');
-
-% end
