@@ -1,16 +1,14 @@
 function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,res,IOD,lmSS,descFunc,patchSize,saveNormVideo,saveNormLandmarks,saveVideoLandmarks)
 
     descExt = [];
-    [~,fnName,~] = fileparts(fn);
-    fprintf('processing "%s"\n',fn);    
-    
-    if isfile(fn)
+    [~,fnName,~] = fileparts(fn);    
+    video_path = fullfile(trackingDir,fn);
+    if isfile(video_path)
         fit_file = [fnName '_fit.mat'];
-        if isfile(fit_file)
-
+        fit_path = fullfile(fit_dir,fit_file);
+        if isfile(fit_path)
             fprintf('- loading tracking: ');
-            fitOld_path = fullfile(fit_dir,fit_file);
-            fitOld = load(fitOld_path);
+            fitOld = load(fit_path);
             fprintf('done!\n');
             fitOld = fitOld.fit;
             fitOldRange = cell2mat({fitOld(:).frame}');
@@ -20,7 +18,7 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
             fprintf('done!\n');
 
             fprintf('- reading last frame: ');
-            fprintf('skipped (%d frames)\n',vo.NumberOfFra 
+            fprintf('skipped (%d frames)\n',vo.NumberOfFrames);
             if isempty(strFr)
                 strFr = 'all frames';
                 fr = 1:vo.NumberOfFrames;
@@ -112,12 +110,12 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
                 close(vwNormLand);
             end      
             if saveNormLandmarks
-                out_fit_norm_fn = sprintf('(%.4d)_%s_fitNorm.mat',i,fnName)]);
+                out_fit_norm_fn = sprintf('(%.4d)_%s_fitNorm.mat',i,fnName);
                 out_fit_norm_path = fullfile(outDir,out_fit_norm_fn);
                 save(out_fit_norm_path,'fitNorm');
             end
 
-            out_feat_fn = sprintf('(%.4d)_%s_feat.mat',i,fnName)]);
+            out_feat_fn = sprintf('(%.4d)_%s_feat.mat',i,fnName);
             out_feat_path = fullfile(outDir,out_feat_fn);
             save(out_feat_path,'feat');
             fprintf('done!\n\n');    
