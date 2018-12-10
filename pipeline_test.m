@@ -36,7 +36,7 @@ au_out_dir    = dir_full_path(au_out_dir);
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% % Zface module
+% Zface module
 % mesh_path = fullfile(zface_dir,'ZFace_models','zf_ctrl49_mesh512.dat');
 % alt2_path = fullfile(zface_dir,'haarcascade_frontalface_alt2.xml');
 % video_path = fullfile(video_dir,video_file);
@@ -64,6 +64,7 @@ au_out_dir    = dir_full_path(au_out_dir);
 %     F = getframe(h.fig);
 %     [X, Map] = frame2im(F);
 %     writeVideo(vw,X);
+%     fit(frame_index).frame     = frame_index
 %     fit(frame_index).isTracked = ~isempty(ctrl2D);
 %     if fit(frame_index).isTracked
 %         fit(frame_index).pts_2d   = ctrl2D;
@@ -102,7 +103,7 @@ patch_size  = 32;
 saveNormVideo      = false;
 saveNormLandmarks  = false;
 saveVideoLandmarks = false;
-lmSS = '1:end';
+lmSS = ':';
 res  = 400;
 IOD  = 100;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -166,12 +167,12 @@ fit_dir = zface_out_dir;
 nItems  = length(C{1,1});
 for i = 1:nItems
     fn = C{1,1}{i,1};
+    display(fn);
     if length(C{1,2}) >= i
         strFr = C{1,2}{i,1};    
     else
         strFr = '';
     end
-    fprintf(fn);
     f(i) = parfeval(p,@fet_process_single,0,fn,strFr,ms3D,tracking_dir,...
                     fit_dir,feta_out_dir,normFunc,res,IOD,lmSS,descFunc,...
                     patch_size,saveNormVideo,saveNormLandmarks,...
