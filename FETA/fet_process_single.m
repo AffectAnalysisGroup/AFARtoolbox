@@ -1,8 +1,13 @@
-function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,res,IOD,lmSS,descFunc,patchSize,saveNormVideo,saveNormLandmarks,saveVideoLandmarks)
+function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,normFunc,res,IOD,lmSS,descFunc,patchSize,saveNormVideo,saveNormLandmarks,saveVideoLandmarks)
 
-    descExt = [];
-    [~,fnName,~] = fileparts(fn);    
-    video_path = fullfile(trackingDir,fn);
+    descExt       = [];
+    [~,fnName,~]  = fileparts(fn);    
+    video_path    = fullfile(trackingDir,fn);
+
+    out_norm_dir      = fullfile(out_dir,'feta_norm_videos');
+    out_annotated_dir = fullfile(out_dir,'feta_norm_annotated_videos');
+    out_fitNorm_dir   = fullfile(out_dir,'feta_fit_norm');
+    out_feat_dir      = fullfile(out_dir,'feta_feat');
     if isfile(video_path)
         fit_file = [fnName '_fit.mat'];
         fit_path = fullfile(fit_dir,fit_file);
@@ -28,16 +33,16 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
             end                        
 
             if saveNormVideo
-                out_video_fn = sprintf('(%.4d)_%s_norm.mp4',i,fnName);
-                out_video_path = fullfile(outDir,out_video_fn);
+                out_video_fn = [fnName '_norm.mp4']
+                out_video_path = fullfile(out_norm_dir,out_video_fn);
                 vwNorm = VideoWriter(out_video_path,'MPEG-4');
                 vwNorm.FrameRate = vo.FrameRate;
                 open(vwNorm);
             end
 
             if saveVideoLandmarks
-                out_annotated_fn = sprintf('(%.4d)_%s_norm_annotated.mp4',i,fnName); 
-                out_annotated_path = fullfile(outDir,out_annotated_path); 
+                out_annotated_fn = [fnName '_norm_annotated.mp4'];
+                out_annotated_path = fullfile(out_annotated_dir,out_annotated_fn); 
                 vwNormLand = VideoWriter(out_annotated_path,'MPEG-4');
                 vwNormLand.FrameRate = vo.FrameRate;
                 open(vwNormLand);
@@ -112,13 +117,13 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
                 close(vwNormLand);
             end      
             if saveNormLandmarks
-                out_fit_norm_fn = sprintf('(%.4d)_%s_fitNorm.mat',i,fnName);
-                out_fit_norm_path = fullfile(outDir,out_fit_norm_fn);
+                out_fit_norm_fn = [fnName '_fitNorm.mat'];
+                out_fit_norm_path = fullfile(out_fitNorm_dir,out_fit_norm_fn);
                 save(out_fit_norm_path,'fitNorm');
             end
 
-            out_feat_fn = sprintf('(%.4d)_%s_feat.mat',i,fnName);
-            out_feat_path = fullfile(outDir,out_feat_fn);
+            out_feat_fn = [fnName '_feat.mat'];
+            out_feat_path = fullfile(out_feat_dir,out_feat_fn);
             save(out_feat_path,'feat');
             fprintf('done!\n\n');    
         else
