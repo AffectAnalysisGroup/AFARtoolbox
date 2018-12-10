@@ -71,8 +71,10 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,outDir,normFunc,re
                 end
 
                 if ~isempty(pts)
-                    eval(['[ I_AS, pts_AS ] = fet_norm_' normFunc '( I, pts, ms3D, res, IOD, lmSS );']);
-                    eval(['[ phi, descExt ] = fet_desc_' descFunc '( I_AS, pts_AS, patchSize, descExt );']);
+                    [ I_AS, pts_AS ] = normFunc(I, pts, ms3D, res, IOD, lmSS);
+                    [ phi, descExt ] = descFunc(I_AS, pts_AS, patchSize, descExt);
+                    % eval(['[ I_AS, pts_AS ] = fet_norm_' normFunc '( I, pts, ms3D, res, IOD, lmSS );']);
+                    % eval(['[ phi, descExt ] = fet_desc_' descFunc '( I_AS, pts_AS, patchSize, descExt );']);
                     if ~isempty(phi)
                         eval(['phi = phi(' lmSS ',:);']);
                         phi = phi';
