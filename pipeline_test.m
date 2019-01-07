@@ -19,7 +19,7 @@ run_AU_detector = true;
 
 addpath(genpath('.'));
 zface_dir = dir_full_path('zface');
-feta_dir  = dir_full_path('feta');
+feta_dir  = dir_full_path('FETA');
 au_dir    = dir_full_path('AU_detector');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
