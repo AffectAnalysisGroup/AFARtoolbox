@@ -11,8 +11,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% For debugging purpose only %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-run_zface = false;
-run_FETA  = false;
+run_zface = true;
+run_FETA  = true;
 run_AU_detector = true;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Initialization %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,19 +42,21 @@ zface_out_video    = fullfile(zface_out_dir,'zface_videos');
 feta_out_annotated = fullfile(feta_out_dir,'feta_norm_annotated_videos');
 feta_out_fitNorm   = fullfile(feta_out_dir,'feta_fit_norm');
 
-if ~isfolder(output_dir) 
-    mkdir(output_dir);
-    mkdir(zface_out_dir);
-    mkdir(feta_out_dir);
-    mkdir(au_out_dir);
-    mkdir(zface_out_mat);
-    mkdir(zface_out_video);
-    mkdir(feta_out_norm);
-    mkdir(feta_out_annotated);
-    mkdir(feta_out_fitNorm);
-    mkdir(feta_out_feat);
-    addpath(genpath(output_dir));
+if ~isfolder(output_dir)
+  mkdir(output_dir)
 end
+
+mkdir(zface_out_dir);
+mkdir(feta_out_dir);
+mkdir(au_out_dir);
+mkdir(zface_out_mat);
+mkdir(zface_out_video);
+mkdir(feta_out_norm);
+mkdir(feta_out_annotated);
+mkdir(feta_out_fitNorm);
+mkdir(feta_out_feat);
+addpath(genpath(output_dir));
+    
 output_dir    = dir_full_path(output_dir);
 zface_out_dir = dir_full_path(zface_out_dir);
 feta_out_dir  = dir_full_path(feta_out_dir);
