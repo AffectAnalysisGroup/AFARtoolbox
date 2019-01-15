@@ -11,7 +11,7 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,normFunc,r
     out_feat_dir      = fullfile(out_dir,'feta_feat');
 
     if ~isfile(video_path)
-        fprintf('skipped! can''t find video file\n\n');   
+        fprintf(['skipped! can''t find video file: ' video_path '\n\n']);   
     else    
         fit_file = [fnName '_fit.mat'];
         fit_path = fullfile(fit_dir,fit_file);
@@ -39,7 +39,7 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,normFunc,r
             end                        
 
             if saveNormVideo
-                out_video_fn = [fnName '_norm.mp4']
+                out_video_fn = [fnName '_norm.mp4'];
                 out_video_path = fullfile(out_norm_dir,out_video_fn);
                 vwNorm = VideoWriter(out_video_path,'MPEG-4');
                 vwNorm.FrameRate = vo.FrameRate;
