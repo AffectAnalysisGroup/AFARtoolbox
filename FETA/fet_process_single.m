@@ -2,16 +2,22 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,normFunc,r
 
     descExt       = [];
     [~,fnName,~]  = fileparts(fn);    
-    video_path    = fullfile(trackingDir,fn);
+    % video_path    = fullfile(trackingDir,fn);
+    video_path    = fn;
 
     out_norm_dir      = fullfile(out_dir,'feta_norm_videos');
     out_annotated_dir = fullfile(out_dir,'feta_norm_annotated_videos');
     out_fitNorm_dir   = fullfile(out_dir,'feta_fit_norm');
     out_feat_dir      = fullfile(out_dir,'feta_feat');
-    if isfile(video_path)
+
+    if ~isfile(video_path)
+        fprintf('skipped! can''t find video file\n\n');   
+    else    
         fit_file = [fnName '_fit.mat'];
         fit_path = fullfile(fit_dir,fit_file);
-        if isfile(fit_path)
+        if ~isfile(fit_path)
+            fprintf('skipped! can''t find tracking file\n\n');
+        else
             fprintf('- loading tracking: ');
             fitOld = load(fit_path);
             fprintf('done!\n');
@@ -78,8 +84,6 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,normFunc,r
                 if ~isempty(pts)
                     [ I_AS, pts_AS ] = normFunc(I, pts, ms3D, res, IOD, lmSS);
                     [ phi, descExt ] = descFunc(I_AS, pts_AS, patchSize, descExt);
-                    % eval(['[ I_AS, pts_AS ] = fet_norm_' normFunc '( I, pts, ms3D, res, IOD, lmSS );']);
-                    % eval(['[ phi, descExt ] = fet_desc_' descFunc '( I_AS, pts_AS, patchSize, descExt );']);
                     if ~isempty(phi)
                         eval(['phi = phi(' lmSS ',:);']);
                         phi = phi';
@@ -126,11 +130,7 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,normFunc,r
             out_feat_path = fullfile(out_feat_dir,out_feat_fn);
             save(out_feat_path,'feat');
             fprintf('done!\n\n');    
-        else
-            fprintf('skipped! can''t find tracking file\n\n');    
         end
-    else
-        fprintf('skipped! can''t find video file\n\n');    
     end
 end
 
