@@ -86,6 +86,4 @@ function runFETA(video_dir,zface,FETA)
 	  progressbar(i/nItems);
 	end
 
-
-
 end
