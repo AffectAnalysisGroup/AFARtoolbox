@@ -1,7 +1,14 @@
-function [zface,FETA,AU] = initOutDir(zface_folder, FETA_folder, AU_folder, output_dir)
+function [zface,FETA,AU] = initOutDir(zface_folder, FETA_folder, AU_folder, ...
+									  output_dir, creat_new_outDir)
 
 	% if ~(isfolder(zface_folder))
 	% need to check if args are valid.
+	
+	if nargin > 4
+		mkdir_new = creat_new_outDir;
+	else
+		mkdir_new = true;
+	end
 
 	zface = [];
 	FETA  = [];
@@ -21,15 +28,19 @@ function [zface,FETA,AU] = initOutDir(zface_folder, FETA_folder, AU_folder, outp
 	FETA.annotatedOut = fullfile(FETA.outDir,'feta_norm_annotated_videos');
 	FETA.fitNormOut   = fullfile(FETA.outDir,'feta_fit_norm');
 
-	mkdir(zface.outDir);
-	mkdir(FETA.outDir);
-	mkdir(AU.outDir);
-	mkdir(zface.matOut);
-	mkdir(zface.videoOut);
-	mkdir(FETA.normOut);
-	mkdir(FETA.annotatedOut);
-	mkdir(FETA.fitNormOut);
-	mkdir(FETA.featOut);
+	if mkdir_new
+		fprintf('Create folders for output results.\n');
+		mkdir(zface.outDir);
+		mkdir(FETA.outDir);
+		mkdir(AU.outDir);
+		mkdir(zface.matOut);
+		mkdir(zface.videoOut);
+		mkdir(FETA.normOut);
+		mkdir(FETA.annotatedOut);
+		mkdir(FETA.fitNormOut);
+		mkdir(FETA.featOut);
+	end
+
 	addpath(genpath(output_dir));
 	    
 	output_dir   = dir_full_path(output_dir);
