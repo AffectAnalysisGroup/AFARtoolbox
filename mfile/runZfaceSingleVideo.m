@@ -1,7 +1,7 @@
-% function runZfaceSingleVideo(zface_dir,zface_video_fname,zface_video_path,fit_path)
+function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path)
 
- 	mesh_path  = fullfile(zface_dir,'ZFace_models','zf_ctrl49_mesh512.dat');
-    alt2_path  = fullfile(zface_dir,'haarcascade_frontalface_alt2.xml');
+ 	mesh_path  = zface.mesh;
+    alt2_path  = zface.alt2;
 
     zf = CZFace(mesh_path,alt2_path);
     vo = VideoReader(video_path);
@@ -37,7 +37,7 @@
             fit(frame_index).headPose = [];
             fit(frame_index).pdmPars  = [];
         end    
-        pause(1/vo.FrameRate)
+        % pause(1/vo.FrameRate)
     end
 
     clear zf;
@@ -45,4 +45,4 @@
     close(vw);
 
     save(fit_path,'fit');
-% end
+end
