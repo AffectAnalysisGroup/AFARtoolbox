@@ -22,11 +22,11 @@ function [zface,FETA,AU] = initOutDir(zface_folder, FETA_folder, AU_folder, ...
 	FETA.outDir  = fullfile(output_dir,'feta_out');
 	AU.outDir    = fullfile(output_dir,'AU_detector_out');
 	zface.matOut = fullfile(zface.outDir,'zface_fit');
-	FETA.normOut = fullfile(FETA.outDir,'feta_norm');
+	FETA.normOut = fullfile(FETA.outDir,'feta_norm_videos');
 	FETA.featOut = fullfile(FETA.outDir,'feta_feat');
 	zface.videoOut    = fullfile(zface.outDir,'zface_videos');
 	FETA.annotatedOut = fullfile(FETA.outDir,'feta_norm_annotated_videos');
-	FETA.fitNormOut   = fullfile(FETA.outDir,'feta_fit_norm');
+	FETA.fitNormOut   = fullfile(FETA.outDir,'feta_fit_1norm');
 
 	if mkdir_new
 		fprintf('Create folders for output results.\n');

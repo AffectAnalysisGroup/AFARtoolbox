@@ -1,9 +1,9 @@
 function runAUSingleVideo(fname,FETA,AU)
+	
 	% fname is the one without extension.
+	norm_fn   = [fname '_norm.mp4']
 
-	norm_fn   = [fname,'_norm.mp4'];
-    % norm_path = fullfile(feta_out_norm,norm_fn); => changed
-    norm_path = fullfile(FETA.normOut,norm_fn);
+    norm_path = fullfile(FETA.normOut,norm_fn)
 
     net = importKerasNetwork('cnn_model.json', 'WeightFile', 'weights.h5', ...
                              'OutputLayerType', 'regression');

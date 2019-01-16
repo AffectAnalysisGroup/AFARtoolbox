@@ -7,8 +7,9 @@ function tracking_list_path = getTrackingList(tracking_dir)
         if videos(n).isdir
             continue
         end
-        video_path = [videos(n).folder videos(n).name '\n'];
-        fprintf(fid, video_path);
+        video_path    = fullfile(videos(n).folder, videos(n).name);
+        text_to_write = [video_path '\n'];
+        fprintf(fid, text_to_write);
    end 
    fclose(fid);
    tracking_list_path = which(tracking_fname);

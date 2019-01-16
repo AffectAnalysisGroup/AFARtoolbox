@@ -11,6 +11,5 @@ function runAUdetector(video_dir, FETA, AU)
 		[~,fname,ext] = fileparts(video_name);
     	runZfaceSingleVideo(fname,FETA,AU)
     end
- 
 
 end
