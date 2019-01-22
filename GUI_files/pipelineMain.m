@@ -1,35 +1,35 @@
-function varargout = pipelineGUI(varargin)
-% PIPELINEGUI MATLAB code for pipelineGUI.fig
-%      PIPELINEGUI, by itself, creates a new PIPELINEGUI or raises the existing
+function varargout = pipelineMain(varargin)
+% PIPELINEMAIN MATLAB code for pipelineMain.fig
+%      PIPELINEMAIN, by itself, creates a new PIPELINEMAIN or raises the existing
 %      singleton*.
 %
-%      H = PIPELINEGUI returns the handle to a new PIPELINEGUI or the handle to
+%      H = PIPELINEMAIN returns the handle to a new PIPELINEMAIN or the handle to
 %      the existing singleton*.
 %
-%      PIPELINEGUI('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in PIPELINEGUI.M with the given input arguments.
+%      PIPELINEMAIN('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in PIPELINEMAIN.M with the given input arguments.
 %
-%      PIPELINEGUI('Property','Value',...) creates a new PIPELINEGUI or raises the
+%      PIPELINEMAIN('Property','Value',...) creates a new PIPELINEMAIN or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before pipelineGUI_OpeningFcn gets called.  An
+%      applied to the GUI before pipelineMain_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to pipelineGUI_OpeningFcn via varargin.
+%      stop.  All inputs are passed to pipelineMain_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help pipelineGUI
+% Edit the above text to modify the response to help pipelineMain
 
-% Last Modified by GUIDE v2.5 16-Jan-2019 20:44:04
+% Last Modified by GUIDE v2.5 21-Jan-2019 13:58:21
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @pipelineGUI_OpeningFcn, ...
-                   'gui_OutputFcn',  @pipelineGUI_OutputFcn, ...
+                   'gui_OpeningFcn', @pipelineMain_OpeningFcn, ...
+                   'gui_OutputFcn',  @pipelineMain_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,15 +44,15 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before pipelineGUI is made visible.
-function pipelineGUI_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before pipelineMain is made visible.
+function pipelineMain_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to pipelineGUI (see VARARGIN)
+% varargin   command line arguments to pipelineMain (see VARARGIN)
 
-% Choose default command line output for pipelineGUI
+% Choose default command line output for pipelineMain
 handles.output = hObject;
 
 % Update handles structure
@@ -66,12 +66,12 @@ set(handles.ZfaceDirTxt,'string',DefaultZfaceDir);
 set(handles.FETADirTxt,'string',DefaultFETADir);
 set(handles.AUDirTxt,'string',DefaultAUDir);
 
-% UIWAIT makes pipelineGUI wait for user response (see UIRESUME)
+% UIWAIT makes pipelineMain wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = pipelineGUI_OutputFcn(hObject, eventdata, handles) 
+function varargout = pipelineMain_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -241,6 +241,9 @@ function AUDirBnt_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in RunPipelineBnt.
 function RunPipelineBnt_Callback(hObject, eventdata, handles)
+    TxtToView = test('Running pipeline modules...\n');
+    close();
+    
 % hObject    handle to RunPipelineBnt (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
