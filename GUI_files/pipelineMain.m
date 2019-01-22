@@ -22,7 +22,7 @@ function varargout = pipelineMain(varargin)
 
 % Edit the above text to modify the response to help pipelineMain
 
-% Last Modified by GUIDE v2.5 21-Jan-2019 13:58:21
+% Last Modified by GUIDE v2.5 22-Jan-2019 00:04:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -65,9 +65,11 @@ DefaultAUDir    = fullfile(CurrDir,'AU_detector');
 set(handles.ZfaceDirTxt,'string',DefaultZfaceDir);
 set(handles.FETADirTxt,'string',DefaultFETADir);
 set(handles.AUDirTxt,'string',DefaultAUDir);
+set(handles.RunInfoPanel,'Visible','off');
+set(handles.MainPagePanel,'Visible','on');
 
 % UIWAIT makes pipelineMain wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
+% uiwait(handles.MainPage);
 
 
 % --- Outputs from this function are returned to the command line.
@@ -242,7 +244,19 @@ function AUDirBnt_Callback(hObject, eventdata, handles)
 % --- Executes on button press in RunPipelineBnt.
 function RunPipelineBnt_Callback(hObject, eventdata, handles)
     TxtToView = test('Running pipeline modules...\n');
-    close();
+    % set(handles.ModuleDirPanel,'Visible','off');
+    % set(handles.SetParamBnt,'Enable','off');
+    set(handles.MainPagePanel,'Visible','off');
+    set(handles.TrackDirBnt,'Enable','off');
+    set(handles.OutDirBnt,'Enable','off');
+    set(handles.AUDirBnt,'Enable','off');
+    set(handles.FETADirBnt,'Enable','off');
+    set(handles.ZfaceDirBnt,'Enable','off');
+    set(handles.RunPipelineBnt,'Enable','off');
+    set(handles.SetParamBnt,'Enable','off');
+    set(handles.RunInfoPanel,'Visible','on');
+
+    set(handles.RunInfoTxt,'String','ZFace is running...');
     
 % hObject    handle to RunPipelineBnt (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
