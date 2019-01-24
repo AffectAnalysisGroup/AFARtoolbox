@@ -4,7 +4,9 @@ function tracking_list_path = getTrackingList(tracking_dir)
     videos = dir(tracking_dir);
     [video_cnt,~]  = size(videos);
     for n = 1 : video_cnt
-        if videos(n).isdir
+        [fpath, fn, ext] = fileparts(videos(n).name);
+        ext = convertCharsToStrings(ext);
+        if videos(n).isdir | ~ismember(ext,[".mp4",".avi",".flv"])
             continue
         end
         video_path    = fullfile(videos(n).folder, videos(n).name);
