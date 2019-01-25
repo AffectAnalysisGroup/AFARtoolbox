@@ -26,7 +26,7 @@ function [zface,FETA,AU] = initOutDir(zface_folder, FETA_folder, AU_folder, ...
 	FETA.featOut = fullfile(FETA.outDir,'feta_feat');
 	zface.videoOut    = fullfile(zface.outDir,'zface_videos');
 	FETA.annotatedOut = fullfile(FETA.outDir,'feta_norm_annotated_videos');
-	FETA.fitNormOut   = fullfile(FETA.outDir,'feta_fit_1norm');
+	FETA.fitNormOut   = fullfile(FETA.outDir,'feta_fit_norm');
 
 	if mkdir_new
 		fprintf('Create folders for output results.\n');

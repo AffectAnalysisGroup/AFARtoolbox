@@ -16,9 +16,9 @@ function runPipeline(video_dir,output_dir,run_zface,run_FETA,run_AU_detector)
     addpath(genpath('.'));
 
     % ZFace
-    if runZface
-        runZface(video_dir,zface);
-    end
+    % if run_zface
+    %     runZface(video_dir,zface);
+    % end
 
     % FETA
     load('ms3D_v1024_low_forehead');
