@@ -1,9 +1,4 @@
     
-% 1: python
-% 2: GUI. Executable.
-% 3: Emotion assignment.
-% 4: 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 %%%% Input: Normalized Video (FETA Output) obtained with the following parameters:

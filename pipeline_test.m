@@ -1,6 +1,5 @@
 
-create_out = true; % run the pipeline need to set the value to be true to get
-                        % all the output dir and subdir.
+create_out = true; % create output directory and all its subdirectory.
 video_dir  = '/Users/wanqiaod/workspace/pipeline/test_video';
 output_dir = '/Users/wanqiaod/workspace/pipeline/out';
 run_zface  = true;
