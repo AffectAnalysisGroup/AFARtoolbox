@@ -6,10 +6,15 @@ function tracking_list_path = getTrackingList(tracking_dir)
     for n = 1 : video_cnt
         [fpath, fn, ext] = fileparts(videos(n).name);
         ext = convertCharsToStrings(ext);
-        if videos(n).isdir | ~ismember(ext,[".mp4",".avi",".flv"])
+        if videos(n).isdir 
             continue
         end
-        video_path    = fullfile(videos(n).folder, videos(n).name);
+
+        video_path = fullfile(videos(n).folder, videos(n).name);
+        if ~isVideoFile(video_path)
+            continue
+        end
+
         text_to_write = [video_path '\n'];
         fprintf(fid, text_to_write);
    end 
