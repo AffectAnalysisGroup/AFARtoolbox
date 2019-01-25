@@ -1,11 +1,12 @@
-function runPipeline(video_dir,output_dir,run_zface,run_FETA,run_AU_detector)
-    create_out = false; % run the pipeline need to set the value to be true to get
-                        % all the output dir and subdir.
-    video_dir  = '/Users/wanqiaod/workspace/pipeline/test_video';
-    output_dir = '/Users/wanqiaod/workspace/pipeline/out';
-    zface_folder = '/Users/wanqiaod/workspace/pipeline/zface';
-    FETA_folder  = '/Users/wanqiaod/workspace/pipeline/FETA';
-    AU_folder    = '/Users/wanqiaod/workspace/pipeline/AU_detector';
+function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
+                     run_zface,run_FETA,run_AU_detector,create_out)
+    % create_out = true; % run the pipeline need to set the value to be true to get
+    %                     % all the output dir and subdir.
+    % video_dir  = '/Users/wanqiaod/workspace/pipeline/test_video';
+    % output_dir = '/Users/wanqiaod/workspace/pipeline/out';
+    % zface_folder = '/Users/wanqiaod/workspace/pipeline/zface';
+    % FETA_folder  = '/Users/wanqiaod/workspace/pipeline/FETA';
+    % AU_folder    = '/Users/wanqiaod/workspace/pipeline/AU_detector';
 
     if create_out
         mkdir(output_dir);
@@ -16,9 +17,9 @@ function runPipeline(video_dir,output_dir,run_zface,run_FETA,run_AU_detector)
     addpath(genpath('.'));
 
     % ZFace
-    % if run_zface
-    %     runZface(video_dir,zface);
-    % end
+    if run_zface
+        runZface(video_dir,zface);
+    end
 
     % FETA
     load('ms3D_v1024_low_forehead');

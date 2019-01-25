@@ -4,12 +4,13 @@ function runAUdetector(video_dir, FETA, AU)
 	[file_num,~]   = size(video_dir_list);
 
 	for n = 1: file_num
-		if video_dir_list(n).isdir
+		video_name = video_dir_list(n).name;
+		video_path = fullfile(video_dir_list(n).folder,video_dir_list(n).name);
+		if ~isVideoFile(video_path)
 			continue
 		end
-		video_name    = video_dir_list(n).name;
 		[~,fname,ext] = fileparts(video_name);
-    	runZfaceSingleVideo(fname,FETA,AU)
+    	runAUSingleVideo(fname,FETA,AU);
     end
 
 end
