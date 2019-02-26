@@ -22,7 +22,7 @@ function varargout = pipelineMain(varargin)
 
 % Edit the above text to modify the response to help pipelineMain
 
-% Last Modified by GUIDE v2.5 26-Feb-2019 15:49:44
+% Last Modified by GUIDE v2.5 26-Feb-2019 17:43:23
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -307,21 +307,22 @@ function SaveZfaceFitCheckBox_Callback(hObject, eventdata, handles)
 
 
 % --- Executes on button press in RunBnt.
-function FETA = initFETA(FETA)
+function FETA = initFETA(handles, FETA)
 
     load('ms3D_v1024_low_forehead');
     video_dir = get(handles.TrackDirTxt,'string');
     FETA.lmSS = ':';
-    FETA.res  = 200;
-    FETA.IOD  = 80;
+    FETA.res  = str2num(get(handles.normResInputTxt,'string'));
+    FETA.IOD  = str2num(get(handles.normIODInputTxt,'string'));
     FETA.ms3D = ms3D;
-    FETA.normFeature = '2D_similarity';
-    FETA.descFeature = 'HOG_OpenCV';
-    FETA.patch_size  = 32;
+    FETA.normFeature = get(handles.normFuncPopMenu,'string');
+    descFeature      = get(handles.descFuncPopMenu,'string');
+    FETA.descFeature = descFeature{get(handles.descFuncPopMenu,'Value')};
+    FETA.patch_size  = str2num(get(handles.PatchSizeTxt,'string'));
     FETA.video_list  = getTrackingList(video_dir);
-    FETA.saveNormVideo      = true;
-    FETA.saveNormLandmarks  = true;
-    FETA.saveVideoLandmarks = true;
+    FETA.saveNormVideo      = get(handles.SaveNormVideosCheckBox,'value');
+    FETA.saveNormLandmarks  = get(handles.SaveNormLandmarksCheckBox,'value');
+    FETA.saveVideoLandmarks = get(handles.SaveVideoLandmarksCheckBox,'value');
 
 function RunPipeline(handles)
 
@@ -346,7 +347,7 @@ function RunPipeline(handles)
     end
 
     if run_FETA
-        FETA = initFETA(FETA);
+        FETA = initFETA(handles,FETA);
         set(handles.RunInfoTxt,'string','Running FETA...');
         runFETA(video_dir,zface,FETA);
     end
@@ -366,9 +367,152 @@ function RunBnt_Callback(hObject, eventdata, handles)
     RunPipeline(handles);
 
 
+% --- Executes on button press in SaveNormLandmarksCheckBox.
+function SaveNormLandmarksCheckBox_Callback(hObject, eventdata, handles)
+% hObject    handle to SaveNormLandmarksCheckBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of SaveNormLandmarksCheckBox
+
+
+% --- Executes on selection change in normFuncPopMenu.
+function normFuncPopMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to normFuncPopMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns normFuncPopMenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from normFuncPopMenu
+
+
+% --- Executes during object creation, after setting all properties.
+function normFuncPopMenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to normFuncPopMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in checkbox10.
+function checkbox10_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox10
 
 
 
+function normIODInputTxt_Callback(hObject, eventdata, handles)
+% hObject    handle to normIODInputTxt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of normIODInputTxt as text
+%        str2double(get(hObject,'String')) returns contents of normIODInputTxt as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function normIODInputTxt_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to normIODInputTxt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
 
+function normResInputTxt_Callback(hObject, eventdata, handles)
+% hObject    handle to normResInputTxt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of normResInputTxt as text
+%        str2double(get(hObject,'String')) returns contents of normResInputTxt as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function normResInputTxt_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to normResInputTxt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in descFuncPopMenu.
+function descFuncPopMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to descFuncPopMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns descFuncPopMenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from descFuncPopMenu
+
+
+% --- Executes during object creation, after setting all properties.
+function descFuncPopMenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to descFuncPopMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function PatchSizeTxt_Callback(hObject, eventdata, handles)
+% hObject    handle to PatchSizeTxt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of PatchSizeTxt as text
+%        str2double(get(hObject,'String')) returns contents of PatchSizeTxt as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function PatchSizeTxt_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to PatchSizeTxt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in SaveVideoLandmarksCheckBox.
+function SaveVideoLandmarksCheckBox_Callback(hObject, eventdata, handles)
+% hObject    handle to SaveVideoLandmarksCheckBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of SaveVideoLandmarksCheckBox
+
+
+% --- Executes on button press in SaveNormVideosCheckBox.
+function SaveNormVideosCheckBox_Callback(hObject, eventdata, handles)
+% hObject    handle to SaveNormVideosCheckBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of SaveNormVideosCheckBox
