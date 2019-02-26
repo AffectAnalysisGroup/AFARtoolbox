@@ -1,4 +1,4 @@
-# Automated Facial Affect Recognition
+# Automated Facial Affect Recognition(AFAR)
 
 ## ZFace
 
