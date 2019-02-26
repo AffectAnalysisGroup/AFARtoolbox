@@ -22,7 +22,7 @@ function varargout = pipelineMain(varargin)
 
 % Edit the above text to modify the response to help pipelineMain
 
-% Last Modified by GUIDE v2.5 26-Feb-2019 13:11:16
+% Last Modified by GUIDE v2.5 26-Feb-2019 15:49:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -248,67 +248,17 @@ function TurnMainPagePanelOff(handles)
     set(handles.AUDirBnt,'Enable','off');
     set(handles.FETADirBnt,'Enable','off');
     set(handles.ZfaceDirBnt,'Enable','off');
-    set(handles.RunPipelineBnt,'Enable','off');
-    set(handles.SetParamBnt,'Enable','off');
+    set(handles.MainPageCtnBnt,'Enable','off');
     set(handles.RunInfoPanel,'Visible','on');
 
-function FETA = initFETA(FETA)
-    FETA.lmSS = ':';
-    FETA.res  = 200;
-    FETA.IOD  = 80;
-    FETA.ms3D = ms3D;
-    FETA.normFeature = '2D_similarity';
-    FETA.descFeature = 'HOG_OpenCV';
-    FETA.patch_size  = 32;
-    FETA.video_list  = getTrackingList(video_dir);
-    FETA.saveNormVideo      = true;
-    FETA.saveNormLandmarks  = true;
-    FETA.saveVideoLandmarks = true;
-
-function RunPipeline(handles)
-    run_zface = get(handles.RunZfaceCheckBox,'Value');
-    run_FETA  = get(handles.RunFETACheckBox,'Value');
-    run_AU    = get(handles.RunAUCheckBox,'Value');
-
-    video_dir = get(handles.TrackDirTxt,'string');
-    out_dir   = get(handles.OutDirTxt,'string');
-    zface_dir = get(handles.ZfaceDirTxt,'string');
-    FETA_dir  = get(handles.FETADirTxt,'string');
-    AU_dir    = get(handles.AUDirTxt,'string');
-    
-    mkdir(out_dir);
-    [zface,FETA,AU] = initOutDir(zface_dir,FETA_dir,AU_dir,...
-                                 out_dir,false);
-    if run_zface
-        set(handles.RunInfoTxt,'string','Running ZFace...');
-        runZface(video_dir,zface);
-    end
-
-    load('ms3D_v1024_low_forehead');
-    FETA = initFETA(FETA);
-    if run_FETA
-        set(handles.RunInfoTxt,'string','Running FETA...');
-        runFETA(video_dir,zface,FETA);
-    end
-
-    AU.nAU = 12;
-    if run_AU
-        set(handles.RunInfoTxt,'string','Running AU detector...');
-        runAUdetector(video_dir,FETA,AU);
-    end
-
-
-% --- Executes on button press in RunPipelineBnt.
-function RunPipelineBnt_Callback(hObject, eventdata, handles)
+% --- Executes on button press in MainPageCtnBnt.
+function MainPageCtnBnt_Callback(hObject, eventdata, handles)
     % TxtToView = test('Running pipeline modules...\n');
     % set(handles.ModuleDirPanel,'Visible','off');
     % set(handles.SetParamBnt,'Enable','off');
     TurnMainPagePanelOff(handles);
-    % Run pipeline
 
-    RunPipeline(handles);
-
-% hObject    handle to RunPipelineBnt (see GCBO)
+% hObject    handle to MainPageCtnBnt (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -345,3 +295,80 @@ function RunFETACheckBox_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of RunFETACheckBox
+
+
+% --- Executes on button press in SaveZfaceFitCheckBox.
+function SaveZfaceFitCheckBox_Callback(hObject, eventdata, handles)
+% hObject    handle to SaveZfaceFitCheckBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of SaveZfaceFitCheckBox
+
+
+% --- Executes on button press in RunBnt.
+function FETA = initFETA(FETA)
+
+    load('ms3D_v1024_low_forehead');
+    video_dir = get(handles.TrackDirTxt,'string');
+    FETA.lmSS = ':';
+    FETA.res  = 200;
+    FETA.IOD  = 80;
+    FETA.ms3D = ms3D;
+    FETA.normFeature = '2D_similarity';
+    FETA.descFeature = 'HOG_OpenCV';
+    FETA.patch_size  = 32;
+    FETA.video_list  = getTrackingList(video_dir);
+    FETA.saveNormVideo      = true;
+    FETA.saveNormLandmarks  = true;
+    FETA.saveVideoLandmarks = true;
+
+function RunPipeline(handles)
+
+    run_zface = get(handles.RunZfaceCheckBox,'Value');
+    run_FETA  = get(handles.RunFETACheckBox,'Value');
+    run_AU    = get(handles.RunAUCheckBox,'Value');
+
+    video_dir = get(handles.TrackDirTxt,'string');
+    out_dir   = get(handles.OutDirTxt,'string');
+    zface_dir = get(handles.ZfaceDirTxt,'string');
+    FETA_dir  = get(handles.FETADirTxt,'string');
+    AU_dir    = get(handles.AUDirTxt,'string');
+
+    save_fit  = get(handles.SaveZfaceFitCheckBox,'Value');
+    
+    mkdir(out_dir);
+    [zface,FETA,AU] = initOutDir(zface_dir,FETA_dir,AU_dir,...
+                                 out_dir,false);
+    if run_zface
+        set(handles.RunInfoTxt,'string','Running ZFace...');
+        runZface(video_dir,zface,save_fit);
+    end
+
+    if run_FETA
+        FETA = initFETA(FETA);
+        set(handles.RunInfoTxt,'string','Running FETA...');
+        runFETA(video_dir,zface,FETA);
+    end
+
+    AU.nAU = 12;
+    if run_AU
+        set(handles.RunInfoTxt,'string','Running AU detector...');
+        runAUdetector(video_dir,FETA,AU);
+    end
+
+function RunBnt_Callback(hObject, eventdata, handles)
+% hObject    handle to RunBnt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+    % Run pipeline
+    RunPipeline(handles);
+
+
+
+
+
+
+
+

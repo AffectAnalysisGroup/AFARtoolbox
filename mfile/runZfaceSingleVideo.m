@@ -1,4 +1,4 @@
-function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path)
+function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,save_fit)
 
  	mesh_path  = zface.mesh;
     alt2_path  = zface.alt2;
@@ -44,5 +44,7 @@ function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path)
     close(h.fig);
     close(vw);
 
-    save(fit_path,'fit');
+    if save_fit
+        save(fit_path,'fit');
+    end
 end

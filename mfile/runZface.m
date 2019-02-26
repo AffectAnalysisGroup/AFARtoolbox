@@ -1,4 +1,4 @@
-function runZface(video_dir,zface)
+function runZface(video_dir,zface,save_fit)
 		
     video_dir_list = dir(video_dir);
     [file_num, ~]  = size(video_dir_list);
@@ -18,7 +18,8 @@ function runZface(video_dir,zface)
         
     	fit_path          = fullfile(zface.matOut,[fname '_fit.mat']);
 	    zface_video_path  = fullfile(zface.videoOut,[fname '_zface' ext]);
-    	runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path);
+    	runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,...
+                            save_fit);
         
     end
 
