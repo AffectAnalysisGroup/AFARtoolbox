@@ -22,7 +22,7 @@ function varargout = pipelineMain(varargin)
 
 % Edit the above text to modify the response to help pipelineMain
 
-% Last Modified by GUIDE v2.5 26-Feb-2019 19:23:11
+% Last Modified by GUIDE v2.5 27-Feb-2019 11:43:52
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -65,13 +65,20 @@ DefaultAUDir    = fullfile(CurrDir,'AU_detector');
 set(handles.ZfaceDirTxt,'string',DefaultZfaceDir);
 set(handles.FETADirTxt,'string',DefaultFETADir);
 set(handles.AUDirTxt,'string',DefaultAUDir);
-set(handles.RunInfoPanel,'Visible','off');
-set(handles.MainPagePanel,'Visible','on');
+initCheckBox(handles);
+
 % set(handles.MainPage)
 
 % UIWAIT makes pipelineMain wait for user response (see UIRESUME)
 % uiwait(handles.MainPage);
-
+function initCheckBox(handles)
+    set(handles.RunZfaceCheckBox,'value',1);
+    set(handles.RunFETACheckBox,'value',1);
+    set(handles.RunAUCheckBox,'value',1);
+    set(handles.SaveZfaceFitCheckBox,'value',1);
+    set(handles.SaveNormVideosCheckBox,'value',1);
+    set(handles.SaveNormLandmarksCheckBox,'value',1);
+    set(handles.SaveVideoLandmarksCheckBox,'value',1);
 
 % --- Outputs from this function are returned to the command line.
 function varargout = pipelineMain_OutputFcn(hObject, eventdata, handles) 
@@ -241,23 +248,6 @@ function AUDirBnt_Callback(hObject, eventdata, handles)
     AUDir = uigetdir;
     set(handles.AUDirTxt,'string',AUDir);
 
-function TurnMainPagePanelOff(handles)
-    set(handles.MainPagePanel,'Visible','off');
-    set(handles.TrackDirBnt,'Enable','off');
-    set(handles.OutDirBnt,'Enable','off');
-    set(handles.AUDirBnt,'Enable','off');
-    set(handles.FETADirBnt,'Enable','off');
-    set(handles.ZfaceDirBnt,'Enable','off');
-    set(handles.MainPageCtnBnt,'Enable','off');
-    set(handles.RunInfoPanel,'Visible','on');
-
-% --- Executes on button press in MainPageCtnBnt.
-function MainPageCtnBnt_Callback(hObject, eventdata, handles)
-    % TxtToView = test('Running pipeline modules...\n');
-    % set(handles.ModuleDirPanel,'Visible','off');
-    % set(handles.SetParamBnt,'Enable','off');
-    TurnMainPagePanelOff(handles);
-
 % hObject    handle to MainPageCtnBnt (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -367,7 +357,6 @@ function RunBnt_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-    % Run pipeline
     RunPipeline(handles);
 
 
@@ -520,3 +509,11 @@ function SaveNormVideosCheckBox_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of SaveNormVideosCheckBox
+
+
+% --- Executes on button press in RunVisualBtn.
+function RunVisualBtn_Callback(hObject, eventdata, handles)
+% hObject    handle to RunVisualBtn (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    run visualization.m
