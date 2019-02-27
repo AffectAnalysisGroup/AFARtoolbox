@@ -8,7 +8,7 @@
 
 ## Modules
 
-###### ZFace
+### ZFace
 **Folder structure**:
 
 - 3rd_party                % 3rd party components
@@ -19,7 +19,6 @@
 - test_video		   % test video 
 - ZFace_models             % tracking models
 - ZFace_src                % SDK source files
-
 
 **Using the SDK**
 The SDK is organized into classes. The CZFace class (located in \ZFace_Src\) is the central way we use the tracker. We can simply create an instance of the tracker:
@@ -57,10 +56,10 @@ If you are getting an "Invalid MEX-file" error from the mexopencv wrapper, try t
 mexopencv.make("clean",true)
 mexopencv.make
 ```
-###### FETA
+### FETA
 
 
-###### AU Detector
+### AU Detector
 
 
 ## Use AFAR GUI
