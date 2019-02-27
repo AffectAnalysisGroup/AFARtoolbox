@@ -5,8 +5,14 @@ function runAUSingleVideo(fname,FETA,AU)
 
     norm_path = fullfile(FETA.normOut,norm_fn);
 
-    net = importKerasNetwork('cnn_model.json', 'WeightFile', 'weights.h5', ...
-                             'OutputLayerType', 'regression');
+    if AU.meanSub
+        net = importONNXNetwork('bp4d_ep10.onnx', 'OutputLayerType', ...
+                                'regression');
+    else
+        net = importKerasNetwork('cnn_model.json','WeightFile',...
+                                 'weights.h5','OutputLayerType','regression');
+    end
+
     nAU = AU.nAU;
     au_out_dir = AU.outDir;
     video_name = norm_path; %%% update this line with your own normalized video
@@ -24,10 +30,14 @@ function runAUSingleVideo(fname,FETA,AU)
             continue
         end
         I2_conv = (double(I2)/255);
-        sum_fr = sum_fr + I2_conv;
+        sum_fr  = sum_fr + I2_conv;
         counter = counter + 1;
     end
-    mean_video = mean(sum_fr(:))/counter;
+    if AU.meanSub
+        mean_video = sum_fr/counter;
+    else
+        mean_video = mean(sum_fr(:))/counter;
+    end
 
     v = VideoReader(video_name);
     all_outputs = [];
@@ -35,7 +45,8 @@ function runAUSingleVideo(fname,FETA,AU)
         I = readFrame(v);
         I2 = rgb2gray(I);
         I2_conv = (double(I2)/255) - mean_video;
-        sample_output = predict(net,I2_conv);
+        sample_output = predict(net,I2_conv,'ExecutionEnvironment','cpu');
+        sample_output = sigm(sample_output);
         all_outputs = [all_outputs;sample_output];
     end
 
@@ -48,3 +59,27 @@ function runAUSingleVideo(fname,FETA,AU)
     save(au_out_path, 'result');
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

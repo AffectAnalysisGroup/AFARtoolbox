@@ -22,7 +22,7 @@ function varargout = pipelineMain(varargin)
 
 % Edit the above text to modify the response to help pipelineMain
 
-% Last Modified by GUIDE v2.5 26-Feb-2019 17:43:23
+% Last Modified by GUIDE v2.5 26-Feb-2019 19:23:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -344,18 +344,22 @@ function RunPipeline(handles)
     if run_zface
         set(handles.RunInfoTxt,'string','Running ZFace...');
         runZface(video_dir,zface,save_fit);
+        set(handles.RunInfoTxt,'string','ZFace done!');
     end
 
     if run_FETA
         FETA = initFETA(handles,FETA);
         set(handles.RunInfoTxt,'string','Running FETA...');
         runFETA(video_dir,zface,FETA);
+        set(handles.RunInfoTxt,'string','FETA done!');
     end
 
     AU.nAU = 12;
+    AU.meanSub = get(handles.MeanSubtractionCheckBox,'value');
     if run_AU
         set(handles.RunInfoTxt,'string','Running AU detector...');
         runAUdetector(video_dir,FETA,AU);
+        set(handles.RunInfoTxt,'string','AU detection done!');
     end
 
 function RunBnt_Callback(hObject, eventdata, handles)
@@ -399,13 +403,13 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in checkbox10.
-function checkbox10_Callback(hObject, eventdata, handles)
-% hObject    handle to checkbox10 (see GCBO)
+% --- Executes on button press in MeanSubtractionCheckBox.
+function MeanSubtractionCheckBox_Callback(hObject, eventdata, handles)
+% hObject    handle to MeanSubtractionCheckBox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of checkbox10
+% Hint: get(hObject,'Value') returns toggle state of MeanSubtractionCheckBox
 
 
 
