@@ -1,10 +1,21 @@
 # Automated Facial Affect Recognition(AFAR)
+## Required
+- [OpenCV](https://opencv.org/)
+- [mexopencv](https://github.com/kyamagu/mexopencv)
+- MATLAB add-on:
+  - Deep Learning Toolbox Converter for ONNX Model Format
+  - Deep Learning Toolbox Importer for Tensorflow-Keras Model
 
-## ZFace
+## Modules
 
-## FETA
+###### ZFace
 
-## AU Detector
+
+###### FETA
+
+
+###### AU Detector
+
 
 ## Use AFAR GUI
 Make sure run pipelineMain.m under the same path where
