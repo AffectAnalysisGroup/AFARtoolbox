@@ -11,14 +11,14 @@
 ### ZFace
 **Folder structure**:
 
-- 3rd_party                % 3rd party components
-    - arrow3D_pub         % 3D arrow display code
-    - mexopencv           % MATLAB OpenCV wrapper
-- opencv_2.4.11_x64_vc11_dlls % OpenCV dlls
-- test_images              % test images of different celebrities
-- test_video		   % test video 
-- ZFace_models             % tracking models
-- ZFace_src                % SDK source files
+- 3rd_party  
+    - arrow3D_pub: 3D arrow display code
+    - mexopencv:MATLAB OpenCV wrapper
+- opencv_2.4.11_x64_vc11_dlls: OpenCV dlls
+- test_images: test images of different celebrities
+- test_video: test video 
+- ZFace_models: tracking models
+- ZFace_src: SDK source files
 
 **Using the SDK**
 The SDK is organized into classes. The CZFace class (located in \ZFace_Src\) is the central way we use the tracker. We can simply create an instance of the tracker:
