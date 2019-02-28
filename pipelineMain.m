@@ -22,7 +22,7 @@ function varargout = pipelineMain(varargin)
 
 % Edit the above text to modify the response to help pipelineMain
 
-% Last Modified by GUIDE v2.5 27-Feb-2019 11:43:52
+% Last Modified by GUIDE v2.5 28-Feb-2019 12:53:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -516,4 +516,52 @@ function RunVisualBtn_Callback(hObject, eventdata, handles)
 % hObject    handle to RunVisualBtn (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-    run visualization.m
+    origVideoPath = get(handles.VisulaizationVideoTxt,'string')
+    auIndexVect   = [1,2,3,4,5,7];
+    out_dir = get(handles.OutDirTxt,'string');
+    auOutDir = fullfile(out_dir,'AU_detector_out');
+    normAnnotatedVideoDir = fullfile(out_dir,'feta_out','feta_norm_annotated_videos');
+    plotAU(auIndexVect,origVideoPath,auOutDir,normAnnotatedVideoDir);
+
+function VisulaizationVideoTxt_Callback(hObject, eventdata, handles)
+% hObject    handle to VisulaizationVideoTxt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of VisulaizationVideoTxt as text
+%        str2double(get(hObject,'String')) returns contents of VisulaizationVideoTxt as a double
+    
+
+% --- Executes during object creation, after setting all properties.
+function VisulaizationVideoTxt_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to VisulaizationVideoTxt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in SelectVisualizationVideoBnt.
+function SelectVisualizationVideoBnt_Callback(hObject, eventdata, handles)
+% hObject    handle to SelectVisualizationVideoBnt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    [origVideoFname,origVideoPath] = uigetfile('*.mp4','*.avi');
+    set(handles.VisulaizationVideoTxt,'string',[origVideoPath origVideoFname]);
+
+
+
+
+
+
+
+
+
+
+
+
+

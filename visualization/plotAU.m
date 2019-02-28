@@ -1,7 +1,7 @@
-function plotAU(auIndexVect,origVideoPath,auDir,normAnnotatedVideoDir)
+function plotAU(auIndexVect,origVideoPath,auOutDir,normAnnotatedVideoDir)
     
 % Input args below:
-% auDir = '/Users/wanqiaod/workspace/pipeline/out/AU_detector_out/';
+% auOutDir = '/Users/wanqiaod/workspace/pipeline/out/AU_detector_out/';
 auIndexVect = [1,2,3,4,5,7];
 % origVideoPath = '/Users/wanqiaod/workspace/pipeline/test_video/LeBlanc_short.mp4';
 % normAnnotatedVideoDir = '/Users/wanqiaod/workspace/pipeline/out/feta_out/feta_norm_annotated_videos/';
@@ -17,7 +17,7 @@ w_offset  = 0.4;
 
 [~,origFname,~]  = fileparts(origVideoPath);
 annotatedVideoFN = fullfile(normAnnotatedVideoDir,[origFname '_norm_annotated.mp4']);
-auFname          = fullfile(auDir,[origFname '_au_out.mat']);
+auFname          = fullfile(auOutDir,[origFname '_au_out.mat']);
 outVideoFname    = [origFname '_out_video'];
 origVideo        = VideoReader(origVideoPath);
 annotatedVideo   = VideoReader(annotatedVideoFN);
