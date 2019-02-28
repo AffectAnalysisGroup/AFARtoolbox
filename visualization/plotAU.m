@@ -1,10 +1,10 @@
-% function plotAU(auIndexVect,origVideoPath,auDir,fetaNormAnnotatedDir)
-% function msg = plotAU(auIndexVect,origVideoPath,auDir,fetaNormAnnotatedDir)
+function plotAU(auIndexVect,origVideoPath,auDir,normAnnotatedVideoDir)
+    
 % Input args below:
-auDir = '/Users/wanqiaod/workspace/pipeline/out/AU_detector_out/';
+% auDir = '/Users/wanqiaod/workspace/pipeline/out/AU_detector_out/';
 auIndexVect = [1,2,3,4,5,7];
-origVideoPath = '/Users/wanqiaod/workspace/pipeline/test_video/LeBlanc_short.mp4';
-normAnnotatedVideoDir = '/Users/wanqiaod/workspace/pipeline/out/feta_out/feta_norm_annotated_videos/';
+% origVideoPath = '/Users/wanqiaod/workspace/pipeline/test_video/LeBlanc_short.mp4';
+% normAnnotatedVideoDir = '/Users/wanqiaod/workspace/pipeline/out/feta_out/feta_norm_annotated_videos/';
 % startFrame 
 % endFrame   
 window_x0 = 100;
@@ -40,6 +40,7 @@ set(gcf,'position',[window_x0,window_y0,window_w,window_h])
 set(gcf,'color','white');
 set(gca,'Clipping','off');
 open(outVideo);
+
 % x0, w, lowest_y0 are magic numbers. Might need update
 auCnt = length(auIndexVect);
 x0    = 0.05 + x0_offset;
@@ -85,10 +86,6 @@ end
 
 % hold on
 set(gca,'Clipping','off');
-% x1 = 1;
-% timeLine = line([x1 x1],[0 20]);
-% set(timeLine,'LineWidth',1,'Color','r');
-
 video_ax_top_pos    = [0.07 0.55 0.35 0.35];
 video_ax_bottom_pos = [0.07 0.05 0.35 0.35];
 video_ax_top    = subplot('Position',video_ax_top_pos);
@@ -112,25 +109,7 @@ for frameIndex = startFrame : endFrame
     set(timeLine,'Visible','off');
 end
 close(outVideo);
+close all
 
-
-% Load img from video
-% Write to output video
-
-% end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+end
 
