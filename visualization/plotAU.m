@@ -1,4 +1,4 @@
-function plotAU(auIndexVect,origVideoPath,auOutDir,normAnnotatedVideoDir)
+function plotAU(auIndexVect,origVideoPath,auOutDir,normAnnotatedVideoDir,vargin)
     
 % Input args below:
 % auOutDir = '/Users/wanqiaod/workspace/pipeline/out/AU_detector_out/';
@@ -7,6 +7,9 @@ auIndexVect = [1,2,3,4,5,7];
 % normAnnotatedVideoDir = '/Users/wanqiaod/workspace/pipeline/out/feta_out/feta_norm_annotated_videos/';
 % startFrame 
 % endFrame   
+
+defaultOutDir = '/Users/wanqiaod/workspace/pipeline'
+
 window_x0 = 100;
 window_y0 = 100;
 window_w  = 1000;
@@ -21,7 +24,7 @@ auFname          = fullfile(auOutDir,[origFname '_au_out.mat']);
 outVideoFname    = [origFname '_out_video'];
 origVideo        = VideoReader(origVideoPath);
 annotatedVideo   = VideoReader(annotatedVideoFN);
-outVideo         = VideoWriter(outVideoFname);
+outVideo         = VideoWriter(outVideoFname); 
 
 startFrame = 1;
 endFrame   = floor(annotatedVideo.Duration * annotatedVideo.FrameRate);
