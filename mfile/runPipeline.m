@@ -18,7 +18,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     % ZFace
     if run_zface
-        runZface(video_dir,zface);
+        runZface(video_dir,zface,true);
     end
 
     % FETA
@@ -40,6 +40,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     % AU detection.
     AU.nAU = 12;
+    AU.meanSub = false;
     if run_AU_detector
         runAUdetector(video_dir,FETA,AU);
     end

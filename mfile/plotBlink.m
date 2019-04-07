@@ -1,67 +1,77 @@
-
-load('/Users/wanqiaod/workspace/pipeline/out/zface_out/zface_fit/1080_provoc_1017_fit.mat');
-frame_cnt = size(fit,2);
-single_face = fit(150).pts_2d;
-% single_face = single_face(20:31,:);
-face_x = single_face(:,1);
-face_y = single_face(:,2);
-
-avg_dist = getAvgDist(single_face);
-avg_dist = zeros(frame_cnt,1);
-for frame = 1 : frame_cnt
-    single_face = fit(frame).pts_2d;
-    if isempty(single_face)
-        continue
-    end
-    avg_dist(frame,1) = getAvgDist(single_face);
+video_path = '/Users/wanqiaod/workspace/pipeline/test_video/F005_01.avi';
+zface_fit_path = '/Users/wanqiaod/workspace/pipeline/out/zface_out/zface_fit/F005_01_fit.mat';
+% zface_fit_path = '/Users/wanqiaod/workspace/pipeline/out/zface_out/zface_fit/1080_provoc_1017_fit.mat';
+out_video_path = '/Users/wanqiaod/workspace/pipeline/visualization/F005_01_blink.avi';
+load(zface_fit_path);
+start_frame = 1;
+end_frame   = 0;
+total_frame = size(fit,2);
+if end_frame == 0
+    end_frame = total_frame;
 end
-dist_x = 1:frame_cnt;
-% scatter(dist_x,avg_dist,'.');
-blink_frame = [];
-for frame = 2 : (frame_cnt-1)
-    prev_dist = avg_dist(frame-1);
-    next_dist = avg_dist(frame+1);
-    curr_dist = avg_dist(frame);
-    if curr_dist < next_dist & curr_dist < prev_dist
-        blink_frame = [blink_frame frame];
-    end
+plot_x      = start_frame:end_frame;
+blink_threshold = 35;
+getBlinkFreq(fit,blink_threshold);
+load('blink_info.mat');
+avg_dist = avg_dist(start_frame:end_frame);
+blink_avg_y = blink_avg_y(start_frame:end_frame);
+
+window_x0 = 100;
+window_y0 = 100;
+window_w  = 1000;
+window_h  = 700;
+
+orig_video = VideoReader(video_path);
+out_video  = VideoWriter(out_video_path);
+open(out_video);
+
+
+figure
+set(gcf,'position',[window_x0,window_y0,window_w,window_h])
+set(gcf,'color','white');
+set(gca,'Clipping','off');
+video_pos   = [0.1 0.4 0.3 0.5];
+eye_pnt_pos = [0.6 0.4 0.3 0.3];
+avg_dist_pos  = [0.1 0.15 0.8 0.08];
+blink_cnt_pos = [0.1 0.05 0.8 0.08];
+
+video_ax    = subplot('Position',video_pos);
+eye_pnt_ax  = subplot('Position',eye_pnt_pos);
+avg_dist_ax  = subplot('Position',avg_dist_pos);
+blink_cnt_ax = subplot('Position',blink_cnt_pos);
+
+plot(avg_dist_ax,plot_x,avg_dist);
+axis(avg_dist_ax,'tight');
+plot(blink_cnt_ax,plot_x,blink_avg_y);
+axis(blink_cnt_ax,'tight');
+
+for frame_index = start_frame : end_frame
+    frame_img = orig_video.read(frame_index);
+    image(video_ax,frame_img);
+    axis(video_ax,'off');
+    singleface = fit(frame_index).pts_2d;
+    singleface = singleface(20:31,:);
+    scatter(eye_pnt_ax,singleface(:,1),singleface(:,2),'filled');
+    axis(eye_pnt_ax,'equal');
+    timeline = line(blink_cnt_ax,[frame_index frame_index],[0 3]);
+    timeline2 = line(avg_dist_ax,[frame_index frame_index],[0 45]);
+    set(timeline,'LineWidth',1,'Color','r');
+    set(timeline2,'LineWidth',1,'Color','r');
+    drawnow
+    frame = getframe(gcf);
+    img   = frame2im(frame);
+    writeVideo(out_video,img);
+    set(timeline,'Visible','off');
+    set(timeline2,'Visible','off');
 end
-blink_y = zeros(frame_cnt,1);
-blink_y(blink_frame) = 1;
-% plot_x = dist_x(1,200:500);
-plot_x = dist_x;
-% plot_y = blink_y(200:500,1);
-plot_y = blink_y;
-% scatter(plot_x,plot_y,'.');
+close(out_video);
 
-frame_rate = 30;
-blink_freq = [];
-for n = 1 : (length(blink_frame)-1)
-    eye_open_interval = blink_frame(n+1) - blink_frame(n);
-    curr_freq = eye_open_interval/frame_rate; 
-    blink_freq = [blink_freq curr_freq];
-end
+% target_frame = 200;
+% frame_img  = orig_video.read(target_frame);
+% singleface = fit(target_frame).pts_2d;
+% singleface = singleface(20:31,:);
+% 
+% scatter(eye_pnt_ax,singleface(:,1),singleface(:,2),'filled');
 
-total_blink_freq = size(blink_freq,2);
-blink_cnt = 0;
-next_blink_cnt = 1;
-start_cnt = 0;
-blink_freq_y = [];
-
-for frame = 1 : frame_cnt
-    if blink_cnt == 0
-        curr_blink_y = blink_freq(1);
-    else
-        curr_blink_y = blink_freq(blink_cnt);
-    end
-
-    if blink_cnt<total_blink_freq && frame == blink_frame(blink_cnt+1)
-        blink_cnt = blink_cnt + 1;
-    end
-
-    blink_freq_y = [blink_freq_y curr_blink_y];
-end
-
-plot(plot_x,blink_freq_y);
 
 

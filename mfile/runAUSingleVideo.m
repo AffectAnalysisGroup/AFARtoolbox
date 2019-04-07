@@ -46,7 +46,9 @@ function runAUSingleVideo(fname,FETA,AU)
         I2 = rgb2gray(I);
         I2_conv = (double(I2)/255) - mean_video;
         sample_output = predict(net,I2_conv,'ExecutionEnvironment','cpu');
-        sample_output = sigm(sample_output);
+        if AU.meanSub
+            sample_output = sigm(sample_output);
+        end
         all_outputs = [all_outputs;sample_output];
     end
 
