@@ -22,8 +22,14 @@ function file_list = listExtFiles(target_path, target_ext, varargin)
               file_list = [target_path file_list];
           end
       else % recursive step
+          dir_content = dir(target_path);
           for item_index = 1 : length(dir_content)
-              sub_file_list = listExtFiles(dir_content(item_index),target_ext);
+              dir_item = dir_content(item_index);
+              full_path_fname = fullfile(dir_item.folder,dir_item.name);
+              if ismember(dir_item.name,["." ".."]) 
+                  continue
+              end
+              sub_file_list = listExtFiles(full_path_fname,target_ext);
               file_list     = [sub_file_list file_list];
           end
       end
@@ -32,9 +38,13 @@ function file_list = listExtFiles(target_path, target_ext, varargin)
       dir_content = dir(target_path);
       for item_index = 1 : length(dir_content)
           dir_item  = dir_content(item_index);
-          [~,~,ext] = fileparts(dir_item);
+          if dir_item.isdir % if the item is a dir, pass
+              continue
+          end
+          [~,~,ext] = fileparts(dir_item.name);
           if ismember(ext,target_ext) % check extension
-              file_list = [dir_item file_list];
+              full_path_fname = fullfile(dir_item.folder,dir_item.name);
+              file_list = [full_path_fname file_list];
           end
       end
 
