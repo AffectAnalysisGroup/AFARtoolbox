@@ -1,4 +1,4 @@
-function getBlink(fit,blink_threhold)
+function blink = getBlink(fit,blink_threhold)
 % getBlink takes fit(output from zface) and a threshold of eyelid distance.
 %   fit: struct, output from zface. Or maybe output from FETA for normalization
 %   blink_threshold: double, a threshold for eyelid distance. If the distance 
@@ -52,13 +52,17 @@ blink_bin = temp;
 blink_bin = reshape(blink_bin, [window_cnt avg_frame_window]);
 % row-wise sum, get the blink count over each time window.
 blink_cnt_avg = sum(blink_bin,2);
+
 % convert blink_cnt_avg into a vector with the same dimension as
 % blink_bin but blink_avg_y has the avg blink cnt within the window period.
 blink_avg_y   = repmat(blink_cnt_avg,[1 avg_frame_window]);
 blink_avg_y   = reshape(blink_avg_y.',1,[]);
 blink_avg_y   = blink_avg_y(1:frame_cnt);
 
-save('blink_info.mat','blink_avg_y','avg_dist');
+% Output struct
+blink = [];
+blink.avg_blink_cnt = blink_avg_y;
+blink.avg_dist      = avg_dist;
 
 end
 
