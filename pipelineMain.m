@@ -22,7 +22,7 @@ function varargout = pipelineMain(varargin)
 
 % Edit the above text to modify the response to help pipelineMain
 
-% Last Modified by GUIDE v2.5 28-Feb-2019 12:53:36
+% Last Modified by GUIDE v2.5 28-Feb-2019 19:10:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -552,16 +552,3 @@ function SelectVisualizationVideoBnt_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
     [origVideoFname,origVideoPath] = uigetfile('*.mp4','*.avi');
     set(handles.VisulaizationVideoTxt,'string',[origVideoPath origVideoFname]);
-
-
-
-
-
-
-
-
-
-
-
-
-
