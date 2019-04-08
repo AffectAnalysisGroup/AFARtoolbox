@@ -14,6 +14,7 @@ function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,save_fit
     ctrl2D = [];
 
     fit = [];
+    vo.CurrentTime = 0;
     frame_index = 0;
     while hasFrame(vo)
         I = readFrame(vo);
