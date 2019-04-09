@@ -10,6 +10,7 @@ function blink = getBlink(fit,blink_threhold)
 % parameters that may change into input args:
 avg_time_window = 10;
 frame_rate      = 30;
+normalizeDist   = true;
 
 % the number of frames in the original video
 frame_cnt = size(fit,2);
@@ -26,6 +27,14 @@ end
 
 % locate the frame when there is a blink;
 blink_frame = [];
+
+% Normalize eyelid distance.
+avg_IOD = getAvgIOD(fit);
+if normalizeDist == false
+    avg_IOD = 1;
+end
+avg_dist = avg_dist/avg_IOD;
+
 for frame = 2 : (frame_cnt-1)
     prev_dist = avg_dist(frame-1);
     next_dist = avg_dist(frame+1);
@@ -44,12 +53,14 @@ blink_bin(blink_frame) = 1;
 % calculate the avg blink times over a fixed interval(avg_interval)
 % time interval for calculating average blink count.
 avg_frame_window = frame_rate*avg_time_window;
-window_cnt       = ceil(frame_cnt/avg_interval);
+window_cnt       = ceil(frame_cnt/avg_frame_window);
 % padding
 temp = zeros(1,window_cnt*avg_frame_window);
 temp(1:length(blink_bin)) = blink_bin;
 blink_bin = temp;
-blink_bin = reshape(blink_bin, [window_cnt avg_frame_window]);
+% MATLAB reshape is col-wise arrangement.
+blink_bin = reshape(blink_bin, [avg_frame_window window_cnt]);
+blink_bin = blink_bin';
 % row-wise sum, get the blink count over each time window.
 blink_cnt_avg = sum(blink_bin,2);
 
@@ -63,6 +74,7 @@ blink_avg_y   = blink_avg_y(1:frame_cnt);
 blink = [];
 blink.avg_blink_cnt = blink_avg_y;
 blink.avg_dist      = avg_dist;
+blink.blink_frame   = blink_frame;
 
 end
 

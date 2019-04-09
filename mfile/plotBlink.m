@@ -4,6 +4,10 @@ zface_fit_path  = '/Users/wanqiaod/workspace/data/out/zface_out/zface_fit/F005_0
 out_video_path  = '/Users/wanqiaod/workspace/data/visualization/F005_01_blink.avi';
 blink_threshold = 35;
 
+% load behavioral data
+behav_data = '/Users/wanqiaod/workspace/data/aDBS002_1017_provoc.mat';
+load(behav_data)
+
 load(zface_fit_path);
 start_frame = 1;
 end_frame   = 0;
@@ -85,8 +89,8 @@ for frame_index = start_frame : end_frame
     set(blink_timeline,'Visible','off');
     set(dist_timeline,'Visible','off');
 end
-close(out_video);
 
+close(out_video);
 
 
 

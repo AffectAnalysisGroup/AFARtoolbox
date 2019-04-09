@@ -7,7 +7,7 @@ function avgIOD = getAvgIOD(fit)
       left_dist   = pdist([single_face(1,:);single_face(7,:)],'euclidean');
       right_dist  = pdist([single_face(4,:);single_face(10,:)],'euclidean');
       current_IOD = mean([left_dist right_dist]);
-      IOD(frame)  = current_IOD;
+      IOD(frame_index)  = current_IOD;
   end
   avgIOD = mean(IOD);
 
