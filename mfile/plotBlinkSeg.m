@@ -35,6 +35,8 @@ seg1_behav{4,5} = 361;
 seg1_behav{5,5} = 661;
 seg1_behav{2,7} = 279;
 seg1_behav{4,7} = 614;
+seg1_behav{2,2} = '/Users/wanqiaod/workspace/data/aDBS_behav_data/img/1p.jpg';
+seg1_behav{4,2} = '/Users/wanqiaod/workspace/data/aDBS_behav_data/img/1n.jpg';
 
 seg_index     = 1:661;
 avg_blink_cnt = blink.avg_blink_cnt(seg_index);
@@ -78,7 +80,6 @@ axis(avg_dist_ax,'tight');
 plot(blink_cnt_ax,plot_x,avg_blink_cnt);
 axis(blink_cnt_ax,'tight');
 
-
 % get the height of red time line.
 blink_timeline_height = ceil(max(avg_blink_cnt));
 dist_timeline_height  = max(avg_dist)+0.05;
@@ -87,12 +88,19 @@ dist_timeline_height  = max(avg_dist)+0.05;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % load provocation stimulus
-curr_seg = 1;
-curr_img_fname = '/Users/wanqiaod/workspace/data/aDBS_behav_data/img/1.jpg';
-curr_img = imread(curr_img_fname);
+curr_bin = 1;
+total_bin = 4;
+% curr_img_fname = '/Users/wanqiaod/workspace/data/aDBS_behav_data/img/1p.jpg';
+% curr_img = imread(curr_img_fname);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for frame_index = start_frame : end_frame
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Move bin
+    if curr_bin < total_bin & frame_index == seg1_behav{curr_bin+1,5}
+        curr_bin = curr_bin + 1;
+    end
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % plot orig video
     frame_img = orig_video.read(frame_index);
     image(video_ax,frame_img);
@@ -104,9 +112,12 @@ for frame_index = start_frame : end_frame
     axis(eye_pnt_ax,'equal'); % set x/y axes equal scale
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Show provocation image.
-    % TO BE IMPLEMENTED: change image as the timeline moves
-    image(img_ax,curr_img);
-    axis(img_ax,'off');
+    % TO BE IMPLEMENTED: add fixation image
+    if ~isempty(seg1_behav{curr_bin,2})
+        img = imread(seg1_behav{curr_bin,2});
+        image(img_ax,img);
+        axis(img_ax,'off');
+    end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % plot moving time line.
     blink_timeline = line(blink_cnt_ax,[frame_index frame_index],...
@@ -122,8 +133,6 @@ for frame_index = start_frame : end_frame
     img   = frame2im(frame);
     if ~debug_mode
         writeVideo(out_video,img);
-    else
-        pause(0.5);
     end
     % delete the timeline after done writing the frame
     set(blink_timeline,'Visible','off');
