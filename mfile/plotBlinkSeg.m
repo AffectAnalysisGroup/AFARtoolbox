@@ -80,6 +80,35 @@ axis(avg_dist_ax,'tight');
 plot(blink_cnt_ax,plot_x,avg_blink_cnt);
 axis(blink_cnt_ax,'tight');
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Get color patch
+total_bin  = 4;
+axis_width = avg_dist_pos(3);
+patch_pos_x        = zeros(total_bin,4);
+dist_patch_pos_y   = zeros(total_bin,4);
+blink_patch_pos_y  = zeros(total_bin,4);
+dist_patch_bottom  = avg_dist_pos(2);
+dist_patch_top     = dist_patch_bottom + avg_dist_pos(4);
+blink_patch_bottom = blink_cnt_pos(2);
+blink_patch_top    = blink_patch_bottom + blink_cnt_pos(4);
+
+for bin_index = 1 : total_bin
+    axis_left   = avg_dist_pos(1) + (seg1_behav{bin_index,5}-1)/total_frame;
+    patch_width = ((seg1_behav{bin_index+1,5}-1)/total_frame) * axis_width;
+    axis_right  = avg_dist_pos(1) + patch_width;
+    % x change, y fixed, width change, height fixed
+    patch_x = [axis_left axis_right axis_left axis_right];
+    dist_patch_y = [dist_patch_bottom dist_patch_bottom dist_patch_top ...
+                    dist_patch_top];
+    blink_patch_y = [blink_patch_bottom blink_patch_bottom blink_patch_top ...
+                     blink_patch_top];
+    patch_pos_x(bin_index,:) = patch_x;
+    dist_patch_pos_y(bin_index,:) = dist_patch_y;
+    blink_patch_pos_y(bin_index,:) = blink_patch_y;
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % get the height of red time line.
 blink_timeline_height = ceil(max(avg_blink_cnt));
 dist_timeline_height  = max(avg_dist)+0.05;
@@ -89,9 +118,6 @@ dist_timeline_height  = max(avg_dist)+0.05;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % load provocation stimulus
 curr_bin = 1;
-total_bin = 4;
-% curr_img_fname = '/Users/wanqiaod/workspace/data/aDBS_behav_data/img/1p.jpg';
-% curr_img = imread(curr_img_fname);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for frame_index = start_frame : end_frame
@@ -135,8 +161,12 @@ for frame_index = start_frame : end_frame
         writeVideo(out_video,img);
     end
     % delete the timeline after done writing the frame
-    set(blink_timeline,'Visible','off');
-    set(dist_timeline,'Visible','off');
+    rating_frame = seg1_behav{curr_bin,7};
+
+    if isempty(rating_frame) | (rating_frame ~= frame_index)
+        set(blink_timeline,'Visible','off');
+        set(dist_timeline,'Visible','off');
+    end
 end
 
 if ~debug_mode
