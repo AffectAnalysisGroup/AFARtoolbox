@@ -20,6 +20,7 @@ start_frame = 1;
 end_frame   = 0;
 debug_mode  = true;
 blink_threshold = 0.1;
+show_orig_video = false;
 
 load(zface_fit_path);
 total_frame = size(fit,2);
@@ -124,9 +125,12 @@ for frame_index = start_frame : end_frame
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % plot orig video
-    frame_img = orig_video.read(frame_index);
-    image(video_ax,frame_img);
-    axis(video_ax,'off'); % no axis shown
+    if show_orig_video
+        frame_img = orig_video.read(frame_index);
+        image(video_ax,frame_img);
+        axis(video_ax,'off'); % no axis shown
+    end
+
     % plot eye outline landmarks
     singleface = fit(frame_index).pts_2d;
     singleface = singleface(20:31,:); % eye part landmarks
@@ -158,7 +162,6 @@ for frame_index = start_frame : end_frame
     end
     % delete the timeline after done writing the frame
     rating_frame = seg1_behav{curr_bin,7};
-
     if isempty(rating_frame) | (rating_frame ~= frame_index)
         set(blink_timeline,'Visible','off');
         set(dist_timeline,'Visible','off');
@@ -168,6 +171,5 @@ end
 if ~debug_mode
     close(out_video);
 end
-
 
 
