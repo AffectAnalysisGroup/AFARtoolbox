@@ -1,6 +1,6 @@
 % provoc_data_path = '/Users/wanqiaod/workspace/data/aDBS002_1017_provoc.mat';
 %[fpath,fname,ext] = fileparts(provoc_data_path);
-target_path = '/Users/wanqiaod/workspace/data/aDBS_behav_data/';
+target_path = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc_behav/aDBS002_provoc_1017.mat';
 target_ext  = [".mat"];
 provoc_data_list = listExtFiles(target_path,target_ext);
 for data_index = 1 : length(provoc_data_list)
