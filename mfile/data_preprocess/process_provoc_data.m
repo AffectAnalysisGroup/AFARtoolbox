@@ -51,6 +51,7 @@ for data_index = 1 : length(provoc_data_list)
         % change onset timestamp to frame index
         onset_time   = full_behav{row,5};
         onset_frame  = floor(onset_time*frame_rate);
+        if onset_frame == 0 onset_frame = 1; end % manually adjust onset frame
         rating_time  = full_behav{row,7};
         rating_frame = floor(rating_time*frame_rate);
         behav{row,1} = new_img_field;
