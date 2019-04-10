@@ -150,7 +150,7 @@ for frame_index = start_frame : end_frame
     frame = getframe(gcf);
     img   = frame2im(frame);
     if ~debug_mode
-        writeVideo(out_video,img);
+        myWriteVideo(out_video,img);
     end
     % delete the timeline after done writing the frame
     rating_frame = seg1_behav{curr_bin,7};
