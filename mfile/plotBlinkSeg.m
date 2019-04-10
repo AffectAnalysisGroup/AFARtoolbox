@@ -1,15 +1,19 @@
 
-video_path      = '/Users/wanqiaod/workspace/data/test_video/F005_01.avi';
-zface_fit_path  = '/Users/wanqiaod/workspace/data/out/zface_out/zface_fit/F005_01_fit.mat';
-out_video_path  = '/Users/wanqiaod/workspace/data/visualization/F005_01_blink.avi';
+% video_path      = '/Users/wanqiaod/workspace/data/test_video/F005_01.avi';
+% zface_fit_path  = '/Users/wanqiaod/workspace/data/out/zface_out/zface_fit/F005_01_fit.mat';
+% out_video_path  = '/Users/wanqiaod/workspace/data/visualization/F005_01_blink.avi';
+video_path      = '/etc/VOLUME1/WanqiaoDing/aDBS/cropped_video/provoc_1017_1080p.avi';
+zface_fit_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/out_cropped/zface_out/zface_fit/provoc_1017_1080p_fit.mat';
+out_video_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/visualization/';
 
 % load behavioral data
-behav_data = '/Users/wanqiaod/workspace/data/aDBS_behav_data/aDBS002_1017_provoc.mat';
+% behav_data = '/Users/wanqiaod/workspace/data/aDBS_behav_data/aDBS002_1017_provoc.mat';
+behav_data = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/behav/aDBS002_provoc_1017.mat';
 load(behav_data)
 
 % Parameter need changes
 start_frame = 1;
-end_frame   = 661;
+end_frame   = 0;
 debug_mode  = true;
 blink_threshold = 0.1;
 
@@ -26,18 +30,6 @@ avg_dist = blink.avg_dist(start_frame:end_frame);
 avg_blink_cnt = blink.avg_blink_cnt(start_frame:end_frame);
 
 % Made up behav data
-provoc_behav = data.provoc_behav{1,1};
-seg1_behav   = provoc_behav(1:5,:);
-seg1_behav{1,5} = 1;
-seg1_behav{2,5} = 31;
-seg1_behav{3,5} = 331;
-seg1_behav{4,5} = 361;
-seg1_behav{5,5} = 661;
-seg1_behav{2,7} = 279;
-seg1_behav{4,7} = 614;
-seg1_behav{2,2} = '/Users/wanqiaod/workspace/data/aDBS_behav_data/img/1p.jpg';
-seg1_behav{4,2} = '/Users/wanqiaod/workspace/data/aDBS_behav_data/img/1n.jpg';
-
 seg_index     = 1:661;
 avg_blink_cnt = blink.avg_blink_cnt(seg_index);
 avg_dist      = blink.avg_dist(seg_index);
