@@ -1,14 +1,18 @@
+if ismac
+    video_path      = '/Users/wanqiaod/workspace/data/test_video/F005_01.avi';
+    zface_fit_path  = '/Users/wanqiaod/workspace/data/out/zface_out/zface_fit/F005_01_fit.mat';
+    out_video_path  = '/Users/wanqiaod/workspace/data/visualization/F005_01_blink.avi';
+    behav_data = '/Users/wanqiaod/workspace/data/aDBS_behav_data/aDBS002_1017_provoc.mat';
+end
 
-% video_path      = '/Users/wanqiaod/workspace/data/test_video/F005_01.avi';
-% zface_fit_path  = '/Users/wanqiaod/workspace/data/out/zface_out/zface_fit/F005_01_fit.mat';
-% out_video_path  = '/Users/wanqiaod/workspace/data/visualization/F005_01_blink.avi';
-video_path      = '/etc/VOLUME1/WanqiaoDing/aDBS/cropped_video/provoc_1017_1080p.avi';
-zface_fit_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/out_cropped/zface_out/zface_fit/provoc_1017_1080p_fit.mat';
-out_video_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/visualization/';
+if isunix
+    video_path      = '/etc/VOLUME1/WanqiaoDing/aDBS/cropped_video/provoc_1017_1080p.avi';
+    zface_fit_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/out_cropped/zface_out/zface_fit/provoc_1017_1080p_fit.mat';
+    out_video_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/visualization/';
+    behav_data = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/behav/aDBS002_provoc_1017.mat';
+end
 
 % load behavioral data
-% behav_data = '/Users/wanqiaod/workspace/data/aDBS_behav_data/aDBS002_1017_provoc.mat';
-behav_data = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/behav/aDBS002_provoc_1017.mat';
 load(behav_data)
 
 % Parameter need changes
