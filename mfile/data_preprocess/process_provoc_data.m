@@ -1,9 +1,12 @@
 % input args
 frame_rate = 30;
 
-target_path = '/Users/wanqiaod/workspace/data/aDBS/orig_behav/';
-output_path = '/Users/wanqiaod/workspace/data/aDBS/behav/';
-img_path    = '';
+% TO BE IMPLEMENTED: function
+% target_path = '/Users/wanqiaod/workspace/data/aDBS/orig_behav/';
+% output_path = '/Users/wanqiaod/workspace/data/aDBS/behav/';
+target_path = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/orig_behav/';
+output_path = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/behav/';
+img_path    = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/img';
 target_ext  = [".mat"];
 provoc_data_list = listExtFiles(target_path,target_ext);
 
