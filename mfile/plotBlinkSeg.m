@@ -9,13 +9,13 @@ if isunix
     video_path      = '/etc/VOLUME1/WanqiaoDing/aDBS/cropped_video/provoc_1017_1080p.avi';
     zface_fit_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/out_cropped/zface_out/zface_fit/provoc_1017_1080p_fit.mat';
     out_video_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/visualization/';
-    behav_data = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/behav/aDBS002_provoc_1017.mat';
+    behav_data      = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/behav/aDBS002_provoc_1017.mat';
 end
 
 % load behavioral data
 load(behav_data)
 
-% Parameter need changes
+% Input args
 start_frame = 1;
 end_frame   = 0;
 debug_mode  = true;
@@ -30,14 +30,15 @@ end
 
 % time course of the plots (x axis)
 plot_x   = start_frame:end_frame;
+% get blink information
 blink    = getBlink(fit,blink_threshold);
 avg_dist = blink.avg_dist(start_frame:end_frame);
 avg_blink_cnt = blink.avg_blink_cnt(start_frame:end_frame);
 
 % Made up behav data
-seg_index     = 1:661;
-avg_blink_cnt = blink.avg_blink_cnt(seg_index);
-avg_dist      = blink.avg_dist(seg_index);
+% seg_index     = 1:661;
+% avg_blink_cnt = blink.avg_blink_cnt(seg_index);
+% avg_dist      = blink.avg_dist(seg_index);
 
 % dimensions of the whole window
 window_x0 = 100;

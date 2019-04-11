@@ -42,9 +42,13 @@ for frame = 2 : (frame_cnt-1)
     % if the current distance is lower than the threshold and a local minimum
     % then we consider it as a blink.
     if curr_dist < blink_threhold &  curr_dist < next_dist & curr_dist < prev_dist
-        blink_frame = [blink_frame frame];
+        blink_frame = [blink_frame,frame];
     end
 end
+
+% get the intervals between blinks
+shifted_blink_frame = [0 blink_frame(1:(length(blink_frame)-1))];
+blink_interval = blink_frame - shifted_blink_frame;
 
 % blink_bin is a binary vector with 1 for frame with a blink, and 0 without
 blink_bin = zeros(1,frame_cnt);
@@ -72,9 +76,9 @@ blink_avg_y   = blink_avg_y(1:frame_cnt);
 
 % Output struct
 blink = [];
-blink.avg_blink_cnt = blink_avg_y;
-blink.avg_dist      = avg_dist;
-blink.blink_frame   = blink_frame;
-
+blink.avg_blink_cnt  = blink_avg_y;
+blink.avg_dist       = avg_dist;
+blink.blink_frame    = blink_frame;
+blink.blink_interval = blink_interval;
 end
 
