@@ -19,10 +19,12 @@ behav = data.provoc_behav;
 
 % Input args
 start_frame = 1;
-end_frame   = 0;
-debug_mode  = false;
+end_frame   = 2878;
+debug_mode  = true;
+total_bin   = 16;
+seg_time_width  = 2000; % width in frame number
 blink_threshold = 0.1;
-show_orig_video = true;
+show_orig_video = false;
 
 load(zface_fit_path);
 total_frame = size(fit,2);
@@ -31,11 +33,18 @@ if end_frame == 0
 end
 
 % time course of the plots (x axis)
-plot_x   = start_frame:end_frame;
+time_x     = start_frame:end_frame;
 % get blink information
-blink    = getBlink(fit,blink_threshold);
-avg_dist = blink.avg_dist(start_frame:end_frame);
+blink = getBlink(fit,blink_threshold);
+% avg distance between eye lids.
+half_seg_time_width = round(seg_time_width/2);
+avg_dist = blink.avg_dist(start_frame:end_frame);       
+padded_avg_dist = zeros((size(avg_dist,1)+half_seg_time_width),1);
+padded_avg_dist(1:(size(avg_dist,1)),1) = avg_dist;
+% inter-blink interval in secs.
 interval = blink.blink_interval(start_frame:end_frame);
+padded_interval = zeros((size(interval,1)+half_seg_time_width),1);
+padded_interval(1:(size(interval,1)),1) = interval;
 
 % dimensions of the whole window
 window_x0 = 100;
@@ -55,11 +64,14 @@ figure
 set(gcf,'position',[window_x0,window_y0,window_w,window_h])
 set(gcf,'color','white');
 set(gca,'Clipping','off');
+
 video_pos    = [0.05 0.55 0.25 0.4]; % original video
 eye_pnt_pos  = [0.4 0.55 0.2 0.2]; % eye outline landmarks
 img_pos      = [0.7 0.55 0.25 0.25]; % provoc image
 avg_dist_pos = [0.1 0.15 0.8 0.08]; % average eyelid distance 
 interval_pos = [0.1 0.05 0.8 0.08]; % average blink count over time
+avg_dist_seg_pos = [0.1 0.25 0.8 0.08]; % one segment of avg_dist
+interval_seg_pos = [0.1 0.35 0.8 0.08]; % one segment of inter-blink interval
 
 % get the axes for each plot
 video_ax    = subplot('Position',video_pos);
@@ -67,17 +79,19 @@ eye_pnt_ax  = subplot('Position',eye_pnt_pos);
 img_ax      = subplot('Position',img_pos);
 avg_dist_ax = subplot('Position',avg_dist_pos);
 interval_ax = subplot('Position',interval_pos);
+avg_dist_seg_ax = subplot('Position',avg_dist_seg_pos);
+interval_seg_ax = subplot('Position',interval_seg_pos);
 
 % plot average eyelid distance
-plot(avg_dist_ax,plot_x,avg_dist);
+plot(avg_dist_ax,time_x,avg_dist);
 axis(avg_dist_ax,'tight');
 % plot blink interval
-plot(interval_ax,plot_x,interval);
+plot(interval_ax,time_x,interval);
 axis(interval_ax,'tight');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Get color patch
-total_bin  = size(behav,1);
+if total_bin == 0 total_bin = size(behav,1); end
 % axis_width = avg_dist_pos(3);
 % patch_pos_x        = zeros(total_bin,4);
 % dist_patch_pos_y   = zeros(total_bin,4);
@@ -107,9 +121,11 @@ total_bin  = size(behav,1);
 % get the height of red time line.
 dist_timeline_height = max(avg_dist)+0.02;
 intv_timeline_height = ceil(max(interval));
+seg_dist_timeline_height = max(avg_dist) + 0.02;
+seg_intv_timeline_height = ceil(max(interval));
+
 % In each iteration: plot orig video frame, eye outline landmarks,
 % average eyelid distance, average blink count and moving red line.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % load provocation stimulus
 curr_bin = 1;
@@ -134,6 +150,7 @@ for frame_index = start_frame : end_frame
     singleface = singleface(20:31,:); % eye part landmarks
     scatter(eye_pnt_ax,singleface(:,1),singleface(:,2),'filled');
     axis(eye_pnt_ax,'equal'); % set x/y axes equal scale
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Show provocation image.
     fname = [img_path behav{curr_bin,1}];
@@ -148,6 +165,30 @@ for frame_index = start_frame : end_frame
     title_str = [behav{curr_bin,2} rate_txt];
     title(img_ax,title_str);
 
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % plot the sliding windows of avg distance and inter-blink interval
+    seg_time_x     = frame_index : (frame_index + seg_time_width);
+    interval_seg   = interval(seg_time_x);
+    seg_timeline_x = round(mean([frame_index (frame_index+seg_time_width)]));
+    seg_timeline_x = frame_index + half_seg_time_width;
+    avg_dist_seg   = avg_dist(seg_time_x);
+
+    plot(avg_dist_seg_ax,seg_time_x,avg_dist_seg);
+    axis(avg_dist_seg_ax,'tight');
+    hold on
+    avg_dist_seg_line = line(avg_dist_seg_ax,[seg_timeline_x seg_timeline_x],...
+    [0 seg_dist_timeline_height]);
+    set(avg_dist_seg_line,'LineWidth',1,'Color','r');
+    hold off
+
+    plot(interval_seg_ax,seg_time_x,interval_seg);
+    axis(interval_seg_ax,'tight');
+    hold on
+    interval_seg_line = line(interval_seg_ax,[seg_timeline_x seg_timeline_x],...
+    [0 seg_intv_timeline_height]);
+    set(interval_seg_line,'LineWidth',1,'Color','r');
+    hold off
+    % drawnow
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % plot moving time line.
     dist_timeline = line(avg_dist_ax,[frame_index frame_index],...
