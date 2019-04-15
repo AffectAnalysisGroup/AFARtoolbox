@@ -50,35 +50,36 @@ end
 shifted_blink_frame = [0 blink_frame(1:(length(blink_frame)-1))];
 blink_interval = blink_frame - shifted_blink_frame;
 
-% blink_bin is a binary vector with 1 for frame with a blink, and 0 without
-blink_bin = zeros(1,frame_cnt);
-blink_bin(blink_frame) = 1;
+% % blink_bin is a binary vector with 1 for frame with a blink, and 0 without
+% blink_bin = zeros(1,frame_cnt);
+% blink_bin(blink_frame) = 1;
 
 % calculate the avg blink times over a fixed interval(avg_interval)
 % time interval for calculating average blink count.
-avg_frame_window = frame_rate*avg_time_window;
-window_cnt       = ceil(frame_cnt/avg_frame_window);
-% padding
-temp = zeros(1,window_cnt*avg_frame_window);
-temp(1:length(blink_bin)) = blink_bin;
-blink_bin = temp;
-% MATLAB reshape is col-wise arrangement.
-blink_bin = reshape(blink_bin, [avg_frame_window window_cnt]);
-blink_bin = blink_bin';
-% row-wise sum, get the blink count over each time window.
-blink_cnt_avg = sum(blink_bin,2);
-
-% convert blink_cnt_avg into a vector with the same dimension as
-% blink_bin but blink_avg_y has the avg blink cnt within the window period.
-blink_avg_y   = repmat(blink_cnt_avg,[1 avg_frame_window]);
-blink_avg_y   = reshape(blink_avg_y.',1,[]);
-blink_avg_y   = blink_avg_y(1:frame_cnt);
+% avg_frame_window = frame_rate*avg_time_window;
+% window_cnt       = ceil(frame_cnt/avg_frame_window);
+% % padding
+% temp = zeros(1,window_cnt*avg_frame_window);
+% temp(1:length(blink_bin)) = blink_bin;
+% blink_bin = temp;
+% % MATLAB reshape is col-wise arrangement.
+% blink_bin = reshape(blink_bin, [avg_frame_window window_cnt]);
+% blink_bin = blink_bin';
+% % row-wise sum, get the blink count over each time window.
+% blink_cnt_avg = sum(blink_bin,2);
+% 
+% % convert blink_cnt_avg into a vector with the same dimension as
+% % blink_bin but blink_avg_y has the avg blink cnt within the window period.
+% blink_avg_y   = repmat(blink_cnt_avg,[1 avg_frame_window]);
+% blink_avg_y   = reshape(blink_avg_y.',1,[]);
+% blink_avg_y   = blink_avg_y(1:frame_cnt);
 
 % Output struct
 blink = [];
-blink.avg_blink_cnt  = blink_avg_y;
+% blink.avg_blink_cnt  = blink_avg_y;
 blink.avg_dist       = avg_dist;
 blink.blink_frame    = blink_frame;
 blink.blink_interval = blink_interval;
+blink.blink_interval = getBlinkInterval(fit,frame_rate);
 end
 
