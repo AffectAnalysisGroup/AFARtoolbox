@@ -1,11 +1,12 @@
 if ismac
     video_path      = '/Users/wanqiaod/workspace/data/test_video/F005_01.avi';
-    zface_fit_path  = '/Users/wanqiaod/workspace/data/out/zface_out/zface_fit/F005_01_fit.mat';
-    out_video_path  = '/Users/wanqiaod/workspace/data/visualization/F005_01_blink.avi';
-    behav_data = '/Users/wanqiaod/workspace/data/aDBS_behav_data/aDBS002_1017_provoc.mat';
+    zface_fit_path  = '/Users/wanqiaod/workspace/data/out/zface_out/zface_fit/1080_provoc_1017_fit.mat';
+    out_video_path  = '/Users/wanqiaod/workspace/data/visualization/aDBS002_1017_provoc_blink_out.avi';
+    behav_data      = '/Users/wanqiaod/workspace/data/aDBS/provoc/behav/aDBS002_provoc_1017.mat';
+    img_path        = '/users/wanqiaod/workspace/data/aDBS/provoc/img/';
 end
 
-if isunix
+if isunix & ~ismac
     video_path      = '/etc/VOLUME1/WanqiaoDing/aDBS/cropped_video/provoc_1017_1080p.avi';
     zface_fit_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/out_cropped/zface_out/zface_fit/provoc_1017_1080p_fit.mat';
     out_video_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/visualization/aDBS002_provoc_1017.avi';
@@ -19,9 +20,9 @@ behav = data.provoc_behav;
 
 % Input args
 start_frame = 1;
-end_frame   = 2878;
+end_frame   = 0;
 debug_mode  = true;
-total_bin   = 16;
+total_bin   = 0;
 seg_time_width  = 2000; % width in frame number
 blink_threshold = 0.1;
 show_orig_video = false;
@@ -37,14 +38,17 @@ time_x     = start_frame:end_frame;
 % get blink information
 blink = getBlink(fit,blink_threshold);
 % avg distance between eye lids.
-half_seg_time_width = round(seg_time_width/2);
 avg_dist = blink.avg_dist(start_frame:end_frame);       
-padded_avg_dist = zeros((size(avg_dist,1)+half_seg_time_width),1);
-padded_avg_dist(1:(size(avg_dist,1)),1) = avg_dist;
 % inter-blink interval in secs.
 interval = blink.blink_interval(start_frame:end_frame);
-padded_interval = zeros((size(interval,1)+half_seg_time_width),1);
-padded_interval(1:(size(interval,1)),1) = interval;
+% Padding: 0, 0, 0, ..., 0, [original avg_dist/blink_interval], 0, 0, 0
+half_seg_time_width = round(seg_time_width/2);
+orig_indices = half_seg_time_width : (half_seg_time_width+size(interval,1)-1);
+padded_avg_dist = zeros((size(avg_dist,1)+seg_time_width),1);
+padded_avg_dist(orig_indices) = avg_dist;
+% padding for the sliding window x-axis
+padded_interval = zeros((size(interval,1)+seg_time_width),1);
+padded_interval(orig_indices) = interval;
 
 % dimensions of the whole window
 window_x0 = 100;
@@ -167,13 +171,16 @@ for frame_index = start_frame : end_frame
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % plot the sliding windows of avg distance and inter-blink interval
-    seg_time_x     = frame_index : (frame_index + seg_time_width);
-    interval_seg   = interval(seg_time_x);
-    seg_timeline_x = round(mean([frame_index (frame_index+seg_time_width)]));
-    seg_timeline_x = frame_index + half_seg_time_width;
-    avg_dist_seg   = avg_dist(seg_time_x);
+    seg_time_x     = frame_index : frame_index + seg_time_width;
+    seg_timeline_x = frame_index;
+    interval_seg   = padded_interval(seg_time_x);
+    % seg_timeline_x = round(mean([frame_index (frame_index+seg_time_width)]));
+    % seg_timeline_x = frame_index + half_seg_time_width;
+    avg_dist_seg   = padded_avg_dist(seg_time_x);
 
-    plot(avg_dist_seg_ax,seg_time_x,avg_dist_seg);
+    seg_plot_x_ax = (frame_index - half_seg_time_width) : (frame_index + half_seg_time_width);
+
+    plot(avg_dist_seg_ax,seg_plot_x_ax,avg_dist_seg);
     axis(avg_dist_seg_ax,'tight');
     hold on
     avg_dist_seg_line = line(avg_dist_seg_ax,[seg_timeline_x seg_timeline_x],...
@@ -181,7 +188,7 @@ for frame_index = start_frame : end_frame
     set(avg_dist_seg_line,'LineWidth',1,'Color','r');
     hold off
 
-    plot(interval_seg_ax,seg_time_x,interval_seg);
+    plot(interval_seg_ax,seg_plot_x_ax,interval_seg);
     axis(interval_seg_ax,'tight');
     hold on
     interval_seg_line = line(interval_seg_ax,[seg_timeline_x seg_timeline_x],...
