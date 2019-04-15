@@ -35,11 +35,12 @@ for data_index = 1 : length(provoc_data_list)
         if isempty(orig_img_field)
             new_img_field = 'fixation.jpg';
         else
-            img_type      = full_behav{row,4};
+            [~,img_index,~] = fileparts(orig_img_field);
+            img_type = full_behav{row,4};
             if string(img_type) == "neutral" 
                 new_img_field = 'neutral.jpg';
             else
-                new_img_field = [img_type '_' orig_img_field];
+                new_img_field = [img_type '_' img_index '.jpg'];
             end
         end 
         % change rating

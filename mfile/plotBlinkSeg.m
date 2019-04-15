@@ -8,7 +8,7 @@ end
 if isunix
     video_path      = '/etc/VOLUME1/WanqiaoDing/aDBS/cropped_video/provoc_1017_1080p.avi';
     zface_fit_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/out_cropped/zface_out/zface_fit/provoc_1017_1080p_fit.mat';
-    out_video_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/visualization/';
+    out_video_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/visualization/aDBS002_provoc_1017.avi';
     behav_data      = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/behav/aDBS002_provoc_1017.mat';
     img_path        = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/img/';
 end
@@ -20,9 +20,9 @@ behav = data.provoc_behav;
 % Input args
 start_frame = 1;
 end_frame   = 0;
-debug_mode  = true;
+debug_mode  = false;
 blink_threshold = 0.1;
-show_orig_video = false;
+show_orig_video = true;
 
 load(zface_fit_path);
 total_frame = size(fit,2);
@@ -136,11 +136,17 @@ for frame_index = start_frame : end_frame
     axis(eye_pnt_ax,'equal'); % set x/y axes equal scale
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Show provocation image.
-    % TO BE IMPLEMENTED: add fixation image
     fname = [img_path behav{curr_bin,1}];
     img   = imread(fname);
     image(img_ax,img);
     axis(img_ax,'off');
+    if behav{curr_bin,4} ~= -1 
+        rate_txt = ['  rate: ' num2str(behav{curr_bin,4})]; 
+    else
+        rate_txt = '';
+    end
+    title_str = [behav{curr_bin,2} rate_txt];
+    title(img_ax,title_str);
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % plot moving time line.
@@ -157,7 +163,7 @@ for frame_index = start_frame : end_frame
     if ~debug_mode
         frame = getframe(gcf);
         img   = frame2im(frame); 
-        myWriteVideo(out_video,img);
+        writeVideo(out_video,img);
     end
     % delete the timeline after done writing the frame
     rating_frame = behav{curr_bin,5};
