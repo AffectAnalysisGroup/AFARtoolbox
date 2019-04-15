@@ -10,10 +10,12 @@ if isunix
     zface_fit_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/out_cropped/zface_out/zface_fit/provoc_1017_1080p_fit.mat';
     out_video_path  = '/etc/VOLUME1/WanqiaoDing/aDBS/visualization/';
     behav_data      = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/behav/aDBS002_provoc_1017.mat';
+    img_path        = '/etc/VOLUME1/WanqiaoDing/aDBS/provoc/img/';
 end
 
 % load behavioral data
 load(behav_data)
+behav = data.provoc_behav;
 
 % Input args
 start_frame = 1;
@@ -33,12 +35,7 @@ plot_x   = start_frame:end_frame;
 % get blink information
 blink    = getBlink(fit,blink_threshold);
 avg_dist = blink.avg_dist(start_frame:end_frame);
-avg_blink_cnt = blink.avg_blink_cnt(start_frame:end_frame);
-
-% Made up behav data
-% seg_index     = 1:661;
-% avg_blink_cnt = blink.avg_blink_cnt(seg_index);
-% avg_dist      = blink.avg_dist(seg_index);
+interval = blink.blink_interval(start_frame:end_frame);
 
 % dimensions of the whole window
 window_x0 = 100;
@@ -58,58 +55,58 @@ figure
 set(gcf,'position',[window_x0,window_y0,window_w,window_h])
 set(gcf,'color','white');
 set(gca,'Clipping','off');
-video_pos     = [0.05 0.55 0.25 0.4]; % original video
-eye_pnt_pos   = [0.4 0.55 0.2 0.2]; % eye outline landmarks
-img_pos       = [0.7 0.55 0.25 0.25]; % provoc image
-avg_dist_pos  = [0.1 0.15 0.8 0.08]; % average eyelid distance 
-blink_cnt_pos = [0.1 0.05 0.8 0.08]; % average blink count over time
+video_pos    = [0.05 0.55 0.25 0.4]; % original video
+eye_pnt_pos  = [0.4 0.55 0.2 0.2]; % eye outline landmarks
+img_pos      = [0.7 0.55 0.25 0.25]; % provoc image
+avg_dist_pos = [0.1 0.15 0.8 0.08]; % average eyelid distance 
+interval_pos = [0.1 0.05 0.8 0.08]; % average blink count over time
 
 % get the axes for each plot
-video_ax     = subplot('Position',video_pos);
-eye_pnt_ax   = subplot('Position',eye_pnt_pos);
-img_ax       = subplot('Position',img_pos);
-avg_dist_ax  = subplot('Position',avg_dist_pos);
-blink_cnt_ax = subplot('Position',blink_cnt_pos);
+video_ax    = subplot('Position',video_pos);
+eye_pnt_ax  = subplot('Position',eye_pnt_pos);
+img_ax      = subplot('Position',img_pos);
+avg_dist_ax = subplot('Position',avg_dist_pos);
+interval_ax = subplot('Position',interval_pos);
 
 % plot average eyelid distance
 plot(avg_dist_ax,plot_x,avg_dist);
 axis(avg_dist_ax,'tight');
-% plot average blink count
-plot(blink_cnt_ax,plot_x,avg_blink_cnt);
-axis(blink_cnt_ax,'tight');
+% plot blink interval
+plot(interval_ax,plot_x,interval);
+axis(interval_ax,'tight');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Get color patch
-total_bin  = 4;
-axis_width = avg_dist_pos(3);
-patch_pos_x        = zeros(total_bin,4);
-dist_patch_pos_y   = zeros(total_bin,4);
-blink_patch_pos_y  = zeros(total_bin,4);
-dist_patch_bottom  = avg_dist_pos(2);
-dist_patch_top     = dist_patch_bottom + avg_dist_pos(4);
-blink_patch_bottom = blink_cnt_pos(2);
-blink_patch_top    = blink_patch_bottom + blink_cnt_pos(4);
-
-for bin_index = 1 : total_bin
-    axis_left   = avg_dist_pos(1) + (seg1_behav{bin_index,5}-1)/total_frame;
-    patch_width = ((seg1_behav{bin_index+1,5}-1)/total_frame) * axis_width;
-    axis_right  = avg_dist_pos(1) + patch_width;
-    % x change, y fixed, width change, height fixed
-    patch_x = [axis_left axis_right axis_left axis_right];
-    dist_patch_y = [dist_patch_bottom dist_patch_bottom dist_patch_top ...
-                    dist_patch_top];
-    blink_patch_y = [blink_patch_bottom blink_patch_bottom blink_patch_top ...
-                     blink_patch_top];
-    patch_pos_x(bin_index,:) = patch_x;
-    dist_patch_pos_y(bin_index,:) = dist_patch_y;
-    blink_patch_pos_y(bin_index,:) = blink_patch_y;
-end
+total_bin  = size(behav,1);
+% axis_width = avg_dist_pos(3);
+% patch_pos_x        = zeros(total_bin,4);
+% dist_patch_pos_y   = zeros(total_bin,4);
+% blink_patch_pos_y  = zeros(total_bin,4);
+% dist_patch_bottom  = avg_dist_pos(2);
+% dist_patch_top     = dist_patch_bottom + avg_dist_pos(4);
+% blink_patch_bottom = interval_pos(2);
+% blink_patch_top    = blink_patch_bottom + interval_pos(4);
+% 
+% for bin_index = 1 : total_bin
+%     axis_left   = avg_dist_pos(1) + (behav{bin_index,5}-1)/total_frame;
+%     patch_width = ((behav{bin_index+1,5}-1)/total_frame) * axis_width;
+%     axis_right  = avg_dist_pos(1) + patch_width;
+%     % x change, y fixed, width change, height fixed
+%     patch_x = [axis_left axis_right axis_left axis_right];
+%     dist_patch_y = [dist_patch_bottom dist_patch_bottom dist_patch_top ...
+%                     dist_patch_top];
+%     blink_patch_y = [blink_patch_bottom blink_patch_bottom blink_patch_top ...
+%                      blink_patch_top];
+%     patch_pos_x(bin_index,:) = patch_x;
+%     dist_patch_pos_y(bin_index,:) = dist_patch_y;
+%     blink_patch_pos_y(bin_index,:) = blink_patch_y;
+% end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % get the height of red time line.
-blink_timeline_height = ceil(max(avg_blink_cnt));
-dist_timeline_height  = max(avg_dist)+0.05;
+dist_timeline_height = max(avg_dist)+0.02;
+intv_timeline_height = ceil(max(interval));
 % In each iteration: plot orig video frame, eye outline landmarks,
 % average eyelid distance, average blink count and moving red line.
 
@@ -121,7 +118,7 @@ curr_bin = 1;
 for frame_index = start_frame : end_frame
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Move bin
-    if curr_bin < total_bin & frame_index == seg1_behav{curr_bin+1,5}
+    if curr_bin < total_bin & frame_index == behav{curr_bin+1,3}
         curr_bin = curr_bin + 1;
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,32 +137,33 @@ for frame_index = start_frame : end_frame
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Show provocation image.
     % TO BE IMPLEMENTED: add fixation image
-    if ~isempty(seg1_behav{curr_bin,2})
-        img = imread(seg1_behav{curr_bin,2});
-        image(img_ax,img);
-        axis(img_ax,'off');
-    end
+    fname = [img_path behav{curr_bin,1}];
+    img   = imread(fname);
+    image(img_ax,img);
+    axis(img_ax,'off');
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % plot moving time line.
-    blink_timeline = line(blink_cnt_ax,[frame_index frame_index],...
-                          [0 blink_timeline_height]);
-    dist_timeline  = line(avg_dist_ax,[frame_index frame_index],...
+    dist_timeline = line(avg_dist_ax,[frame_index frame_index],...
                           [0 dist_timeline_height]);
+    intv_timeline = line(interval_ax,[frame_index frame_index],...
+                          [0 intv_timeline_height]);
     % set timeline width and color
-    set(blink_timeline,'LineWidth',1,'Color','r');
     set(dist_timeline,'LineWidth',1,'Color','r');
+    set(intv_timeline,'LineWidth',1,'Color','r');
     drawnow
+
     % get and write the output frame
-    frame = getframe(gcf);
-    img   = frame2im(frame);
     if ~debug_mode
+        frame = getframe(gcf);
+        img   = frame2im(frame); 
         myWriteVideo(out_video,img);
     end
     % delete the timeline after done writing the frame
-    rating_frame = seg1_behav{curr_bin,7};
+    rating_frame = behav{curr_bin,5};
     if isempty(rating_frame) | (rating_frame ~= frame_index)
-        set(blink_timeline,'Visible','off');
         set(dist_timeline,'Visible','off');
+        set(intv_timeline,'Visible','off');
     end
 end
 
