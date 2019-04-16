@@ -19,8 +19,8 @@ load(behav_data)
 behav = data.provoc_behav;
 
 % Input args
-start_frame = 1;
-end_frame   = 0;
+start_frame = 2000;
+end_frame   = 6000;
 debug_mode  = false;
 total_bin   = 0;
 seg_time_width  = 2000; % width in frame number
@@ -53,8 +53,8 @@ padded_interval(orig_indices) = interval;
 % dimensions of the whole window
 window_x0 = 100;
 window_y0 = 100;
-window_w  = 1000;
-window_h  = 700;
+window_w  = 1300;
+window_h  = 800;
 
 % open the original video and output video
 orig_video = VideoReader(video_path);
@@ -179,11 +179,11 @@ for frame_index = start_frame : end_frame
 
     plot(interval_seg_ax,seg_plot_x_ax,interval_seg);
     axis(interval_seg_ax,'tight');
-    hold on
+    % hold on
     interval_seg_line = line(interval_seg_ax,[seg_timeline_x seg_timeline_x],...
     [0 seg_intv_timeline_height]);
     set(interval_seg_line,'LineWidth',2,'Color','r');
-    hold off
+    % hold on
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % plot the background patch on the sliding window.
 
