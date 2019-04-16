@@ -19,8 +19,8 @@ load(behav_data)
 behav = data.provoc_behav;
 
 % Input args
-start_frame = 2000;
-end_frame   = 6000;
+start_frame = 1;
+end_frame   = 200;
 debug_mode  = false;
 total_bin   = 0;
 seg_time_width  = 2000; % width in frame number
