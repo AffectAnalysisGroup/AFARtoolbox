@@ -1,13 +1,41 @@
-function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,save_fit)
+function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,...
+         varargin)
+% runZfaceSingleVideo saves zface video/fit files to given output directory.
+%   Input arguments:
+%   -zface: a struct containing mesh/alt2 path and others.
+%   -video_path: the path of the video folder. 
+%   -zface_video_path: the full path of the output zface video. 
+%   -fit_path: the full path of the output zface fit file.
+%   Optional input arguments:
+%   -save_fit: if or not to save fit file. Default is true.
+%   -save_video: if or not to save the tracked face video. Default is true.
+
+    % Parse optional arguments
+    p = inputParser;
+    default_save_fit   = true;
+    default_save_video = true;
+    addOptional(p,'save_fit',default_save_fit);
+    addOptional(p,'save_video',default_save_video);
+    parse(p,varargin{:}); 
+    save_fit   = p.Results.save_fit;
+    save_video = p.Results.save_video;
+
+    if (~save_fit && ~save_video)
+        % if not save fit or video, nothing to save, quit.
+        return
+    end
 
  	mesh_path  = zface.mesh;
     alt2_path  = zface.alt2;
 
     zf = CZFace(mesh_path,alt2_path);
     vo = VideoReader(video_path);
-    vw = VideoWriter(zface_video_path,'MPEG-4');
-    vw.FrameRate = vo.FrameRate;
-    open(vw);
+
+    if save_video
+        vw = VideoWriter(zface_video_path);
+        vw.FrameRate = vo.FrameRate;
+        open(vw);
+    end
 
     I = readFrame(vo);
     h = InitDisplay(zf,I);
@@ -15,8 +43,9 @@ function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,save_fit
 
     fit = [];
     vo.CurrentTime = 0;
-    frame_index = 0;
+    frame_index    = 0;
     while hasFrame(vo)
+        % Track each frame
         I = readFrame(vo);
         frame_index = frame_index + 1;
       [ ctrl2D, mesh2D, mesh3D, pars ] = zf.Fit( I, ctrl2D );
@@ -24,7 +53,9 @@ function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,save_fit
 
         F = getframe(h.fig);
         [X, Map] = frame2im(F);
-        writeVideo(vw,X);
+        if save_video
+            writeVideo(vw,X);
+        end
         fit(frame_index).frame     = frame_index;
         fit(frame_index).isTracked = ~isempty(ctrl2D);
         if fit(frame_index).isTracked
@@ -38,14 +69,17 @@ function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,save_fit
             fit(frame_index).headPose = [];
             fit(frame_index).pdmPars  = [];
         end    
-        % pause(1/vo.FrameRate)
     end
 
     clear zf;
     close(h.fig);
-    close(vw);
+
+    if save_video
+        close(vw);
+    end
 
     if save_fit
         save(fit_path,'fit');
     end
+
 end
