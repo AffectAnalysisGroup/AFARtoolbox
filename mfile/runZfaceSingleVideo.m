@@ -1,7 +1,7 @@
 function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,...
          varargin)
 
-% runZfaceSingleVideo saves zface video/fit files to given output directory.
+% runZfaceSingleVideo saves zface video/fit files of a given video.
 %   Input arguments:
 %   -zface: a struct containing mesh/alt2 path and others.
 %   -video_path: the path of the video folder. 
