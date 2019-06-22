@@ -1,9 +1,9 @@
-function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,...
-         varargin)
+function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
+                             fit_path,varargin)
 
 % runZfaceSingleVideo saves zface video/fit files of a given video.
 %   Input arguments:
-%   -zface: a struct containing mesh/alt2 path and others.
+%   -zface_param: a struct containing mesh/alt2 path and other parameters.
 %   -video_path: the path of the video folder. 
 %   -zface_video_path: the full path of the output zface video. 
 %   -fit_path: the full path of the output zface fit file.
@@ -26,8 +26,8 @@ function runZfaceSingleVideo(zface,video_path,zface_video_path,fit_path,...
         return
     end
 
- 	mesh_path  = zface.mesh;
-    alt2_path  = zface.alt2;
+ 	mesh_path  = zface_param.mesh;
+    alt2_path  = zface_param.alt2;
 
     zf = CZFace(mesh_path,alt2_path);
     vo = VideoReader(video_path);
