@@ -82,4 +82,5 @@ function [zface_param,FETA_param,AU_param] = initOutDir(zface_folder, ...
 	FETA_param.fitNormOut   = dir_full_path(FETA_param.fitNormOut);
 
     fprintf('Initialization finished.\n');
+
 end
