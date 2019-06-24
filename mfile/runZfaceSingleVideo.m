@@ -3,13 +3,13 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
 % runZfaceSingleVideo saves zface video/fit files of a given video.
 %   Input arguments:
-%   -zface_param: a struct containing mesh/alt2 path and other parameters.
-%   -video_path: the path of the video folder. 
-%   -zface_video_path: the full path of the output zface video. 
-%   -fit_path: the full path of the output zface fit file.
+%   - zface_param: a struct containing mesh/alt2 path and other parameters.
+%   - video_path: char array, the path of the video folder. 
+%   - zface_video_path: char array, the full path of the output zface video. 
+%   - fit_path: char array, the full path of the output zface fit file.
 %   Optional input arguments:
-%   -save_fit: if or not to save fit file. Default is true.
-%   -save_video: if or not to save the tracked face video. Default is true.
+%   - save_fit: boolean, if not to save fit file. Default true.
+%   - save_video: boolean, if to save the tracked face video. Default true.
 
     % Parse optional arguments
     p = inputParser;

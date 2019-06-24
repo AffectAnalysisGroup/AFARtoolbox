@@ -2,13 +2,14 @@ function runZface(zface_param,video_dir,varargin)
 
 % runZface generates zface outputs of videos in the given directory.
 %   Input arguments: 
-%   -zface_param: zface_param struct, output from initOutDir()
-%   -video_dir: the absolute path of the videos
+%   - zface_param: zface_param struct, output from initOutDir()
+%   - video_dir: char array, the absolute path of the videos
 %   Optional arguments:
-%   -save_fit: if or not to save fit file. Default is true.
-%   -save_video: if or not to save the tracked face video. Default is true.
-%   -save_video_ext: the format of zface output video.(MATLAB can't write .mp4 
-%                    videos on Linux)
+%   - save_fit: boolean, if or not to save fit file. Default is true.
+%   - save_video: boolean, if or not to save the tracked face video. 
+%     Default is true.
+%   - save_video_ext: the format of zface output video.(MATLAB can't write 
+%     .mp4 videos on Linux)
 
     % Parse optional arguments
     p = inputParser;
