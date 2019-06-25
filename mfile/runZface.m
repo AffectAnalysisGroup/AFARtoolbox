@@ -64,11 +64,15 @@ function runZface(zface_param,video_dir,varargin)
     	fit_path          = fullfile(zface_param.matOut,[fname '_fit.mat']);
 	    zface_video_path  = fullfile(zface_param.videoOut,...
                                      [fname '_zface' save_video_ext]);
-        % Run zface
-        runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
-                            fit_path,'save_fit',save_fit,'save_video',...
-                            save_video);
-        
+        % Run zface, if run into error, skip.
+        try
+            runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
+                                fit_path,'save_fit',save_fit,'save_video',...
+                                save_video);
+        catch
+            msg = 'Unable to process the video: ' + video_name + '\n';
+            warning(msg);
+            return
+        end
     end
-
 end
