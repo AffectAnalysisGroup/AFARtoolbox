@@ -34,7 +34,7 @@ function runZface(zface_param,video_dir,varargin)
     end
     % Check if the system is Linux and the output format is .avi
     islinux = (~ismac) & (~ispc);
-    if islinux && (ext_str == ".avi")
+    if islinux && (ext_str ~= ".avi")
         msg = ['Cannot write zface output video: cannot write',...
                ' .mp4 videos on Linux.\n'];
         fprintf(msg);
@@ -70,7 +70,7 @@ function runZface(zface_param,video_dir,varargin)
                                 fit_path,'save_fit',save_fit,'save_video',...
                                 save_video);
         catch
-            msg = 'Unable to process the video: ' + video_name + '\n';
+            msg = ['Unable to process the video: ',video_name];
             warning(msg);
             return
         end

@@ -18,7 +18,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     % ZFace
     if run_zface
-        runZface(video_dir,zface,true);
+        runZface(zface,video_dir);
     end
 
     % FETA
