@@ -72,7 +72,7 @@ function runZface(zface_param,video_dir,varargin)
         catch
             msg = ['Unable to process the video: ',video_name];
             warning(msg);
-            return
+            continue
         end
     end
 end
