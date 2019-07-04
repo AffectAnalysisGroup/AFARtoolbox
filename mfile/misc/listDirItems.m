@@ -19,9 +19,9 @@ function target_items = listDirItems(target_dir,varargin)
         if fname_str == "." || fname_str == ".."
             continue
         end
-
+        [~,~,ext] = fileparts(fname_str);
         exclude_item = false;
-        item_is_dir = dir_list_struct(n).isdir;
+        item_is_dir  = dir_list_struct(n).isdir;
         if item_is_dir
             if is_file
                 exclude_item = true;
