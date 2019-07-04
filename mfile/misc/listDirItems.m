@@ -12,16 +12,16 @@ function target_items = listDirItems(target_dir,varargin)
     is_dir   = p.Results.is_dir;
     file_ext = p.Results.file_ext;
 
-    dir_list_str = dir(target_dir);
-    target_items = [];
-    for n = 1 : length(dir_list_dir)
-        fname_str = convertCharsToStrings(dir_list_dir(n).name);
+    dir_list_struct = dir(target_dir);
+    target_items    = [];
+    for n = 1 : length(dir_list_struct)
+        fname_str = convertCharsToStrings(dir_list_struct(n).name);
         if fname_str == "." || fname_str == ".."
             continue
         end
 
         exclude_item = false;
-        item_is_dir = dir_list_dir(n).isdir;
+        item_is_dir = dir_list_struct(n).isdir;
         if item_is_dir
             if is_file
                 exclude_item = true;
