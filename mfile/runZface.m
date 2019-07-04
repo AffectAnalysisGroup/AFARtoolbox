@@ -41,8 +41,11 @@ function runZface(zface_param,video_dir,varargin)
         return
     end
 
-    video_dir_list = dir(video_dir);
-    [file_num, ~]  = size(video_dir_list);
+    old_zface_mat   = listDirItems(zface_param.matOut,'file_ext','.mat');
+    old_zface_video = listDirItems(zface_param.videoOut,'is_file',true,...
+                                   'is_dir',false);
+    video_dir_list  = dir(video_dir);
+    [file_num, ~]   = size(video_dir_list);
 
     zface_param.mesh = fullfile(zface_param.folder,'ZFace_models',...
                                 'zf_ctrl49_mesh512.dat');
@@ -64,6 +67,14 @@ function runZface(zface_param,video_dir,varargin)
     	fit_path          = fullfile(zface_param.matOut,[fname '_fit.mat']);
 	    zface_video_path  = fullfile(zface_param.videoOut,...
                                      [fname '_zface' save_video_ext]);
+        fit_fname_str   = convertCharsToStrings([fname '_fit.mat']);
+        video_fname_str = convertCharsToStrings([fname '_zface' save_video_ext]);
+        if ismember(fit_fname_str,old_zface_mat)
+            save_fit = false;
+        end
+        if ismember(video_fname_str,old_video_mat)
+            save_video = false;
+        end
         % Run zface, if run into error, skip.
         try
             runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
