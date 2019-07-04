@@ -27,6 +27,9 @@ function target_items = listDirItems(target_dir,varargin)
                 exclude_item = true;
             end
         else % the element is a file.
+            if is_dir
+                exclude_item = true;
+            end
             if file_ext ~= "" && ext ~= file_ext
                 exclude_item = true;
             end
