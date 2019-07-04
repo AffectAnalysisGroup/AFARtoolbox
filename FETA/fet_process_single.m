@@ -1,4 +1,6 @@
-function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,normFunc,res,IOD,lmSS,descFunc,patchSize,saveNormVideo,saveNormLandmarks,saveVideoLandmarks)
+function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,...
+                            normFunc,res,IOD,lmSS,descFunc,patchSize,...
+                            saveNormVideo,saveNormLandmarks,saveVideoLandmarks)
 
     descExt       = [];
     [~,fnName,~]  = fileparts(fn);    

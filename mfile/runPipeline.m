@@ -22,7 +22,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     end
 
     % FETA
-    load('ms3D_v1024_low_forehead');
+    load('ms3D_v1024_low_forehead.mat');
     FETA.lmSS = ':';
     FETA.res  = 200;
     FETA.IOD  = 80;
@@ -35,7 +35,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     FETA.saveNormLandmarks  = true;
     FETA.saveVideoLandmarks = true;
     if run_FETA
-        runFETA(video_dir,zface,FETA);
+        runFETA(zface,FETA,video_dir);
     end
 
     % AU detection.

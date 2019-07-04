@@ -1,11 +1,10 @@
-function runAUSingleVideo(fname,FETA,AU)
+function runAUSingleVideo(fname,FETA_param,AU_param)
 	
 	% fname is the one without extension.
 	norm_fn   = [fname '_norm.mp4'];
+    norm_path = fullfile(FETA_param.normOut,norm_fn)
 
-    norm_path = fullfile(FETA.normOut,norm_fn);
-
-    if AU.meanSub
+    if AU_param.meanSub
         net = importONNXNetwork('bp4d_ep10.onnx', 'OutputLayerType', ...
                                 'regression');
     else
@@ -13,12 +12,12 @@ function runAUSingleVideo(fname,FETA,AU)
                                  'weights.h5','OutputLayerType','regression');
     end
 
-    nAU = AU.nAU;
-    au_out_dir = AU.outDir;
-    video_name = norm_path; %%% update this line with your own normalized video
-    v = VideoReader(video_name);
+    v   = VideoReader(video_name);
+    nAU = AU_param.nAU;
+    au_out_dir = AU_param.outDir;
+    video_name = norm_path; 
 
-    sum_fr = zeros(200,200);
+    sum_fr  = zeros(200,200);
     counter = 1;
     while hasFrame(v)
         I = readFrame(v);
@@ -33,7 +32,7 @@ function runAUSingleVideo(fname,FETA,AU)
         sum_fr  = sum_fr + I2_conv;
         counter = counter + 1;
     end
-    if AU.meanSub
+    if AU_param.meanSub
         mean_video = sum_fr/counter;
     else
         mean_video = mean(sum_fr(:))/counter;
@@ -42,11 +41,11 @@ function runAUSingleVideo(fname,FETA,AU)
     v = VideoReader(video_name);
     all_outputs = [];
     while hasFrame(v)
-        I = readFrame(v);
+        I  = readFrame(v);
         I2 = rgb2gray(I);
         I2_conv = (double(I2)/255) - mean_video;
         sample_output = predict(net,I2_conv,'ExecutionEnvironment','cpu');
-        if AU.meanSub
+        if AU_param.meanSub
             sample_output = sigm(sample_output);
         end
         all_outputs = [all_outputs;sample_output];

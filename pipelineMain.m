@@ -59,7 +59,7 @@ handles.output = hObject;
 guidata(hObject, handles);
 
 CurrDir = pwd; 
-DefaultZfaceDir = fullfile(CurrDir,'ZFace');
+DefaultZfaceDir = fullfile(CurrDir,'zface');
 DefaultFETADir  = fullfile(CurrDir,'FETA');
 DefaultAUDir    = fullfile(CurrDir,'AU_detector');
 set(handles.ZfaceDirTxt,'string',DefaultZfaceDir);
@@ -152,7 +152,6 @@ function OutDirBnt_Callback(hObject, eventdata, handles)
     
     OutDir = uigetdir;
     set(handles.OutDirTxt,'string',OutDir);
-
 
 
 function ZfaceDirTxt_Callback(hObject, eventdata, handles)
@@ -330,15 +329,15 @@ function RunPipeline(handles)
     
     mkdir(out_dir);
     [zface,FETA,AU] = initOutDir(zface_dir,FETA_dir,AU_dir,...
-                                 out_dir,false);
+                                 out_dir,true);
     if run_zface
         set(handles.RunInfoTxt,'string','Running ZFace...');
         runZface(video_dir,zface,save_fit);
         set(handles.RunInfoTxt,'string','ZFace done!');
     end
 
+    FETA = initFETA(handles,FETA);    
     if run_FETA
-        FETA = initFETA(handles,FETA);
         set(handles.RunInfoTxt,'string','Running FETA...');
         runFETA(video_dir,zface,FETA);
         set(handles.RunInfoTxt,'string','FETA done!');
@@ -517,9 +516,9 @@ function RunVisualBtn_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     origVideoPath = get(handles.VisulaizationVideoTxt,'string')
-    auIndexVect   = [1,2,3,4,5,7];
-    out_dir = get(handles.OutDirTxt,'string');
-    auOutDir = fullfile(out_dir,'AU_detector_out');
+    auIndexVect   = 1:12;
+    out_dir       = get(handles.OutDirTxt,'string');
+    auOutDir      = fullfile(out_dir,'AU_detector_out');
     normAnnotatedVideoDir = fullfile(out_dir,'feta_out','feta_norm_annotated_videos');
     plotAU(auIndexVect,origVideoPath,auOutDir,normAnnotatedVideoDir);
 

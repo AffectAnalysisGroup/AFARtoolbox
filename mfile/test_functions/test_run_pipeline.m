@@ -1,12 +1,12 @@
 % Testing runZface.m
 
-video_dir    = '/home/wanqiao/workspace/data/test_video';
-output_dir   = '/home/wanqiao/workspace/data/test_out';
-zface_folder = '/home/wanqiao/workspace/pipeline/zface';
-FETA_folder  = '/home/wanqiao/workspace/pipeline/FETA';
-AU_folder    = '/home/wanqiao/workspace/pipeline/AU_detector';
+video_dir    = '/Users/wanqiaod/workspace/data/B';
+output_dir   = '/Users/wanqiaod/workspace/data/B_out';
+zface_folder = '/Users/wanqiaod/workspace/pipeline/zface';
+FETA_folder  = '/Users/wanqiaod/workspace/pipeline/FETA';
+AU_folder    = '/Users/wanqiaod/workspace/pipeline/AU_detector';
 run_zface    = true;
-run_FETA     = false;
+run_FETA     = true;
 run_AU       = false;
 create_out   = false;
 
