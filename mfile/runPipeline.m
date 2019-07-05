@@ -5,12 +5,16 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     default_email_update     = false;
     default_email_acc_info   = [];
     default_update_iteration = -1;
+    default_email_recipient  = '';
     addOptional(p,'email_update',default_email_update);
     addOptional(p,'email_acc_info',default_email_acc_info);
-    addOptional(p,'email_update_iteration',default_email_update_iteration);
+    addOptional(p,'email_update_iteration',default_update_iteration);
+    addOptional(p,'email_recipient',default_email_recipient);
     parse(p,varargin{:});
-    email_update   = p.Results.email_update;
-    email_acc_info = p.Results.email_acc_info;
+    email_update     = p.Results.email_update;
+    email_acc_info   = p.Results.email_acc_info;
+    update_iteration = p.Results.email_update_iteration;
+    email_recipient  = p.Results.email_recipient;
 
     if create_out
         mkdir(output_dir);
@@ -18,6 +22,9 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     if email_update
         setup_email(email_acc_info);
+        if isempty(email_recipient)
+            error('Email recipient address cannot be empty.');
+        end
         email_subject_txt = 'A message from your running AFAR program';
     end
 
@@ -35,14 +42,12 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
                               zface_end_time, '\n Start time: ', ...
                               zface_start_time, '\n Input video path: ',...
                               video_dir,'\n Output path: ', zface.outDir];
-            sendmail(email_acc_info.acc_username,email_subject_txt,...
-                     email_msg_txt);
+            sendmail(email_recipient,email_subject_txt,email_msg_txt);
         catch
             zface_crash_time = getMyTime();
             email_msg_txt = ['Unfortunately, zface has stopped at ',...
                              zface_crash_time];
-            sendmail(email_acc_info.acc_username,email_subject_txt,...
-                     email_msg_txt);
+            sendmail(email_recipient,email_subject_txt,email_msg_txt);
         end
     end
 
@@ -69,14 +74,12 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
                               FETA_end_time, '\n Start time: ', ...
                               FETA_start_time, '\n Input video path: ',...
                               video_dir,'\n Output path: ', FETA.outDir];
-            sendmail(email_acc_info.acc_username,email_subject_txt,...
-                     email_msg_txt);
+            sendmail(email_recipient,email_subject_txt,email_msg_txt);
         catch
             FETA_crash_time = getMyTime();
             email_msg_txt = ['Unfortunately, FETA has stopped at ',...
                              FETA_crash_time];
-            sendmail(email_acc_info.acc_username,email_subject_txt,...
-                     email_msg_txt);
+            sendmail(email_recipient,email_subject_txt,email_msg_txt);
         end
     end
 
@@ -92,14 +95,12 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
                              ' ', AU_end_time, '\n Start time: ',...
                              AU_start_time, '\n Input video path: ',...
                              video_dir,'\n Output path: ', AU.outDir];
-            sendmail(email_acc_info.acc_username,email_subject_txt,...
-                     email_msg_txt);
+            sendmail(email_recipient,email_subject_txt,email_msg_txt);
         catch
             AU_crash_time = getMyTime();
             email_msg_txt = ['Unfortunately, AU detection has stopped at ',...
                              AU_crash_time];
-            sendmail(email_acc_info.acc_username,email_subject_txt,...
-                     email_msg_txt);  
+            sendmail(email_recipient,email_subject_txt,email_msg_txt); 
         end
     end
 end
