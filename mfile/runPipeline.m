@@ -1,15 +1,24 @@
 function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
-                     run_zface,run_FETA,run_AU_detector,create_out)
-    % create_out = true; % run the pipeline need to set the value to be true to get
-    %                     % all the output dir and subdir.
-    % video_dir  = '/Users/wanqiaod/workspace/pipeline/test_video';
-    % output_dir = '/Users/wanqiaod/workspace/pipeline/out';
-    % zface_folder = '/Users/wanqiaod/workspace/pipeline/zface';
-    % FETA_folder  = '/Users/wanqiaod/workspace/pipeline/FETA';
-    % AU_folder    = '/Users/wanqiaod/workspace/pipeline/AU_detector';
+                     run_zface,run_FETA,run_AU_detector,create_out,varargin)
+
+    p = inputParser;
+    default_email_update     = false;
+    default_email_acc_info   = [];
+    default_update_iteration = -1;
+    addOptional(p,'email_update',default_email_update);
+    addOptional(p,'email_acc_info',default_email_acc_info);
+    addOptional(p,'email_update_iteration',default_email_update_iteration);
+    parse(p,varargin{:});
+    email_update   = p.Results.email_update;
+    email_acc_info = p.Results.email_acc_info;
 
     if create_out
         mkdir(output_dir);
+    end
+
+    if email_update
+        setup_email(email_acc_info);
+        email_subject_txt = 'A message from your running AFAR program';
     end
 
     [zface,FETA,AU] = initOutDir(zface_folder,FETA_folder,AU_folder,output_dir,...
@@ -18,8 +27,25 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     % ZFace
     if run_zface
-        runZface(zface,video_dir);
+        zface_start_time = getMyTime();
+        try
+            runZface(zface,video_dir);
+            zface_end_time = getMyTime();
+            email_msg_txt  = ['Zface just finished all processing at ',...
+                              zface_end_time, '\n Start time: ', ...
+                              zface_start_time, '\n Input video path: ',...
+                              video_dir,'\n Output path: ', zface.outDir];
+            sendmail(email_acc_info.acc_username,email_subject_txt,...
+                     email_msg_txt);
+        catch
+            zface_crash_time = getMyTime();
+            email_msg_txt = ['Unfortunately, zface has stopped at ',...
+                             zface_crash_time];
+            sendmail(email_acc_info.acc_username,email_subject_txt,...
+                     email_msg_txt);
+        end
     end
+
 
     % FETA
     load('ms3D_v1024_low_forehead.mat');
@@ -35,14 +61,46 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     FETA.saveNormLandmarks  = true;
     FETA.saveVideoLandmarks = true;
     if run_FETA
-        runFETA(zface,FETA,video_dir);
+        FETA_start_time = getMyTime();
+        try
+            runFETA(zface,FETA,video_dir);
+            FETA_end_time = getMyTime();
+            email_msg_txt  = ['FETA just finished all processing at ',...
+                              FETA_end_time, '\n Start time: ', ...
+                              FETA_start_time, '\n Input video path: ',...
+                              video_dir,'\n Output path: ', FETA.outDir];
+            sendmail(email_acc_info.acc_username,email_subject_txt,...
+                     email_msg_txt);
+        catch
+            FETA_crash_time = getMyTime();
+            email_msg_txt = ['Unfortunately, FETA has stopped at ',...
+                             FETA_crash_time];
+            sendmail(email_acc_info.acc_username,email_subject_txt,...
+                     email_msg_txt);
+        end
     end
 
     % AU detection.
     AU.nAU = 12;
     AU.meanSub = false;
     if run_AU_detector
-        runAUdetector(video_dir,FETA,AU);
+        AU_start_time = getMyTime();
+        try
+            runAUdetector(video_dir,FETA,AU);
+            AU_end_time = getMyTime();
+            email_msg_txt = ['AU detection just finished all processing at',...
+                             ' ', AU_end_time, '\n Start time: ',...
+                             AU_start_time, '\n Input video path: ',...
+                             video_dir,'\n Output path: ', AU.outDir];
+            sendmail(email_acc_info.acc_username,email_subject_txt,...
+                     email_msg_txt);
+        catch
+            AU_crash_time = getMyTime();
+            email_msg_txt = ['Unfortunately, AU detection has stopped at ',...
+                             AU_crash_time];
+            sendmail(email_acc_info.acc_username,email_subject_txt,...
+                     email_msg_txt);  
+        end
     end
 end
 
