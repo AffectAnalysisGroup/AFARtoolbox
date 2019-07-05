@@ -1,12 +1,20 @@
 % Testing runZface.m
+if ismac
+    video_dir    = '/Users/wanqiaod/workspace/data/test_video';
+    output_dir   = '/Users/wanqiaod/workspace/data/test_out';
+    zface_folder = '/Users/wanqiaod/workspace/pipeline/zface';
+    FETA_folder  = '/Users/wanqiaod/workspace/pipeline/FETA';
+    AU_folder    = '/Users/wanqiaod/workspace/pipeline/AU_detector';
+else
+    video_dir  = '/run/user/1435550896/gvfs/smb-share:server=136.142.40.131,share=raw_data/TPOT/Video_Data/CameraA/converted';
+    output_dir = '/etc/VOLUME1/WanqiaoDing/TPOT_out';
+    zface_folder = '/home/wanqiao/workspace/pipeline/zface';
+    FETA_folder  = '/home/wanqiao/workspace/pipeline/FETA';
+    AU_folder    = '/home/wanqiao/workspace/pipeline/AU_detector';
+end
 
-video_dir    = '/Users/wanqiaod/workspace/data/B';
-output_dir   = '/Users/wanqiaod/workspace/data/B_out';
-zface_folder = '/Users/wanqiaod/workspace/pipeline/zface';
-FETA_folder  = '/Users/wanqiaod/workspace/pipeline/FETA';
-AU_folder    = '/Users/wanqiaod/workspace/pipeline/AU_detector';
 run_zface    = true;
-run_FETA     = true;
+run_FETA     = false;
 run_AU       = false;
 create_out   = false;
 
