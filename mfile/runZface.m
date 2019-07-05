@@ -72,7 +72,7 @@ function runZface(zface_param,video_dir,varargin)
         if ismember(fit_fname_str,old_zface_mat)
             save_fit = false;
         end
-        if ismember(video_fname_str,old_video_mat)
+        if ismember(video_fname_str,old_zface_video)
             save_video = false;
         end
         % Run zface, if run into error, skip.
