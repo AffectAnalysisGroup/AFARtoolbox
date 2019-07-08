@@ -16,13 +16,16 @@ function runZface(zface_param,video_dir,varargin)
     default_save_fit   = true;
     default_save_video = true;
     default_save_video_ext = '.avi';
+    default_debug_mode     = false; 
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
     addOptional(p,'save_video_ext',default_save_video_ext);
+    addOptional(p,'debug_mode',default_debug_mode);
     parse(p,varargin{:});
     save_fit   = p.Results.save_fit;
     save_video = p.Results.save_video;
     save_video_ext = p.Results.save_video_ext;
+    debug_mode     = p.Results.debug_mode;
 
     % Check if the given video format is valid
     valid_ext = [".avi",".mj2",".mp4",".m4v"];
@@ -69,21 +72,27 @@ function runZface(zface_param,video_dir,varargin)
                                      [fname '_zface' save_video_ext]);
         fit_fname_str   = convertCharsToStrings([fname '_fit.mat']);
         video_fname_str = convertCharsToStrings([fname '_zface' save_video_ext]);
-        if ismember(fit_fname_str,old_zface_mat)
+        if (~isempty(old_zface_mat)) && ismember(fit_fname_str,old_zface_mat)
             save_fit = false;
         end
-        if ismember(video_fname_str,old_zface_video)
+        if (~isempty(old_zface_video)) && ismember(video_fname_str,old_zface_video)
             save_video = false;
         end
         % Run zface, if run into error, skip.
-        try
+        if debug_mode
             runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
                                 fit_path,'save_fit',save_fit,'save_video',...
                                 save_video);
-        catch
-            msg = ['Unable to process the video: ',video_name];
-            warning(msg);
-            continue
+        else
+            try
+                runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
+                                    fit_path,'save_fit',save_fit,'save_video',...
+                                    save_video);
+            catch
+                msg = ['Unable to process the video: ',video_name];
+                warning(msg);
+                continue
+            end
         end
     end
 end
