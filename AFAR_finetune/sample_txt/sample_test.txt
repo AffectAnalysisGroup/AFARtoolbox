@@ -1,0 +1,9 @@
+../sample_test_data/F040_01/0695.png	0	0	0	0	0	1	0	1	0	0	0	0
+../sample_test_data/F040_01/0781.png	0	0	0	0	1	1	1	1	0	0	0	0
+../sample_test_data/F040_01/0915.png	0	0	0	1	1	1	1	1	0	0	0	0
+../sample_test_data/F093_01/0234.png	0	0	0	1	1	1	1	0	0	0	0	0
+../sample_test_data/F093_01/0262.png	0	0	0	1	1	1	1	0	0	0	1	0
+../sample_test_data/F093_01/0401.png	0	0	0	1	1	1	1	0	0	0	0	0
+../sample_test_data/M019_11/1263.png	0	0	0	0	0	0	0	0	0	0	1	0
+../sample_test_data/M019_11/1299.png	0	0	1	1	1	0	0	1	0	0	0	0
+../sample_test_data/M019_11/1361.png	0	1	0	0	1	0	0	0	0	0	0	0

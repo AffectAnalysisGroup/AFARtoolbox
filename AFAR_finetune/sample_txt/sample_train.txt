@@ -1,0 +1,10 @@
+../sample_train_data/M057_01/0093.png	0	0	0	1	1	1	1	1	0	0	0	0
+../sample_train_data/M057_01/0244.png	0	0	0	1	1	1	1	1	0	0	0	0
+../sample_train_data/M057_01/0450.png	0	0	0	1	1	0	1	1	1	1	1	0
+../sample_train_data/F001_08/1188.png	0	0	1	1	1	1	0	1	0	0	1	0
+../sample_train_data/F001_08/1421.png	1	1	0	1	1	1	1	1	1	0	1	0
+../sample_train_data/F001_08/1468.png	0	0	0	0	0	1	1	1	0	0	1	1
+../sample_train_data/M011_08/0748.png	0	0	0	0	0	0	0	0	0	0	0	0
+../sample_train_data/M011_08/0779.png	1	1	0	1	1	1	0	1	0	0	0	0
+../sample_train_data/M011_08/0851.png	1	1	0	0	0	1	0	1	0	0	0	0
+
