@@ -102,7 +102,7 @@ To test your dataset using frames and a .txt file containing the paths and names
 - Set your test_txt_file and test_txt_file_name
 - If you want to use the model trained on mean subtracted frames, (i) compute mean frames of each video, (ii) save them under a folder and (iii) set mean_image_path that contains the mean frames of videos in your dataset to that folder.
 
-### Citation
+## Citation
 
 If you use any of the resources provided on this page, please cite the pipeline paper and papers relevant to the components you used:
 
@@ -156,3 +156,6 @@ each module's folder is.
 (That's the default module location. Otherwise you have 
 to check and manually change the locations of 
 ZFace/FETA/AUDetector directory)
+
+## License
+OpenPose is freely available for free non-commercial use, and may be redistributed under these conditions. Please, see the license for further details. Interested in a commercial license? Please contact [Jeffrey Cohn](http://www.jeffcohn.net/).
