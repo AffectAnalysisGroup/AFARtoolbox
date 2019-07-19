@@ -158,4 +158,4 @@ to check and manually change the locations of
 ZFace/FETA/AUDetector directory)
 
 ## License
-OpenPose is freely available for free non-commercial use, and may be redistributed under these conditions. Please, see the license for further details. Interested in a commercial license? Please contact [Jeffrey Cohn](http://www.jeffcohn.net/).
+OpenPose is freely available for free non-commercial use, and may be redistributed under these conditions. Please, see the [license](LICENSE) for further details. Interested in a commercial license? Please contact [Jeffrey Cohn](http://www.jeffcohn.net/).
