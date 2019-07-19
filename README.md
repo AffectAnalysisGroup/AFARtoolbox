@@ -102,6 +102,53 @@ To test your dataset using frames and a .txt file containing the paths and names
 - Set your test_txt_file and test_txt_file_name
 - If you want to use the model trained on mean subtracted frames, (i) compute mean frames of each video, (ii) save them under a folder and (iii) set mean_image_path that contains the mean frames of videos in your dataset to that folder.
 
+### Citation
+
+If you use any of the resources provided on this page, please cite the pipeline paper and papers relevant to the components you used:
+
+**Pipeline:**
+```
+@inproceedings{ertugrul2019afar,
+  title={AFAR: A Deep Learning Based Tool for Automated Facial Affect Recognition},
+  author={Onal Ertugrul, Itir and Jeni, L{\'a}szl{\'o} A and Ding, Wanqiao and Cohn, Jeffrey F},
+  booktitle={2019 14th IEEE International Conference on Automatic Face \& Gesture Recognition (FG 2019)},
+  year={2019},
+  organization={IEEE}
+}
+```
+
+**AU detector and AFAR finetune:**
+```
+@inproceedings{ertugrul2019cross,
+  title={Cross-domain AU Detection: Domains, Learning Approaches, and Measures},
+  author={Onal Ertugrul, Itir and Cohn, Jeffrey F and Jeni, L{\'a}szl{\'o} A and Zhang, Zheng and Yin, Lijun and Ji, Qiang},
+  booktitle={2019 14th IEEE International Conference on Automatic Face \& Gesture Recognition (FG 2019)},
+  year={2019},
+  organization={IEEE}
+}
+```
+
+**ZFace:**
+```
+@article{jeni2017dense,
+  title={Dense 3d face alignment from 2d video for real-time use},
+  author={Jeni, L{\'a}szl{\'o} A and Cohn, Jeffrey F and Kanade, Takeo},
+  journal={Image and Vision Computing},
+  volume={58},
+  pages={13--24},
+  year={2017},
+  publisher={Elsevier}
+}
+
+@inproceedings{jeni2015dense,
+  title={Dense 3D face alignment from 2D videos in real-time},
+  author={Jeni, L{\'a}szl{\'o} A and Cohn, Jeffrey F and Kanade, Takeo},
+  booktitle={2015 11th IEEE international conference and workshops on automatic face and gesture recognition (FG)},
+  year={2015},
+  organization={IEEE}
+}
+```
+
 
 ## Use AFAR GUI
 Make sure run pipelineMain.m under the same path where
