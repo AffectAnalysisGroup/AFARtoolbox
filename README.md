@@ -1,4 +1,7 @@
 # Automated Facial Affect Recognition(AFAR)
+
+Automated facial affect recognition is crucial to multiple domains (e.g., health, education, entertainment). Commercial tools are available but costly and of unknown validity. Open-source ones lack user-friendly GUI for use by non-programmers. For both types, evidence of domain transfer and options for retraining for use in new domains typically are lacking. Deep approaches have two key advantages. They typically outperform shallow ones for facial affect recognition. And pre-trained models provided by deep approaches can be fine tuned with new datasets to optimize performance. AFAR is an open-source, deep-learning based, user-friendly tool for automated facial affect recognition. It consists of a pipeline having four components: (i) face tracking, ii) face registration, (iii) action unit (AU) detection and (iv) visualization. Moreover, finetuning component allows the interested users to finetune the pretrained AU detection models with their own dataset. AFAR has been used to assess treatment response to deep brain stimulation (DBS) [[1]](https://dl.acm.org/citation.cfm?id=3243023), investigate cross-domain generalizability [[2]](https://ieeexplore.ieee.org/abstract/document/8756543), and explore facial affect in social interactions.
+
 ## Required
 - [OpenCV](https://opencv.org/)
 - [mexopencv](https://github.com/kyamagu/mexopencv)
