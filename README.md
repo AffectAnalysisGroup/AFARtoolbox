@@ -156,8 +156,11 @@ If you use any of the resources provided on this page, please cite the pipeline 
 
 ## Links to the papers
 [Cross-domain AU detection: Domains, Learning Approaches, and Measures](https://www.jeffcohn.net/wp-content/uploads/2019/02/FG2019_cross_domain_final_version.pdf)
+
 [AFAR: A Deep Learning Based Tool for Automated Facial Affect Recognition](https://www.jeffcohn.net/wp-content/uploads/2019/07/FG2019_demo_paper.pdf.pdf)
+
 [Dense 3d face alignment from 2d video for real-time use](http://www.laszlojeni.com/pub/articles/Jeni16_ImaVis_ZFace.pdf)
+
 [Dense 3D face alignment from 2D videos in real-time](http://www.laszlojeni.com/pub/articles/Jeni15FG_ZFace.pdf)
 
 ## Use AFAR GUI
