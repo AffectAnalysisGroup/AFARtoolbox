@@ -78,7 +78,7 @@ These AUs are: AU1, AU2, AU4, AU6, AU7, AU10, AU12, AU14, AU15, AU17, AU23 and A
 
 ### AFAR Finetune
 
-With this module, you can finetune pretained AU detector models trained on EB+ dataset. You can also obtain AU probabilities for frames/videos. Finetuning code and models can be found in AFAR_finetune/codes. You can run the following command:
+AFAR Finetune module is written in PyTorch. With this module, you can finetune pretained AU detector models trained on EB+ dataset. You can also obtain AU probabilities for frames/videos. Finetuning code and models can be found in AFAR_finetune/codes. You can run the following command:
 ```
 python afar_finetune.py
 ```
