@@ -15,15 +15,32 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     p = inputParser;
     default_save_fit   = true;
     default_save_video = true;
+    default_debug_mode = false;
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
+    addOptional(p,'debug_mode',default_debug_mode);
     parse(p,varargin{:}); 
     save_fit   = p.Results.save_fit;
     save_video = p.Results.save_video;
+    debug_mode = p.Results.debug_mode;
 
     if (~save_fit && ~save_video)
         % if not save fit or video, nothing to save, quit.
         return
+    end
+
+    if debug_mode
+        log_file = 'zface_log';
+        if isfile(log_file)
+            fid = fopen(log_file,'a+');
+        else
+            fid = fopen(log_file,'w');
+        end
+        [~,v_fn,v_ext] = fileparts(video_path);
+        video_fname    = [v_fn,v_ext];
+        current_time   = getMyTime();
+        fprintf(fid,'%s Start zface process on %s \n',current_time,...
+                video_path);
     end
 
  	mesh_path  = zface_param.mesh;
@@ -70,6 +87,12 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
             fit(frame_index).headPose = [];
             fit(frame_index).pdmPars  = [];
         end    
+        if mod(frame_index,500) == 0 && debug_mode 
+            current_time = getMyTime();
+            fprintf(fid,'%s -- %d frames tracked from %s\n', current_time,...
+                    frame_index, video_fname);
+        end
+
     end
 
     clear zf;
@@ -77,6 +100,10 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
     if save_video
         close(vw);
+    end
+
+    if debug_mode
+        fclose(fid);
     end
 
     if save_fit

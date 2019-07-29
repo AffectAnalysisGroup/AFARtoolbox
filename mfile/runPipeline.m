@@ -7,17 +7,23 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     default_update_iteration = -1;
     default_email_recipient  = '';
     default_debug_mode       = false;
+    default_zface_save_fit   = true;
+    default_zface_save_video = false;
     addOptional(p,'email_update',default_email_update);
     addOptional(p,'email_acc_info',default_email_acc_info);
     addOptional(p,'email_update_iteration',default_update_iteration);
     addOptional(p,'email_recipient',default_email_recipient);
     addOptional(p,'debug_mode',default_debug_mode);
+    addOptional(p,'zface_save_fit',default_zface_save_fit);
+    addOptional(p,'zface_save_video',default_zface_save_video);
     parse(p,varargin{:});
     email_update     = p.Results.email_update;
     email_acc_info   = p.Results.email_acc_info;
     update_iteration = p.Results.email_update_iteration;
     email_recipient  = p.Results.email_recipient;
     debug_mode       = p.Results.debug_mode;
+    zface_save_fit   = p.Results.zface_save_fit;
+    zface_save_video = p.Results.zface_save_video;
 
     if create_out
         mkdir(output_dir);
@@ -39,10 +45,13 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     if run_zface
         zface_start_time = getMyTime();
         if debug_mode
-            runZface(zface,video_dir,'debug_mode',debug_mode);
+            runZface(zface,video_dir,'debug_mode',debug_mode,'save_fit',...
+                     zface_save_fit,'save_video',zface_save_video);
         else
             try
                 runZface(zface,video_dir);
+                runZface(zface,video_dir,'save_fit',zface_save_fit,...
+                         'save_video',zface_save_video);
                 zface_end_time = getMyTime();
                 if email_update
                     email_msg_txt  = ['Zface just finished all processing at ',...

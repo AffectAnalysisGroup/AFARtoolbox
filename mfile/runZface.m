@@ -22,10 +22,10 @@ function runZface(zface_param,video_dir,varargin)
     addOptional(p,'save_video_ext',default_save_video_ext);
     addOptional(p,'debug_mode',default_debug_mode);
     parse(p,varargin{:});
-    save_fit   = p.Results.save_fit;
-    save_video = p.Results.save_video;
-    save_video_ext = p.Results.save_video_ext;
-    debug_mode     = p.Results.debug_mode;
+    global_save_fit   = p.Results.save_fit;
+    global_save_video = p.Results.save_video;
+    save_video_ext    = p.Results.save_video_ext;
+    debug_mode        = p.Results.debug_mode;
 
     % Check if the given video format is valid
     valid_ext = [".avi",".mj2",".mp4",".m4v"];
@@ -58,6 +58,9 @@ function runZface(zface_param,video_dir,varargin)
     % Loop through each file in the given folder
     for file_index = 1 : file_num
 
+        save_video = global_save_video;
+        save_fit   = global_save_fit;
+
     	video_name  = video_dir_list(file_index).name;
     	[~,fname,~] = fileparts(video_name);
     	video_path 	= fullfile(video_dir,video_name);
@@ -67,9 +70,9 @@ function runZface(zface_param,video_dir,varargin)
         end
 
         % Get full path and file names of outputs 
-    	fit_path          = fullfile(zface_param.matOut,[fname '_fit.mat']);
-	    zface_video_path  = fullfile(zface_param.videoOut,...
-                                     [fname '_zface' save_video_ext]);
+    	fit_path         = fullfile(zface_param.matOut,[fname '_fit.mat']);
+	    zface_video_path = fullfile(zface_param.videoOut,...
+                                    [fname '_zface' save_video_ext]);
         fit_fname_str   = convertCharsToStrings([fname '_fit.mat']);
         video_fname_str = convertCharsToStrings([fname '_zface' save_video_ext]);
         if (~isempty(old_zface_mat)) && ismember(fit_fname_str,old_zface_mat)
@@ -82,12 +85,12 @@ function runZface(zface_param,video_dir,varargin)
         if debug_mode
             runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
                                 fit_path,'save_fit',save_fit,'save_video',...
-                                save_video);
+                                save_video,'debug_mode',debug_mode);
         else
             try
                 runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
                                     fit_path,'save_fit',save_fit,'save_video',...
-                                    save_video);
+                                    save_video,'debug_mode',debug_mode);
             catch
                 msg = ['Unable to process the video: ',video_name];
                 warning(msg);
