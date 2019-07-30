@@ -31,17 +31,15 @@ function runZface(zface_param,video_dir,varargin)
     valid_ext = [".avi",".mj2",".mp4",".m4v"];
     ext_str   = convertCharsToStrings(save_video_ext);
     if ~(ismember(ext_str,valid_ext))
-        msg = 'Cannot write zface output video: invalid given video format\n';
-        fprintf(msg);
-        return
+        error('Cannot write zface output video: invalid given video format\n');
     end
+
     % Check if the system is Linux and the output format is .avi
     islinux = (~ismac) & (~ispc);
     if islinux && (ext_str ~= ".avi")
         msg = ['Cannot write zface output video: cannot write',...
                ' .mp4 videos on Linux.\n'];
-        fprintf(msg);
-        return
+        error(msg);
     end
 
     old_zface_mat   = listDirItems(zface_param.matOut,'file_ext','.mat');
@@ -81,21 +79,10 @@ function runZface(zface_param,video_dir,varargin)
         if (~isempty(old_zface_video)) && ismember(video_fname_str,old_zface_video)
             save_video = false;
         end
-        % Run zface, if run into error, skip.
-        if debug_mode
-            runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
-                                fit_path,'save_fit',save_fit,'save_video',...
-                                save_video,'debug_mode',debug_mode);
-        else
-            try
-                runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
-                                    fit_path,'save_fit',save_fit,'save_video',...
-                                    save_video,'debug_mode',debug_mode);
-            catch
-                msg = ['Unable to process the video: ',video_name];
-                warning(msg);
-                continue
-            end
-        end
+
+        % Run zface for a single video.
+        runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
+                            fit_path,'save_fit',save_fit,'save_video',...
+                            save_video,'debug_mode',debug_mode);
     end
 end

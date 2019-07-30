@@ -14,7 +14,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     % Parse optional arguments
     p = inputParser;
     default_save_fit   = true;
-    default_save_video = true;
+    default_save_video = false;
     default_debug_mode = false;
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
@@ -55,25 +55,26 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         open(vw);
     end
 
-    I = readFrame(vo);
-    h = InitDisplay(zf,I);
+    
+    fit    = [];
     ctrl2D = [];
-
-    fit = [];
     vo.CurrentTime = 0;
     frame_index    = 0;
     while hasFrame(vo)
         % Track each frame
         I = readFrame(vo);
+        if frame_index == 0 && save_video
+            h = InitDisplay(zf,I);
+        end
         frame_index = frame_index + 1;
       [ ctrl2D, mesh2D, mesh3D, pars ] = zf.Fit( I, ctrl2D );
-        UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
-
-        F = getframe(h.fig);
-        [X, Map] = frame2im(F);
         if save_video
+            UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
+            F = getframe(h.fig);
+            [X, Map] = frame2im(F);
             writeVideo(vw,X);
         end
+        
         fit(frame_index).frame     = frame_index;
         fit(frame_index).isTracked = ~isempty(ctrl2D);
         if fit(frame_index).isTracked
@@ -96,9 +97,9 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     end
 
     clear zf;
-    close(h.fig);
 
     if save_video
+        close(h.fig);
         close(vw);
     end
 
