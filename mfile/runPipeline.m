@@ -18,7 +18,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     end
 
     [zface_param,FETA_param,AU_param] = initOutDir(zface_folder,FETA_folder,...
-                                        AU_folder,output_dir,create_out);
+                                        AU_folder,output_dir);
     addpath(genpath('.'));
 
     % ZFace module

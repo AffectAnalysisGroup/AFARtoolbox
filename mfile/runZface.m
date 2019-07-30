@@ -15,17 +15,20 @@ function runZface(zface_param,video_dir,varargin)
     p = inputParser;
     default_save_fit   = true;
     default_save_video = true;
+    default_multi_thread   = false;
     default_save_video_ext = '.avi';
     default_debug_mode     = false; 
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
     addOptional(p,'save_video_ext',default_save_video_ext);
     addOptional(p,'debug_mode',default_debug_mode);
+    addOptional(p,'multi_thread',default_multi_thread);
     parse(p,varargin{:});
     global_save_fit   = p.Results.save_fit;
     global_save_video = p.Results.save_video;
     save_video_ext    = p.Results.save_video_ext;
     debug_mode        = p.Results.debug_mode;
+    multi_thread      = p.Results.multi_thread;
 
     % Check if the given video format is valid
     valid_ext = [".avi",".mj2",".mp4",".m4v"];
@@ -54,6 +57,7 @@ function runZface(zface_param,video_dir,varargin)
                                 'haarcascade_frontalface_alt2.xml');
 
     % Loop through each file in the given folder
+    process_list = []; % the list of all videos need to process.
     for file_index = 1 : file_num
 
         save_video = global_save_video;
@@ -79,10 +83,29 @@ function runZface(zface_param,video_dir,varargin)
         if (~isempty(old_zface_video)) && ismember(video_fname_str,old_zface_video)
             save_video = false;
         end
-
-        % Run zface for a single video.
-        runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
-                            fit_path,'save_fit',save_fit,'save_video',...
-                            save_video,'debug_mode',debug_mode);
+        
+        video_info = [];
+        video_info.path = video_path;
+        video_info.fit  = fit_path;
+        video_info.zface_video = zface_video_path;
+        process_list = [process_list, video_info];
     end
+    
+    % run zface on each video
+    if multi_thread
+        parfor video_index = 1 : length(process_list)
+            v = process_list(video_index);
+            runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
+                                'save_fit',save_fit,'save_video',save_video,...
+                                'debug_mode',debug_mode);
+        end
+    else
+        for video_index = 1 : length(process_list)
+            v = process_list(video_index);
+            runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
+                                'save_fit',save_fit,'save_video',save_video,...
+                                'debug_mode',debug_mode);
+        end
+    end
+
 end
