@@ -1,5 +1,5 @@
 function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
-                     run_zface,run_FETA,run_AU_detector,create_out,varargin)
+                     run_zface,run_FETA,run_AU_detector,varargin)
 
     p = inputParser;
     default_debug_mode       = false;
@@ -13,8 +13,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     zface_save_fit   = p.Results.zface_save_fit;
     zface_save_video = p.Results.zface_save_video;
 
-    if create_out
-        mkdir(output_dir);
+    if ~isfolder(output_dir)
+        error('Given output folder is not valid.\n');
     end
 
     [zface_param,FETA_param,AU_param] = initOutDir(zface_folder,FETA_folder,...
@@ -26,7 +26,6 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
         runZface(zface_param,video_dir,'debug_mode',debug_mode,...
                  'save_fit',zface_save_fit,'save_video',zface_save_video);
     end
-
 
     % FETA module
     load('ms3D_v1024_low_forehead.mat');
