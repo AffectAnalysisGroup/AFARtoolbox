@@ -1,4 +1,4 @@
-function runAUdetector(video_dir, FETA, AU)
+function runAUdetector(FETA, AU, video_dir)
 
 	video_dir_list = dir(video_dir);
 	[file_num,~]   = size(video_dir_list);
