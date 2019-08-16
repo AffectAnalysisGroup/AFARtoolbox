@@ -24,6 +24,7 @@ function runFETA(zface_param,FETA_param,video_dir)
 	    return
 	end
 
+    % TODO: choose desc feature from input arg
 	switch FETA_param.descFeature
 	    case {'HOG_OpenCV'}
 	        descFunc = @fet_desc_HOG_OpenCV;
@@ -41,6 +42,7 @@ function runFETA(zface_param,FETA_param,video_dir)
 	end
 
 	% IOD normalization
+    % TODO: implement mean substraction
 	e1 = mean(ms3D(37:42,:));
 	e2 = mean(ms3D(43:48,:));
 	d  = dist3D(e1,e2);
@@ -52,6 +54,7 @@ function runFETA(zface_param,FETA_param,video_dir)
 	ms3D(:,1) = ms3D(:,1) - (maxXY(1) + minXY(1))/2 + res/2;
 	ms3D(:,2) = ms3D(:,2) - (maxXY(2) + minXY(2))/2 + res/2;
 
+    % Print parameters
 	fprintf('input list:\t%s\n',FETA_param.video_list);
 	fprintf('tracking dir:\t%s\n',video_dir);
 	fprintf('output dir:\t%s\n',FETA_param.outDir);

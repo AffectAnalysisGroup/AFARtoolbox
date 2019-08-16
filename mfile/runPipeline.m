@@ -1,6 +1,8 @@
 function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
                      run_zface,run_FETA,run_AU_detector,varargin)
 
+    % TODO: set up AFAR processing server folder.
+    % TODO: solve bug with parallel worker number greater than processing videos
     p = inputParser;
     default_debug_mode       = false;
     default_zface_save_fit   = true;
@@ -29,17 +31,17 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     % FETA module
     load('ms3D_v1024_low_forehead.mat');
-    FETA.lmSS = ':';
-    FETA.res  = 200;
-    FETA.IOD  = 80;
-    FETA.ms3D = ms3D;
-    FETA.normFeature = '2D_similarity';
-    FETA.descFeature = 'HOG_OpenCV';
-    FETA.patch_size  = 32;
-    FETA.video_list  = getTrackingList(video_dir);
-    FETA.saveNormVideo      = true;
-    FETA.saveNormLandmarks  = true;
-    FETA.saveVideoLandmarks = true;
+    FETA_param.lmSS = ':';
+    FETA_param.res  = 200;
+    FETA_param.IOD  = 80;
+    FETA_param.ms3D = ms3D;
+    FETA_param.normFeature = '2D_similarity';
+    FETA_param.descFeature = 'HOG_OpenCV';
+    FETA_param.patch_size  = 32;
+    FETA_param.video_list  = getTrackingList(video_dir);
+    FETA_param.saveNormVideo      = true;
+    FETA_param.saveNormLandmarks  = true;
+    FETA_param.saveVideoLandmarks = true;
     if run_FETA
         runFETA(zface_param,FETA_param,video_dir);
     end
