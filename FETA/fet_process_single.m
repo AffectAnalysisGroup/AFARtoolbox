@@ -41,17 +41,18 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,...
             end                        
 
             if saveNormVideo
-                out_video_fn = [fnName '_norm.mp4'];
+                out_video_fn = [fnName '_norm.avi'];
                 out_video_path = fullfile(out_norm_dir,out_video_fn);
-                vwNorm = VideoWriter(out_video_path,'MPEG-4');
+                % TODO: add ext option
+                vwNorm = VideoWriter(out_video_path);
                 vwNorm.FrameRate = vo.FrameRate;
                 open(vwNorm);
             end
 
             if saveVideoLandmarks
-                out_annotated_fn = [fnName '_norm_annotated.mp4'];
+                out_annotated_fn = [fnName '_norm_annotated.avi'];
                 out_annotated_path = fullfile(out_annotated_dir,out_annotated_fn); 
-                vwNormLand = VideoWriter(out_annotated_path,'MPEG-4');
+                vwNormLand = VideoWriter(out_annotated_path);
                 vwNormLand.FrameRate = vo.FrameRate;
                 open(vwNormLand);
             end

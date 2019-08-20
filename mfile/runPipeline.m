@@ -3,6 +3,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     % TODO: set up AFAR processing server folder.
     % TODO: solve bug with parallel worker number greater than processing videos
+    % TODO: modify fet_process_single
+
     p = inputParser;
     default_debug_mode       = false;
     default_zface_save_fit   = true;
@@ -47,8 +49,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     end
 
     % AU detection module
-    AU.nAU = 12;
-    AU.meanSub = false;
+    AU_param.nAU = 12;
+    AU_param.meanSub = false;
     if run_AU_detector
         runAUdetector(FETA_param,AU_param,video_dir);
     end

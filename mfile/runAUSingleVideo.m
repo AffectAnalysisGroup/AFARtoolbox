@@ -1,7 +1,7 @@
 function runAUSingleVideo(fname,FETA_param,AU_param)
 	
 	% fname is the one without extension.
-	norm_fn   = [fname '_norm.mp4'];
+	norm_fn   = [fname '_norm.avi'];
     norm_path = fullfile(FETA_param.normOut,norm_fn)
 
     if AU_param.meanSub
@@ -12,10 +12,11 @@ function runAUSingleVideo(fname,FETA_param,AU_param)
                                  'weights.h5','OutputLayerType','regression');
     end
 
-    v   = VideoReader(video_name);
-    nAU = AU_param.nAU;
     au_out_dir = AU_param.outDir;
     video_name = norm_path; 
+
+    v   = VideoReader(video_name);
+    nAU = AU_param.nAU;
 
     sum_fr  = zeros(200,200);
     counter = 1;
