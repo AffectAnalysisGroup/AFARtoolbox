@@ -8,8 +8,7 @@ function runAUSingleVideo(fname,FETA_param,AU_param)
         net = importONNXNetwork('bp4d_ep10.onnx', 'OutputLayerType', ...
                                 'regression');
     else
-        net = importKerasNetwork('cnn_model.json','WeightFile',...
-                                 'weights.h5','OutputLayerType','regression');
+        net = importONNXNetwork('bp4d_ep10_no_meansub.onnx', 'OutputLayerType', 'regression');
     end
 
     au_out_dir = AU_param.outDir;
@@ -46,9 +45,7 @@ function runAUSingleVideo(fname,FETA_param,AU_param)
         I2 = rgb2gray(I);
         I2_conv = (double(I2)/255) - mean_video;
         sample_output = predict(net,I2_conv,'ExecutionEnvironment','cpu');
-        if AU_param.meanSub
-            sample_output = sigm(sample_output);
-        end
+        sample_output = sigm(sample_output);
         all_outputs = [all_outputs;sample_output];
     end
 
