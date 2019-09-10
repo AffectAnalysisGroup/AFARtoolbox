@@ -1,4 +1,4 @@
-function plotAU(auIndexVect,origVideoPath,auOutDir,normAnnotatedVideoDir,vargin)
+function plotAU(auIndexVect,origVideoPath,auOutDir,normAnnotatedVideoDir,outDir,vargin)
     
 % Input args below:
 % auOutDir = '/Users/wanqiaod/workspace/pipeline/out/AU_detector_out/';
@@ -19,9 +19,9 @@ w_offset  = 0.4;
 % Input args above
 
 [~,origFname,~]  = fileparts(origVideoPath);
-annotatedVideoFN = fullfile(normAnnotatedVideoDir,[origFname '_norm_annotated.mp4']);
+annotatedVideoFN = fullfile(normAnnotatedVideoDir,[origFname '_norm_annotated.avi']);
 auFname          = fullfile(auOutDir,[origFname '_au_out.mat']);
-outVideoFname    = [origFname '_out_video'];
+outVideoFname    = fullfile(outDir,[origFname '_out_video.avi']);
 origVideo        = VideoReader(origVideoPath);
 annotatedVideo   = VideoReader(annotatedVideoFN);
 outVideo         = VideoWriter(outVideoFname); 

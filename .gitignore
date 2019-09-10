@@ -1,0 +1,4 @@
+# ignore all test functions
+mfile/test_functions/
+
+
