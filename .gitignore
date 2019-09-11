@@ -5,3 +5,9 @@ mfile/test_functions/
 example/test_out
 example/tracking_list.txt
 
+.gitignore
+zface/3rd_party/mexopencv/
+mfile/*.txt
+mfile/*.mat
+
+
