@@ -30,14 +30,14 @@ function runZface(zface_param,video_dir,varargin)
     debug_mode        = p.Results.debug_mode;
     multi_thread      = p.Results.multi_thread;
 
-    % Check if the given video format is valid
+    % Check if the given video format for saved video is valid.
     valid_ext = [".avi",".mj2",".mp4",".m4v"];
     ext_str   = convertCharsToStrings(save_video_ext);
     if ~(ismember(ext_str,valid_ext))
         error('Cannot write zface output video: invalid given video format\n');
     end
 
-    % Check if the system is Linux and the output format is .avi
+    % Check if the system is Linux and the output format is .avi.
     islinux = (~ismac) & (~ispc);
     if islinux && (ext_str ~= ".avi")
         msg = ['Cannot write zface output video: cannot write',...
