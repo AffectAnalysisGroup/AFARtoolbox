@@ -12,10 +12,12 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     addOptional(p,'debug_mode',default_debug_mode);
     addOptional(p,'zface_save_fit',default_zface_save_fit);
     addOptional(p,'zface_save_video',default_zface_save_video);
+    addOptional(p,'zface_parallel',default_zface_parallel);
     parse(p,varargin{:});
     debug_mode       = p.Results.debug_mode;
     zface_save_fit   = p.Results.zface_save_fit;
     zface_save_video = p.Results.zface_save_video;
+    zface_parallel   = p.Results.zface_parallel;
 
     if ~isfolder(output_dir)
         error('Given output folder is not valid.\n');
@@ -28,7 +30,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % ZFace module
     if run_zface
         runZface(zface_param,video_dir,'debug_mode',debug_mode,...
-                 'save_fit',zface_save_fit,'save_video',zface_save_video);
+                 'save_fit',zface_save_fit,'save_video',zface_save_video,...
+                 'multi_thread',zface_parallel);
     end
 
     % FETA module
