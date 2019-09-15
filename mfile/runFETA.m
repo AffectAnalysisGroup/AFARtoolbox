@@ -1,10 +1,23 @@
-function runFETA(zface_param,FETA_param,video_dir)
+function runFETA(zface_param,FETA_param,video_dir,varargin)
 
 % runFETA generates normalized outputs for AU detector.
 %   Input arguments:
 %   - zface_param: zface_param struct, output from initOutDir().
 %   - FETA_param: FETA_param struct, output from initOutDir().
 %   - video_dir: char array, the absolute path of the videos.
+    
+    p = inputParser;
+    % FETA_out/feta_feat.mat is always saved.
+    default_save_norm_video     = true;  % FETA_out/feta_norm_videos
+    default_save_fit_norm       = false; % FETA_out/feta_fit_norm
+    default_save_norm_annotated = false; % FETA_out/feta_norm_annotated.
+    addOptional(p,'save_norm_video',default_save_norm_video);
+    addOptional(p,'save_fit_norm',default_save_fit_norm);
+    addOptional(p,'save_norm_annotated',default_save_norm_annotated);
+    parse(p,varargin{:});
+    FETA_param.save_norm_video     = p.Results.save_norm_video;
+    FETA_param.save_fit_norm       = p.Results.save_fit_norm;
+    FETA_param.save_norm_annotated = p.Results.save_norm_annotated;
 
 	tracking_dir = video_dir;
 
@@ -42,7 +55,6 @@ function runFETA(zface_param,FETA_param,video_dir)
 	end
 
 	% IOD normalization
-    % TODO: implement mean substraction
 	e1 = mean(ms3D(37:42,:));
 	e2 = mean(ms3D(43:48,:));
 	d  = dist3D(e1,e2);
@@ -83,10 +95,10 @@ function runFETA(zface_param,FETA_param,video_dir)
 	    f(i) = parfeval(p,@fet_process_single,0,fn,strFr,ms3D,tracking_dir,...
 	                    fit_dir,FETA_param.outDir,normFunc,res,IOD,...
 	                    FETA_param.lmSS,descFunc,FETA_param.patch_size,...
-	                    FETA_param.saveNormVideo,...
-                        FETA_param.saveNormLandmarks,...
-	                    FETA_param.saveVideoLandmarks);
-	end
+	                    FETA_param.save_norm_video,...
+                        FETA_param.save_fit_norm,...
+	                    FETA_param.save_norm_annotated);
+   	end
 
 	for i = 1:nItems
 	  [completedNdx] = fetchNext(f);

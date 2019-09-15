@@ -41,9 +41,9 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     FETA_param.descFeature = 'HOG_OpenCV';
     FETA_param.patch_size  = 32;
     FETA_param.video_list  = getTrackingList(video_dir);
-    FETA_param.saveNormVideo      = true;
-    FETA_param.saveNormLandmarks  = true;
-    FETA_param.saveVideoLandmarks = true;
+    % FETA_param.saveNormVideo      = true;
+    % FETA_param.saveNormLandmarks  = true;
+    % FETA_param.saveVideoLandmarks = true;
     if run_FETA
         runFETA(zface_param,FETA_param,video_dir);
     end
