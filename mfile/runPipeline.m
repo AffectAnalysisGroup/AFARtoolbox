@@ -9,6 +9,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     default_debug_mode       = false;
     default_zface_save_fit   = true;
     default_zface_save_video = false;
+    default_zface_parallel   = false;
     addOptional(p,'debug_mode',default_debug_mode);
     addOptional(p,'zface_save_fit',default_zface_save_fit);
     addOptional(p,'zface_save_video',default_zface_save_video);
