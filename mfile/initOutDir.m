@@ -52,7 +52,7 @@ function [zface_param,FETA_param,AU_param] = initOutDir(zface_folder, ...
 	createDir(FETA_param.fitNormOut);
 	createDir(FETA_param.featOut);
 
-	addpath(genpath(output_dir));
+% 	addpath(genpath(output_dir));
 	    
 	output_dir   = dir_full_path(output_dir);
 	zface_param.outDir = dir_full_path(zface_param.outDir);
