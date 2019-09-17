@@ -11,7 +11,10 @@
 %%%% Requirements: importONNXNetwork function requires Deep Learning Toolbox.
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<<<<<< HEAD
 
+=======
+>>>>>>> e396d6a0441270ec8e90cabee2bd1225277b52b8
 mean_frame_subtraction = 0;
 if mean_frame_subtraction == 1
     net = importONNXNetwork('bp4d_ep10.onnx', 'OutputLayerType', 'regression');
