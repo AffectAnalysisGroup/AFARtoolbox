@@ -87,6 +87,8 @@ function runZface(zface_param,video_dir,varargin)
         video_info = [];
         video_info.path = video_path;
         video_info.fit  = fit_path;
+        video_info.save_fit    = save_fit;
+        video_info.save_video  = save_video;
         video_info.zface_video = zface_video_path;
         process_list = [process_list, video_info];
     end
@@ -96,15 +98,15 @@ function runZface(zface_param,video_dir,varargin)
         parfor video_index = 1 : length(process_list)
             v = process_list(video_index);
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
-                                'save_fit',save_fit,'save_video',save_video,...
-                                'debug_mode',debug_mode);
+                                'save_fit',v.save_fit,'save_video',...
+                                v.save_video,'debug_mode',debug_mode);
         end
     else
         for video_index = 1 : length(process_list)
             v = process_list(video_index);
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
-                                'save_fit',save_fit,'save_video',save_video,...
-                                'debug_mode',debug_mode);
+                                'save_fit',v.save_fit,'save_video',...
+                                v.save_video,'debug_mode',debug_mode);
         end
     end
 

@@ -38,7 +38,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % FETA module
     load('ms3D_v1024_low_forehead.mat');
     FETA_param.lmSS = ':';
-    FETA_param.res  = 200;
+    FETA_param.res  = 250;
     FETA_param.IOD  = 80;
     FETA_param.ms3D = ms3D;
     FETA_param.normFeature = '2D_similarity';
