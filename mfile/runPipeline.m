@@ -4,6 +4,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % TODO: set up AFAR processing server folder.
     % TODO: solve bug with parallel worker number greater than processing videos
     % TODO: modify fet_process_single
+    % TODO: finalize verbose messages.
 
     p = inputParser;
     default_debug_mode       = false;
