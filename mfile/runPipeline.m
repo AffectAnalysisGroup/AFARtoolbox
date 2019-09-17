@@ -7,15 +7,18 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     p = inputParser;
     default_debug_mode       = false;
+    default_verbose          = false;
     default_zface_save_fit   = true;
     default_zface_save_video = false;
     default_zface_parallel   = false;
     addOptional(p,'debug_mode',default_debug_mode);
+    addOptional(p,'verbose',default_verbose);
     addOptional(p,'zface_save_fit',default_zface_save_fit);
     addOptional(p,'zface_save_video',default_zface_save_video);
     addOptional(p,'zface_parallel',default_zface_parallel);
     parse(p,varargin{:});
     debug_mode       = p.Results.debug_mode;
+    verbose          = p.Results.verbose;
     zface_save_fit   = p.Results.zface_save_fit;
     zface_save_video = p.Results.zface_save_video;
     zface_parallel   = p.Results.zface_parallel;
@@ -30,11 +33,15 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     % ZFace module
     if run_zface
+        if verbose
+            fprintf('Running Zface on %s\n',video_dir);
+        end
         runZface(zface_param,video_dir,'debug_mode',debug_mode,...
                  'save_fit',zface_save_fit,'save_video',zface_save_video,...
-                 'multi_thread',zface_parallel);
+                 'multi_thread',zface_parallel,'verbose',verbose);
     end
-
+    
+    % TODO: Add verbose option for FETA and AU detection.
     % FETA module
     load('ms3D_v1024_low_forehead.mat');
     FETA_param.lmSS = ':';
