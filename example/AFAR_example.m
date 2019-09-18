@@ -7,8 +7,8 @@ if isunix
     FETA_dir  = '../FETA/';
     AU_dir    = '../AU_detector/';
 else
-    video_dir = '..\..\data\test_videos\';
-    out_dir   = '..\..\data\test_out\';
+    video_dir = '.\test_videos\';
+    out_dir   = '.\test_out\';
     zface_dir = '..\zface\';
     FETA_dir  = '..\FETA\';
     AU_dir    = '..\AU_detector';
