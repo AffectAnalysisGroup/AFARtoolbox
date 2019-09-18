@@ -5,6 +5,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % TODO: solve bug with parallel worker number greater than processing videos
     % TODO: modify fet_process_single
     % TODO: finalize verbose messages.
+    % TODO: fix FETA on windows.
 
     p = inputParser;
     default_debug_mode       = false;
