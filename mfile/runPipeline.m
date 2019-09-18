@@ -8,25 +8,36 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % TODO: fix FETA on windows.
 
     p = inputParser;
-    default_debug_mode       = false;
-    default_verbose          = false;
+    default_verbose    = false;
+    default_save_log   = false;
     default_zface_save_fit   = true;
     default_zface_save_video = false;
     default_zface_parallel   = false;
-    addOptional(p,'debug_mode',default_debug_mode);
     addOptional(p,'verbose',default_verbose);
+    addOptional(p,'save_log',default_save_log);
     addOptional(p,'zface_save_fit',default_zface_save_fit);
     addOptional(p,'zface_save_video',default_zface_save_video);
     addOptional(p,'zface_parallel',default_zface_parallel);
     parse(p,varargin{:});
-    debug_mode       = p.Results.debug_mode;
-    verbose          = p.Results.verbose;
+    verbose    = p.Results.verbose;
+    save_log   = p.Results.save_log;
     zface_save_fit   = p.Results.zface_save_fit;
     zface_save_video = p.Results.zface_save_video;
     zface_parallel   = p.Results.zface_parallel;
 
     if ~isfolder(output_dir)
         error('Given output folder is not valid.\n');
+    end
+    
+    if save_log
+        log_fn = 'AFAR_process_log.txt';
+        if isfile(log_fn)
+            log_fid = fopen(log_fn,'a+');
+        else
+            log_fid = fopen(log_fn,'w');
+        end
+    else
+        log_fid = -1;
     end
 
     [zface_param,FETA_param,AU_param] = initOutDir(zface_folder,FETA_folder,...
@@ -36,11 +47,12 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % ZFace module
     if run_zface
         if verbose
-            fprintf('Running Zface on %s\n',video_dir);
+            printWrite(sprintf('\n%s Running Zface on %s\n',getMyTime(),video_dir),log_fid);
         end
-        runZface(zface_param,video_dir,'debug_mode',debug_mode,...
+        runZface(zface_param,video_dir,...
                  'save_fit',zface_save_fit,'save_video',zface_save_video,...
-                 'multi_thread',zface_parallel,'verbose',verbose);
+                 'multi_thread',zface_parallel,'verbose',verbose,...
+                 'log_fid',log_fid);
     end
     
     % TODO: Add verbose option for FETA and AU detection.
@@ -54,10 +66,10 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     FETA_param.descFeature = 'HOG_OpenCV';
     FETA_param.patch_size  = 32;
     FETA_param.video_list  = getTrackingList(video_dir);
-    % FETA_param.saveNormVideo      = true;
-    % FETA_param.saveNormLandmarks  = true;
-    % FETA_param.saveVideoLandmarks = true;
     if run_FETA
+        if verbose
+            printWrite(sprintf('\n%s Running FETA on %s\n',getMyTime(),video_dir),log_fid);
+        end
         runFETA(zface_param,FETA_param,video_dir);
     end
 
