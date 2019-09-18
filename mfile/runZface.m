@@ -100,8 +100,8 @@ function runZface(zface_param,video_dir,varargin)
     if multi_thread
         parfor video_index = 1 : length(process_list)
             v = process_list(video_index);
-            if verbose & (v.save_fid | v.save_video)
-                printWrite(sprintf('%s Processing %s \n',getMyTime(),v.path),fid);
+            if verbose & (v.save_fit | v.save_video)
+                printWrite(sprintf('%s Processing %s \n',getMyTime(),v.path),log_fid);
             end
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,'save_video',...
@@ -111,7 +111,7 @@ function runZface(zface_param,video_dir,varargin)
         for video_index = 1 : length(process_list)
             v = process_list(video_index);
             if verbose & (v.save_fit | v.save_video)
-                printWrite(sprintf('%s Processing %s \n',getMyTime(),v.path),fid);
+                printWrite(sprintf('%s Processing %s \n',getMyTime(),v.path),log_fid);
             end
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,'save_video',...
