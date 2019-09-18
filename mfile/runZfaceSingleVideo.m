@@ -13,35 +13,26 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
     % Parse optional arguments
     p = inputParser;
+    default_verbose    = false;
+    default_log_fid    = -1;
     default_save_fit   = true;
     default_save_video = false;
-    default_debug_mode = false;
+    addOptional(p,'verbose',default_verbose);
+    addOptional(p,'log_fid',default_log_fid);
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
-    addOptional(p,'debug_mode',default_debug_mode);
     parse(p,varargin{:}); 
+    verbose    = p.Results.verbose;   
+    log_fid    = p.Results.log_fid;
     save_fit   = p.Results.save_fit;
     save_video = p.Results.save_video;
-    debug_mode = p.Results.debug_mode;
 
     if (~save_fit && ~save_video)
         % if not save fit or video, nothing to save, quit.
         return
     end
 
-    if debug_mode
-        log_file = 'zface_log';
-        if isfile(log_file)
-            fid = fopen(log_file,'a+');
-        else
-            fid = fopen(log_file,'w');
-        end
-        [~,v_fn,v_ext] = fileparts(video_path);
-        video_fname    = [v_fn,v_ext];
-        current_time   = getMyTime();
-        fprintf(fid,'%s Start zface process on %s \n',current_time,...
-                video_path);
-    end
+    [~,video_fname,video_ext] = fileparts(video_path);
 
  	mesh_path  = zface_param.mesh;
     alt2_path  = zface_param.alt2;
@@ -54,7 +45,6 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         vw.FrameRate = vo.FrameRate;
         open(vw);
     end
-
     
     fit    = [];
     ctrl2D = [];
@@ -88,10 +78,10 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
             fit(frame_index).headPose = [];
             fit(frame_index).pdmPars  = [];
         end    
-        if mod(frame_index,500) == 0 && debug_mode 
-            current_time = getMyTime();
-            fprintf(fid,'%s -- %d frames tracked from %s\n', current_time,...
-                    frame_index, video_fname);
+        if mod(frame_index,500) == 0 && verbose 
+            msg = sprintf('%s -- %d frames tracked from %s\n',getMyTime(),...
+                          frame_index,video_fname);
+            printWrite(msg,log_fid);
         end
 
     end
@@ -101,10 +91,6 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     if save_video
         close(h.fig);
         close(vw);
-    end
-
-    if debug_mode
-        fclose(fid);
     end
 
     if save_fit
