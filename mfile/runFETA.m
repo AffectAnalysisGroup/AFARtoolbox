@@ -98,7 +98,7 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 	                    FETA_param.save_norm_video,...
                         FETA_param.save_fit_norm,...
 	                    FETA_param.save_norm_annotated);
-   	end
+   	 end
 
 	for i = 1:nItems
 	  [completedNdx] = fetchNext(f);
