@@ -32,6 +32,10 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         return
     end
 
+    if verbose
+        printWrite(sprintf('%s Processing %s \n',getMyTime(),video_path),log_fid);
+    end
+
     [~,video_fname,video_ext] = fileparts(video_path);
 
  	mesh_path  = zface_param.mesh;
@@ -95,6 +99,10 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
     if save_fit
         save(fit_path,'fit');
+    end
+
+    if verbose
+        printWrite(sprintf('%s %s tracking finished.\n',getMyTime(),video_path),log_fid);
     end
 
 end
