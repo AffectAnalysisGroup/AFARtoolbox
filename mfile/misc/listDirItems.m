@@ -4,18 +4,27 @@ function target_items = listDirItems(target_dir,varargin)
     default_is_file  = true;
     default_is_dir   = false;
     default_file_ext = "";
+    default_with_dir = false;
     addOptional(p,'is_file',default_is_file);
     addOptional(p,'is_dir',default_is_dir);
     addOptional(p,'file_ext',default_file_ext);
+    addOptional(p,'with_dir',default_with_dir);
     parse(p,varargin{:}); 
     is_file  = p.Results.is_file;
     is_dir   = p.Results.is_dir;
     file_ext = p.Results.file_ext;
+    with_dir = p.Results.with_dir;
 
     dir_list_struct = dir(target_dir);
     target_items    = [];
     for n = 1 : length(dir_list_struct)
-        fname_str = convertCharsToStrings(dir_list_struct(n).name);
+        if with_dir
+            fname_str = convertCharsToStrings(fullfile(...
+            dir_list_struct(n).folder,dir_list_struct(n).name));
+        else
+            fname_str = convertCharsToStrings(dir_list_struct(n).name);
+        end
+
         if fname_str == "." || fname_str == ".."
             continue
         end
@@ -35,7 +44,7 @@ function target_items = listDirItems(target_dir,varargin)
             end
         end
         if ~exclude_item
-            target_items = [target_items,fname_str];
+            target_items = [target_items fname_str];
         end
     end
 end

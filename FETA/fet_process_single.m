@@ -4,7 +4,6 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,...
 
     descExt       = [];
     [~,fnName,~]  = fileparts(fn);    
-    % video_path    = fullfile(trackingDir,fn);
     video_path    = fn;
 
     out_norm_dir      = fullfile(out_dir,'feta_norm_videos');
@@ -15,9 +14,10 @@ function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,...
     if ~isfile(video_path)
         fprintf(['skipped! can''t find video file: ' video_path '\n\n']);   
     else    
-        fit_file = [fnName '_fit.mat'];
+        fit_file = [fnName '_fit.mat']
         fit_path = fullfile(fit_dir,fit_file);
         if ~isfile(fit_path)
+            fprintf('fit_path: %s\n',fit_path);
             fprintf('skipped! can''t find tracking file\n\n');
         else
             fprintf('- loading tracking: ');
