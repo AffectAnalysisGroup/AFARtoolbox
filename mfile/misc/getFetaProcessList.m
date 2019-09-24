@@ -22,11 +22,6 @@ for n = 1 : length(video_list)
     fit_norm_fn   = convertCharsToStrings([fn '_fitNorm.mat']);
     norm_annotated_fn = convertCharsToStrings([fn '_norm_annoatated.avi']);
 
-    % each save_* is if there is an existing file in the output dir;
-    % Only when there is no such output file and the user set to save it, set
-    % the save_* value as true for the video;
-    % Note: make sure the old_*_list is not empty
-
     if ~isempty(old_feat_list)
         % if there are files in the output dir, check if this video's output
         % output in the folder. If it's already in there, set save_* false;

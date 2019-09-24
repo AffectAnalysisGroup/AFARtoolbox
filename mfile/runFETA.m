@@ -67,9 +67,6 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 	ms3D(:,1) = ms3D(:,1) - (maxXY(1) + minXY(1))/2 + res/2;
 	ms3D(:,2) = ms3D(:,2) - (maxXY(2) + minXY(2))/2 + res/2;
 
-    % Print parameters
-	% fprintf('input list:\t%s\n',FETA_param.video_list);
-
     % TODO: change fprintf to disp() to accomodate windows.
 
 	% fprintf('tracking dir:\t%s\n',video_dir);
