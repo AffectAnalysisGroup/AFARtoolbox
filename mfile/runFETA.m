@@ -25,6 +25,7 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 	IOD  = FETA_param.IOD;
 	res  = FETA_param.res;
 
+    % TODO: get rid of video_list
 	if ~isfile(FETA_param.video_list)
 		fprintf('Cannot find the list to process. Try changing input_list.\n');
 	    return
@@ -67,45 +68,37 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 	ms3D(:,2) = ms3D(:,2) - (maxXY(2) + minXY(2))/2 + res/2;
 
     % Print parameters
-	fprintf('input list:\t%s\n',FETA_param.video_list);
-	fprintf('tracking dir:\t%s\n',video_dir);
-	fprintf('output dir:\t%s\n',FETA_param.outDir);
-	fprintf('norm. function:\t%s\n',FETA_param.normFeature);
-	fprintf('desc. function:\t%s\n',FETA_param.descFeature);
-	fprintf('\n');
+	% fprintf('input list:\t%s\n',FETA_param.video_list);
 
-	descExt = [];
-	fprintf('reading list: ');
-	fid = fopen(FETA_param.video_list);
-	C   = textscan(fid,'%q%q');
-	fprintf('found %d item(s) to process\n\n',length(C{1,1}));
-	fclose(fid);
+    % TODO: change fprintf to disp() to accomodate windows.
 
-	p = gcp();
-	fit_dir = zface_param.matOut;
-	nItems  = length(C{1,1});
-	for i = 1:nItems
-	    fn = C{1,1}{i,1};
-	    if length(C{1,2}) >= i
-	        strFr = C{1,2}{i,1};    
-	    else
-	        strFr = '';
-	    end
-	    fprintf([fn '\n']);
-	    f(i) = parfeval(p,@fet_process_single,0,fn,strFr,ms3D,tracking_dir,...
-	                    fit_dir,FETA_param.outDir,normFunc,res,IOD,...
-	                    FETA_param.lmSS,descFunc,FETA_param.patch_size,...
-	                    FETA_param.save_norm_video,...
-                        FETA_param.save_fit_norm,...
-	                    FETA_param.save_norm_annotated);
-   	end
+	% fprintf('tracking dir:\t%s\n',video_dir);
+	% fprintf('output dir:\t%s\n',FETA_param.outDir);
+	% fprintf('norm. function:\t%s\n',FETA_param.normFeature);
+	% fprintf('desc. function:\t%s\n',FETA_param.descFeature);
+	% fprintf('\n');
 
-	for i = 1:nItems
-	  [completedNdx] = fetchNext(f);
-	  fprintf('done: %s.\n', C{1,1}{completedNdx,1});
-	  display(f(completedNdx).Diary);
-	  fprintf('\n');
-	  progressbar(i/nItems);
-	end
+    process_list = getFetaProcessList(tracking_dir,FETA_param);
 
+    p = gcp();
+    fit_dir = zface_param.matOut;
+    for i = 1 : length(process_list)
+        v = process_list(i);
+        video_path = fullfile(video_dir,v.path);
+        f(i) = parfeval(p,@fet_process_single,0,video_path,'',ms3D,video_dir,fit_dir,...
+                        FETA_param.outDir,normFunc,res,IOD,FETA_param.lmSS,...
+                        descFunc,FETA_param.patch_size,v.save_norm_video,...
+                        v.save_fit_norm,v.save_norm_annotated);
+    end
+
+    for i = 1:length(process_list)
+        v = process_list(i);
+        [completedNdx] = fetchNext(f);
+        msg = ['done:' v.path];
+        fprintf('\n');
+        display(f(completedNdx).Diary);
+        fprintf('\n');
+        progressbar(i/length(process_list));
+    end
+	
 end
