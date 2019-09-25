@@ -1,6 +1,7 @@
 mkdir 'test_out/';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 if isunix
     video_dir = './test_video';
@@ -26,6 +27,14 @@ FETA_dir  = '/home/wanqiao/workspace/pipeline/FETA/';
 AU_dir    = '/home/wanqiao/workspace/pipeline/AU_detector/';
 >>>>>>> feta_debug
 
+=======
+video_dir = './test_video';
+out_dir   = './test_out';
+zface_dir = '../zface/';
+FETA_dir  = '../FETA/';
+AU_dir    = '../AU_detector/';
+    
+>>>>>>> windows
 run_zface = true;
 run_FETA  = false;
 run_AU    = false;
