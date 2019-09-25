@@ -1,19 +1,11 @@
 mkdir 'test_out/';
 
-if isunix
-    video_dir = './test_video';
-    out_dir   = './test_out';
-    zface_dir = '../zface/';
-    FETA_dir  = '../FETA/';
-    AU_dir    = '../AU_detector/';
-else
-    video_dir = '.\test_video\';
-    out_dir   = '.\test_out\';
-    zface_dir = '..\zface\';
-    FETA_dir  = '..\FETA\';
-    AU_dir    = '..\AU_detector';
-end
-
+video_dir = './test_video';
+out_dir   = './test_out';
+zface_dir = '../zface/';
+FETA_dir  = '../FETA/';
+AU_dir    = '../AU_detector/';
+    
 run_zface = true;
 run_FETA  = false;
 run_AU    = false;
