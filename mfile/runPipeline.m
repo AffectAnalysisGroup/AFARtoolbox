@@ -13,17 +13,32 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     default_zface_save_fit   = true;
     default_zface_save_video = false;
     default_zface_parallel   = false;
+    default_feta_resolution  = 200;
+    default_feta_IOD         = 80;
+    default_feta_patch_size  = 32;
+    default_au_meansub       = false;
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'save_log',default_save_log);
     addOptional(p,'zface_save_fit',default_zface_save_fit);
     addOptional(p,'zface_save_video',default_zface_save_video);
     addOptional(p,'zface_parallel',default_zface_parallel);
+    addOptional(p,'feta_resolution',default_feta_resolution);
+    addOptional(p,'feta_IOD',default_feta_IOD);
+    addOptional(p,'feta_patch_size',default_feta_patch_size);
+    addOptional(p,'au_meansub',default_au_meansub);
     parse(p,varargin{:});
     verbose    = p.Results.verbose;
     save_log   = p.Results.save_log;
+    % zface parameters
     zface_save_fit   = p.Results.zface_save_fit;
     zface_save_video = p.Results.zface_save_video;
     zface_parallel   = p.Results.zface_parallel;
+    % FETA parameters
+    feta_resolution  = p.Results.feta_resolution;
+    feta_IOD         = p.Results.feta_IOD;
+    feta_patch_size  = p.Results.feta_patch_size;
+    % AU parameters
+    au_meansub       = p.Results.au_meansub;
 
     if ~isfolder(output_dir)
         error('Given output folder is not valid.\n');
@@ -59,13 +74,13 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % FETA module
     load('ms3D_v1024_low_forehead.mat');
     FETA_param.lmSS = ':';
-    FETA_param.res  = 200;
-    FETA_param.IOD  = 80;
+    FETA_param.res  = feta_resolution;
+    FETA_param.IOD  = feta_IOD;
     FETA_param.ms3D = ms3D;
     FETA_param.normFeature = '2D_similarity';
     FETA_param.descFeature = 'HOG_OpenCV';
-    FETA_param.patch_size  = 32;
-    FETA_param.video_list  = getTrackingList(video_dir);
+    FETA_param.patch_size  = feta_patch_size;
+    % FETA_param.video_list  = getTrackingList(video_dir);
     if run_FETA
         if verbose
             printWrite(sprintf('\n%s Running FETA on %s\n',getMyTime(),video_dir),log_fid);
@@ -74,11 +89,12 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     end
 
     % AU detection module
-    AU_param.nAU = 12;
-    AU_param.meanSub = false;
+    AU_param.nAU     = 12;
+    AU_param.meanSub = au_meansub;
     if run_AU_detector
         runAUdetector(FETA_param,AU_param,video_dir);
     end
+
 end
 
 
