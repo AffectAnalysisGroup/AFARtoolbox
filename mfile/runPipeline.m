@@ -1,11 +1,15 @@
 function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
                      run_zface,run_FETA,run_AU_detector,varargin)
-
-    % TODO: set up AFAR processing server folder.
-    % TODO: solve bug with parallel worker number greater than processing videos
-    % TODO: modify fet_process_single
-    % TODO: finalize verbose messages.
-    % TODO: fix FETA on windows.
+    % runPipeline processes the videos in the given folder thru zface, feta
+    % and AU detector on the choice of callers.
+    %   video_dir: the directory videos locate.
+    %   output_dir: the top directory where the outputs will be.
+    %   zface_folder: zface source code folder.
+    %   FETA_folder: feta source code folder.
+    %   AU_folder: au detector source code folder.
+    %   run_zface: bool, if run videos thru zface.
+    %   run_feta: bool, if run videos thru feta.
+    %   run_AU_detector: bool, if run videos thru AU detector.
 
     p = inputParser;
     default_verbose    = false;
