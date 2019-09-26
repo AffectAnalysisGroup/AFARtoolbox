@@ -59,6 +59,9 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
         log_fid = -1;
     end
 
+    % video dir with no backslash(bs)
+    video_dir_nobs = correctPathFormat(video_dir);
+
     [zface_param,FETA_param,AU_param] = initOutDir(zface_folder,FETA_folder,...
                                         AU_folder,output_dir);
     addpath(genpath('.'));
@@ -66,12 +69,12 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % ZFace module
     if run_zface
         if verbose
-            printWrite(sprintf('\n%s Running Zface on %s\n',getMyTime(),video_dir),log_fid);
+            printWrite(sprintf('\n%s Running Zface on %s\n',getMyTime(),...
+                       video_dir_nobs),log_fid);
         end
-        runZface(zface_param,video_dir,...
-                 'save_fit',zface_save_fit,'save_video',zface_save_video,...
-                 'multi_thread',zface_parallel,'verbose',verbose,...
-                 'log_fid',log_fid);
+        runZface(zface_param,video_dir,'save_fit',zface_save_fit,...
+                 'save_video',zface_save_video,'multi_thread',...
+                 zface_parallel,'verbose',verbose,'log_fid',log_fid);
     end
     
     % TODO: Add verbose option for FETA and AU detection.
@@ -87,7 +90,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % FETA_param.video_list  = getTrackingList(video_dir);
     if run_FETA
         if verbose
-            printWrite(sprintf('\n%s Running FETA on %s\n',getMyTime(),video_dir),log_fid);
+            printWrite(sprintf('\n%s Running FETA on %s\n',getMyTime(),...
+                       video_dir_nobs),log_fid);
         end
         runFETA(zface_param,FETA_param,video_dir);
     end
@@ -96,6 +100,10 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     AU_param.nAU     = 12;
     AU_param.meanSub = au_meansub;
     if run_AU_detector
+        if verbose
+            printWrite(sprintf('\n%s Running AU detector %s\n',getMyTime(),...
+                       video_dir_nobs),log_fid);
+        end
         runAUdetector(FETA_param,AU_param,video_dir);
     end
 
