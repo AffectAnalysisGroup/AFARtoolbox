@@ -1,4 +1,13 @@
-function runAUdetector(FETA, AU, video_dir)
+function runAUdetector(FETA, AU, video_dir,varargin)
+
+    p = inputParser;
+    default_verbose = false;
+    default_log_fid = -1;
+    addOptional(p,'verbose',default_verbose);
+    addOptional(p,'log_fid',default_log_fid);
+    parse(p,varargin{:});
+    verbose = p.Results.verbose;
+    log_fid = p.Results.log_fid;
 
 	video_dir_list = dir(video_dir);
 	[file_num,~]   = size(video_dir_list);
@@ -10,7 +19,7 @@ function runAUdetector(FETA, AU, video_dir)
 			continue
 		end
 		[~,fname,ext] = fileparts(video_name);
-    	runAUSingleVideo(fname,FETA,AU);
+    	runAUSingleVideo(fname,FETA,AU,'verbose',verbose,'log_fid',log_fid);
     end
 
 end

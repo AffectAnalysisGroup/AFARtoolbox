@@ -8,13 +8,19 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
     
     p = inputParser;
     % FETA_out/feta_feat.mat is always saved.
+    default_verbose = false;
+    default_log_fid = -1;
     default_save_norm_video     = true;  % FETA_out/feta_norm_videos
     default_save_fit_norm       = false; % FETA_out/feta_fit_norm
     default_save_norm_annotated = false; % FETA_out/feta_norm_annotated.
+    addOptional(p,'verbose',default_verbose);
+    addOptional(p,'log_fid',default_log_fid);
     addOptional(p,'save_norm_video',default_save_norm_video);
     addOptional(p,'save_fit_norm',default_save_fit_norm);
     addOptional(p,'save_norm_annotated',default_save_norm_annotated);
     parse(p,varargin{:});
+    verbose = p.Results.verbose;
+    log_fid = p.Results.log_fid;
     FETA_param.save_norm_video     = p.Results.save_norm_video;
     FETA_param.save_fit_norm       = p.Results.save_fit_norm;
     FETA_param.save_norm_annotated = p.Results.save_norm_annotated;
@@ -24,12 +30,6 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 	ms3D = FETA_param.ms3D;
 	IOD  = FETA_param.IOD;
 	res  = FETA_param.res;
-
-    % TODO: get rid of video_list
-	if ~isfile(FETA_param.video_list)
-		fprintf('Cannot find the list to process. Try changing input_list.\n');
-	    return
-	end
 
 	if FETA_param.normFeature == '2D_similarity'
 	    normFunc = @fet_norm_2D_similarity;
@@ -74,6 +74,14 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 	% fprintf('norm. function:\t%s\n',FETA_param.normFeature);
 	% fprintf('desc. function:\t%s\n',FETA_param.descFeature);
 	% fprintf('\n');
+    if verbose
+        video_dir_nobs = correctPathFormat(video_dir);
+        printWrite(sprintf('%s Running feta on %s.\n',getMyTime(),video_dir_nobs),log_fid);
+        printWrite(sprintf('\t norm. function: %s \n',...
+                   FETA_param.normFeature),log_fid);
+        printWrite(sprintf('\t desc. function: %s \n',...
+                   FETA_param.descFeature),log_fid);
+    end
 
     process_list = getFetaProcessList(tracking_dir,FETA_param);
 

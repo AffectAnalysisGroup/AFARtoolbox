@@ -102,14 +102,14 @@ function runZface(zface_param,video_dir,varargin)
             v = process_list(video_index);
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,'save_video',...
-                                v.save_video);
+                                v.save_video,'verbose',verbose);
         end
     else
         for video_index = 1 : length(process_list)
             v = process_list(video_index);
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,'save_video',...
-                                v.save_video);
+                                v.save_video,'verbose',verbose);
         end
     end
 

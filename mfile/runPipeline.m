@@ -93,7 +93,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
             printWrite(sprintf('\n%s Running FETA on %s\n',getMyTime(),...
                        video_dir_nobs),log_fid);
         end
-        runFETA(zface_param,FETA_param,video_dir);
+        runFETA(zface_param,FETA_param,video_dir,'verbose',verbose,...
+                'log_fid',log_fid);
     end
 
     % AU detection module

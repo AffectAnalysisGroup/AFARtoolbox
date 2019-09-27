@@ -1,8 +1,24 @@
-function runAUSingleVideo(fname,FETA_param,AU_param)
-	
+function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
+
+    p = inputParser;
+    default_verbose = false;
+    default_log_fid = -1;
+    addOptional(p,'verbose',default_verbose);
+    addOptional(p,'log_fid',default_log_fid);
+    parse(p,varargin{:});
+    verbose = p.Results.verbose;
+    log_fid = p.Results.log_fid;
+
 	% fname is the one without extension.
 	norm_fn   = [fname '_norm.avi'];
     norm_path = fullfile(FETA_param.normOut,norm_fn)
+    norm_path_nobs = correctPathFormat(norm_path);
+
+    if verbose
+        printWrite(sprintf('%s Processing AU detection on %s.\n',getMyTime(),...
+                   norm_path_nobs),log_fid);
+    end
+
 
     if AU_param.meanSub
         net = importONNXNetwork('bp4d_ep10.onnx', 'OutputLayerType', ...
@@ -58,27 +74,4 @@ function runAUSingleVideo(fname,FETA_param,AU_param)
     save(au_out_path, 'result');
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
