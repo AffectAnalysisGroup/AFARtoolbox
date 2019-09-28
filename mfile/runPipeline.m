@@ -101,11 +101,10 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     AU_param.nAU     = 12;
     AU_param.meanSub = au_meansub;
     if run_AU_detector
-        if verbose
-            printWrite(sprintf('\n%s Running AU detector %s\n',getMyTime(),...
-                       video_dir_nobs),log_fid);
-        end
-        runAUdetector(FETA_param,AU_param,video_dir);
+        printWrite(sprintf('\n%s Running AU detector %s\n',getMyTime(),...
+                   video_dir_nobs),log_fid,'no_action',~verbose);
+        runAUdetector(FETA_param,AU_param,video_dir,'verbose',verbose,...
+                      'log_fid',log_fid);
     end
 
 end

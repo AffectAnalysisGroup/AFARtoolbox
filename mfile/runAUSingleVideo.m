@@ -33,11 +33,11 @@ function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
     v   = VideoReader(video_name);
     nAU = AU_param.nAU;
 
-    sum_fr  = zeros(200,200);
-    counter = 1;
+    sum_fr  = zeros(FETA_param.res,FETA_param.res);
+    frame_cnt = 1;
     while hasFrame(v)
         I = readFrame(v);
-        if size(I,1) ~= 200 || size(I,2) ~= 200
+        if size(I,1) ~= FETA_param.res || size(I,2) ~= FETA_param.res
             error('Frame size should be 200 x 200.')
         end
         I2 = rgb2gray(I);
@@ -46,12 +46,18 @@ function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
         end
         I2_conv = (double(I2)/255);
         sum_fr  = sum_fr + I2_conv;
-        counter = counter + 1;
+        if mod(frame_cnt,500) == 0 && verbose
+            msg = sprintf('%s -- %d frames tracked from %s\n',getMyTime(),...
+                          frame_cnt,fname);
+            printWrite(msg,log_fid);
+        end
+
+        frame_cnt = frame_cnt + 1;
     end
     if AU_param.meanSub
-        mean_video = sum_fr/counter;
+        mean_video = sum_fr/frame_cnt;
     else
-        mean_video = mean(sum_fr(:))/counter;
+        mean_video = mean(sum_fr(:))/frame_cnt;
     end
 
     v = VideoReader(video_name);
@@ -72,6 +78,11 @@ function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
     au_out_fn   = [fname,'_au_out.mat'];
     au_out_path = fullfile(au_out_dir,au_out_fn);
     save(au_out_path, 'result');
+
+    if verbose
+        printWrite(sprintf('%s AU detection result saved as %s.\n',getMyTime(),...
+                   correctPathFormat(au_out_path)),log_fid);
+    end
 
 end
 

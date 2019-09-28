@@ -67,13 +67,6 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 	ms3D(:,1) = ms3D(:,1) - (maxXY(1) + minXY(1))/2 + res/2;
 	ms3D(:,2) = ms3D(:,2) - (maxXY(2) + minXY(2))/2 + res/2;
 
-    % TODO: change fprintf to disp() to accomodate windows.
-
-	% fprintf('tracking dir:\t%s\n',video_dir);
-	% fprintf('output dir:\t%s\n',FETA_param.outDir);
-	% fprintf('norm. function:\t%s\n',FETA_param.normFeature);
-	% fprintf('desc. function:\t%s\n',FETA_param.descFeature);
-	% fprintf('\n');
     if verbose
         video_dir_nobs = correctPathFormat(video_dir);
         printWrite(sprintf('%s Running feta on %s.\n',getMyTime(),video_dir_nobs),log_fid);
@@ -90,20 +83,23 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
     for i = 1 : length(process_list)
         v = process_list(i);
         video_path = fullfile(video_dir,v.path);
-        f(i) = parfeval(p,@fet_process_single,0,video_path,'',ms3D,video_dir,fit_dir,...
-                        FETA_param.outDir,normFunc,res,IOD,FETA_param.lmSS,...
-                        descFunc,FETA_param.patch_size,v.save_norm_video,...
-                        v.save_fit_norm,v.save_norm_annotated);
+        f(i) = parfeval(p,@fet_process_single,0,video_path,'',ms3D,...
+                        video_dir,fit_dir,FETA_param.outDir,normFunc,res,...
+                        IOD,FETA_param.lmSS,descFunc,FETA_param.patch_size,...
+                        v.save_norm_video,v.save_fit_norm,...
+                        v.save_norm_annotated);
     end
 
-    for i = 1:length(process_list)
+    video_cnt = length(process_list)
+
+    for i = 1:video_cnt
         v = process_list(i);
         [completedNdx] = fetchNext(f);
-        msg = ['done:' v.path];
-        fprintf('\n');
+        msg = ['done:' correctPathFormat(v.path) '\n'];
+        fprintf(msg);
         display(f(completedNdx).Diary);
         fprintf('\n');
-        progressbar(i/length(process_list));
+        progressbar(i/video_cnt);
     end
 	
 end
