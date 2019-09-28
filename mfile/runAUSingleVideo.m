@@ -46,14 +46,9 @@ function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
         end
         I2_conv = (double(I2)/255);
         sum_fr  = sum_fr + I2_conv;
-        if mod(frame_cnt,500) == 0 && verbose
-            msg = sprintf('%s -- %d frames processed from %s\n',getMyTime(),...
-                          frame_cnt,fname);
-            printWrite(msg,log_fid);
-        end
-
         frame_cnt = frame_cnt + 1;
     end
+
     if AU_param.meanSub
         mean_video = sum_fr/frame_cnt;
     else
@@ -62,12 +57,21 @@ function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
 
     v = VideoReader(video_name);
     all_outputs = [];
+    frame_cnt = 0;
     while hasFrame(v)
+        frame_cnt = frame_cnt + 1;
         I  = readFrame(v);
         I2 = rgb2gray(I);
         I2_conv = (double(I2)/255) - mean_video;
         sample_output = predict(net,I2_conv,'ExecutionEnvironment','cpu');
         sample_output = sigm(sample_output);
+
+        if mod(frame_cnt,500) == 0 && verbose
+            msg = sprintf('%s -- %d frames predicted from %s\n',getMyTime(),...
+                          frame_cnt,fname);
+            printWrite(msg,log_fid);
+        end
+
         all_outputs = [all_outputs;sample_output];
     end
 
