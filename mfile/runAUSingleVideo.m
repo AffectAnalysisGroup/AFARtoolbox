@@ -47,7 +47,7 @@ function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
         I2_conv = (double(I2)/255);
         sum_fr  = sum_fr + I2_conv;
         if mod(frame_cnt,500) == 0 && verbose
-            msg = sprintf('%s -- %d frames tracked from %s\n',getMyTime(),...
+            msg = sprintf('%s -- %d frames processed from %s\n',getMyTime(),...
                           frame_cnt,fname);
             printWrite(msg,log_fid);
         end

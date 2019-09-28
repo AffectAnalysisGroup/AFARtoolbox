@@ -90,16 +90,23 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
                         v.save_norm_annotated);
     end
 
-    video_cnt = length(process_list)
+    video_cnt = length(process_list);
 
+    if video_cnt == 0
+        printWrite('Nothing to process for FETA.\n',log_fid);
+        return
+    end
+
+    f = waitbar(video_cnt,'Processing FETA');
     for i = 1:video_cnt
         v = process_list(i);
+        waitbar_txt = sprintf('Processing %s',correctPathFormat(v.path));
+        waitbar(i/video_cnt,f,waitbar_txt);
         [completedNdx] = fetchNext(f);
-        msg = ['done:' correctPathFormat(v.path) '\n'];
-        fprintf(msg);
+        msg = sprintf(' -- %s done: %s \n',getMyTime(),correctPathFormat(v.path));
+        printWrite(msg,log_fid);
         display(f(completedNdx).Diary);
-        fprintf('\n');
-        progressbar(i/video_cnt);
     end
+    close(f)
 	
 end
