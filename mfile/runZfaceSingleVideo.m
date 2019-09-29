@@ -14,20 +14,20 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     % Parse optional arguments
     p = inputParser;
     default_verbose  = false;
-    default_log_fid  = -1;
+    default_log_fn   = '';
     default_save_fit = true;
     default_save_video  = false;
     default_start_frame = -1;
     default_end_frame   = -1;
     addOptional(p,'verbose',default_verbose);
-    addOptional(p,'log_fid',default_log_fid);
+    addOptional(p,'log_fn',default_log_fn);
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
     addOptional(p,'start_frame',default_start_frame);
     addOptional(p,'end_frame',default_end_frame);
     parse(p,varargin{:}); 
     verbose  = p.Results.verbose;   
-    log_fid  = p.Results.log_fid;
+    log_fn   = p.Results.log_fn;
     save_fit = p.Results.save_fit;
     save_video  = p.Results.save_video;
     start_frame = p.Results.start_frame;
@@ -38,7 +38,11 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         return
     end
 
+    log_fid = -1;
     if verbose
+        if ~isempty(log_fn)
+            log_fid = fopen(log_fn,'a+');
+        end
         printWrite(sprintf('%s Processing zface on %s \n',getMyTime(),...
                    correctPathFormat(video_path)),log_fid);
     end
@@ -126,8 +130,11 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     end
 
     if verbose
-        printWrite(sprintf('%s %s tracking finished.\n',getMyTime(),...
+        printWrite(sprintf('%s %s tracking saved.\n',getMyTime(),...
                    correctPathFormat(video_path)),log_fid);
+        if ~empty(log_fn)
+            fclose(log_fid);
+        end
     end
 
 end

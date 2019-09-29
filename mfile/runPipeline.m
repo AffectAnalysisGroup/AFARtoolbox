@@ -74,7 +74,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
         end
         runZface(zface_param,video_dir,'save_fit',zface_save_fit,...
                  'save_video',zface_save_video,'multi_thread',...
-                 zface_parallel,'verbose',verbose,'log_fid',log_fid);
+                 zface_parallel,'verbose',verbose,'log_fn',log_fn);
     end
     
     % TODO: Add verbose option for FETA and AU detection.
@@ -107,6 +107,9 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
                       'log_fid',log_fid);
     end
 
+    if save_log
+        fclose(log_fid);
+    end
 end
 
 
