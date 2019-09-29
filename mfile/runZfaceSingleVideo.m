@@ -132,7 +132,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     if verbose
         printWrite(sprintf('%s %s tracking saved.\n',getMyTime(),...
                    correctPathFormat(video_path)),log_fid);
-        if ~empty(log_fn)
+        if ~isempty(log_fn)
             fclose(log_fid);
         end
     end
