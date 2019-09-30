@@ -14,20 +14,20 @@ function runZface(zface_param,video_dir,varargin)
     % Parse optional arguments
     p = inputParser;
     default_verbose    = false;
-    default_log_fid    = -1;
+    default_log_fn     = '';
     default_save_fit   = true;
     default_save_video = true;
     default_multi_thread   = false;
     default_save_video_ext = '.avi';
     addOptional(p,'verbose',default_verbose);
-    addOptional(p,'log_fid',default_log_fid);
+    addOptional(p,'log_fn',default_log_fn);
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
     addOptional(p,'save_video_ext',default_save_video_ext);
     addOptional(p,'multi_thread',default_multi_thread);
     parse(p,varargin{:});
-    verbose           = p.Results.verbose;
-    log_fid           = p.Results.log_fid;
+    verbose = p.Results.verbose;
+    log_fn  = p.Results.log_fn;
     global_save_fit   = p.Results.save_fit;
     global_save_video = p.Results.save_video;
     save_video_ext    = p.Results.save_video_ext;
@@ -102,14 +102,16 @@ function runZface(zface_param,video_dir,varargin)
             v = process_list(video_index);
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,'save_video',...
-                                v.save_video,'verbose',verbose);
+                                v.save_video,'verbose',verbose,'log_fn',...
+                                log_fn);
         end
     else
         for video_index = 1 : length(process_list)
             v = process_list(video_index);
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,'save_video',...
-                                v.save_video,'verbose',verbose);
+                                v.save_video,'verbose',verbose,'log_fn',...
+                                log_fn);
         end
     end
 

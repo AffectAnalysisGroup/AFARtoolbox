@@ -83,10 +83,8 @@ function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
     au_out_path = fullfile(au_out_dir,au_out_fn);
     save(au_out_path, 'result');
 
-    if verbose
-        printWrite(sprintf('%s AU detection result saved as %s.\n',getMyTime(),...
-                   correctPathFormat(au_out_path)),log_fid);
-    end
+    printWrite(sprintf('%s AU detection result saved as %s.\n',getMyTime(),...
+               correctPathFormat(au_out_path)),log_fid,'no_action',verbose);
 
 end
 
