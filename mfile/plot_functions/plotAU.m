@@ -1,14 +1,13 @@
-function plotAU(auIndexVect,origVideoPath,auOutDir,normAnnotatedVideoDir,outDir,vargin)
+function plotAU(origVideoPath,auOutDir,normAnnotatedVideoDir,outDir,vargin)
     
 % Input args below:
 % auOutDir = '/Users/wanqiaod/workspace/pipeline/out/AU_detector_out/';
-% auIndexVect = [1,2,3,4,5,7];
 % origVideoPath = '/Users/wanqiaod/workspace/pipeline/test_video/LeBlanc_short.mp4';
 % normAnnotatedVideoDir = '/Users/wanqiaod/workspace/pipeline/out/feta_out/feta_norm_annotated_videos/';
 % startFrame 
 % endFrame   
 
-defaultOutDir = '/Users/wanqiaod/workspace/pipeline'
+% defaultOutDir = '/Users/wanqiaod/workspace/pipeline'
 
 window_x0 = 100;
 window_y0 = 100;
@@ -18,8 +17,9 @@ x0_offset = 0.4;
 w_offset  = 0.4;
 % Input args above
 
-[~,origFname,~]  = fileparts(origVideoPath);
-annotatedVideoFN = fullfile(normAnnotatedVideoDir,[origFname '_norm_annotated.avi']);
+[~,fn,~]  = fileparts(origVideoPath);
+origFname = convertStringsToChars(fn);
+annotatedVideoFN = fullfile(normAnnotatedVideoDir,[origFname '_norm.avi'])
 auFname          = fullfile(auOutDir,[origFname '_au_out.mat']);
 outVideoFname    = fullfile(outDir,[origFname '_out_video.avi']);
 origVideo        = VideoReader(origVideoPath);
@@ -45,7 +45,7 @@ set(gca,'Clipping','off');
 open(outVideo);
 
 % x0, w, lowest_y0 are magic numbers. Might need update
-auCnt = length(auIndexVect);
+auCnt = 12;
 x0    = 0.05 + x0_offset;
 h     = (1 - 0.3)/auCnt;
 w     = 0.9 - w_offset;
@@ -67,9 +67,9 @@ for n = 1 : auCnt
     pos = [x0 y0 w h];
     ax = subplot('Position',pos);
     % Plot AU instensity
-    handle = plot(ax,x,y_pred(:,auIndexVect(n)),'LineWidth',2);
+    handle = plot(ax,x,y_pred(:,n),'LineWidth',2);
     set(handle,{'color'},cell_lines(n));
-    legendTxt    = [auNameCell{auIndexVect(n)} '   '];
+    legendTxt    = [auNameCell{n} '   '];
     [~,hobj,~,~] = legend(ax,legendTxt,'Location','westoutside',...
                          'Orientation', 'horizontal');
     handleLine = findobj(hobj,'type','line');
