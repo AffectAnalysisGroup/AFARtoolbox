@@ -5,22 +5,27 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 %   - zface_param: zface_param struct, output from initOutDir().
 %   - FETA_param: FETA_param struct, output from initOutDir().
 %   - video_dir: char array, the absolute path of the videos.
+
+% TODO: add a non-parallel option
     
     p = inputParser;
     % FETA_out/feta_feat.mat is always saved.
-    default_verbose = false;
-    default_log_fid = -1;
+    default_verbose  = false;
+    default_log_fid  = -1;
+    default_parallel = false;
     default_save_norm_video     = true;  % FETA_out/feta_norm_videos
     default_save_fit_norm       = false; % FETA_out/feta_fit_norm
     default_save_norm_annotated = false; % FETA_out/feta_norm_annotated.
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'log_fid',default_log_fid);
+    addOptional(p,'parallel',default_parallel);
     addOptional(p,'save_norm_video',default_save_norm_video);
     addOptional(p,'save_fit_norm',default_save_fit_norm);
     addOptional(p,'save_norm_annotated',default_save_norm_annotated);
     parse(p,varargin{:});
-    verbose = p.Results.verbose;
-    log_fid = p.Results.log_fid;
+    verbose  = p.Results.verbose;
+    log_fid  = p.Results.log_fid;
+    parallel = p.Results.parallel;
     FETA_param.save_norm_video     = p.Results.save_norm_video;
     FETA_param.save_fit_norm       = p.Results.save_fit_norm;
     FETA_param.save_norm_annotated = p.Results.save_norm_annotated;
@@ -68,45 +73,49 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 	ms3D(:,2) = ms3D(:,2) - (maxXY(2) + minXY(2))/2 + res/2;
 
     if verbose
-        video_dir_nobs = correctPathFormat(video_dir);
-        printWrite(sprintf('%s Running feta on %s.\n',getMyTime(),video_dir_nobs),log_fid);
+        % print feta setting summary
+        video_dir_nobs = correctPathFormat(video_dir); 
+        % no back slash char array for print.
+        printWrite(sprintf('%s Running feta on %s.\n',getMyTime(),...
+                   video_dir_nobs),log_fid);
         printWrite(sprintf('\t norm. function: %s \n',...
                    FETA_param.normFeature),log_fid);
         printWrite(sprintf('\t desc. function: %s \n',...
                    FETA_param.descFeature),log_fid);
     end
 
+    fit_dir      = zface_param.matOut;
     process_list = getFetaProcessList(tracking_dir,FETA_param);
-
-    p = gcp();
-    fit_dir = zface_param.matOut;
-    for i = 1 : length(process_list)
-        v = process_list(i);
-        video_path = fullfile(video_dir,v.path);
-        f(i) = parfeval(p,@fet_process_single,0,video_path,'',ms3D,...
-                        video_dir,fit_dir,FETA_param.outDir,normFunc,res,...
-                        IOD,FETA_param.lmSS,descFunc,FETA_param.patch_size,...
-                        v.save_norm_video,v.save_fit_norm,...
-                        v.save_norm_annotated);
-    end
-
-    video_cnt = length(process_list);
-
+    video_cnt    = length(process_list);
     if video_cnt == 0
         printWrite('Nothing to process for FETA.\n',log_fid);
         return
     end
 
-    feta_progress_bar = waitbar(video_cnt,'Processing FETA');
-    for i = 1:video_cnt
-        v = process_list(i);
-        waitbar_txt = sprintf('Processing %s',correctPathFormat(v.path));
-        waitbar(i/video_cnt,feta_progress_bar,waitbar_txt);
-        [completedNdx] = fetchNext(f);
-        msg = sprintf(' -- %s done: %s \n',getMyTime(),correctPathFormat(v.path));
-        printWrite(msg,log_fid);
-        display(f(completedNdx).Diary);
+    if parallel
+        p = gcp();
+        for i = 1 : video_cnt 
+            v = process_list(i);
+            video_path = fullfile(video_dir,v.path);
+            f(i) = parfeval(p,@fet_process_single,0,video_path,'',ms3D,...
+                            video_dir,fit_dir,FETA_param.outDir,normFunc,...
+                            res,IOD,FETA_param.lmSS,descFunc,...
+                            FETA_param.patch_size,v.save_norm_video,...
+                            v.save_fit_norm,v.save_norm_annotated);
+        end
+        for i = 1 : video_cnt
+            v = process_list(i);
+            [completedNdx] = fetchNext(f);
+            msg = sprintf(' -- %s done: %s \n',getMyTime(),...
+                          correctPathFormat(v.path));
+            printWrite(msg,log_fid);
+            display(f(completedNdx).Diary);
+        end
+    else
+        for i = 1 : video_cnt 
+            v = process_list(i);
+            video_path = fullfile(video_dir,v.path);
+        end
     end
-    close(feta_progress_bar)
 	
 end
