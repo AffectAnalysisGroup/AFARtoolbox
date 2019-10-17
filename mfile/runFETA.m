@@ -11,20 +11,32 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
     p = inputParser;
     % FETA_out/feta_feat.mat is always saved.
     default_verbose  = false;
+<<<<<<< HEAD
     default_log_fn   = '';
+=======
+    default_log_fid  = -1;
+>>>>>>> bb3180fe5b7253d297603152932a23db850caa01
     default_parallel = false;
     default_save_norm_video     = true;  % FETA_out/feta_norm_videos
     default_save_fit_norm       = false; % FETA_out/feta_fit_norm
     default_save_norm_annotated = false; % FETA_out/feta_norm_annotated.
     addOptional(p,'verbose',default_verbose);
+<<<<<<< HEAD
     addOptional(p,'log_fn',default_log_fn);
+=======
+    addOptional(p,'log_fid',default_log_fid);
+>>>>>>> bb3180fe5b7253d297603152932a23db850caa01
     addOptional(p,'parallel',default_parallel);
     addOptional(p,'save_norm_video',default_save_norm_video);
     addOptional(p,'save_fit_norm',default_save_fit_norm);
     addOptional(p,'save_norm_annotated',default_save_norm_annotated);
     parse(p,varargin{:});
     verbose  = p.Results.verbose;
+<<<<<<< HEAD
     log_fn   = p.Results.log_fn;
+=======
+    log_fid  = p.Results.log_fid;
+>>>>>>> bb3180fe5b7253d297603152932a23db850caa01
     parallel = p.Results.parallel;
     FETA_param.save_norm_video     = p.Results.save_norm_video;
     FETA_param.save_fit_norm       = p.Results.save_fit_norm;
@@ -74,9 +86,12 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 
     log_fid = -1;
     if verbose
+<<<<<<< HEAD
         if ~isempty(log_fn)
             log_fid = fopen(log_fn,'a+');
         end
+=======
+>>>>>>> bb3180fe5b7253d297603152932a23db850caa01
         % print feta setting summary
         video_dir_nobs = correctPathFormat(video_dir); 
         % no back slash char array for print.
@@ -102,9 +117,16 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
             v = process_list(i);
             video_path = fullfile(video_dir,v.path);
             f(i) = parfeval(p,@fet_process_single,0,video_path,'',ms3D,...
+<<<<<<< HEAD
                       fit_dir,FETA_param.outDir,normFunc,res,IOD,...
                       FETA_param.lmSS,descFunc,FETA_param.patch_size,...
                       v.save_norm_video,v.save_fit_norm,v.save_norm_annotated);
+=======
+                            video_dir,fit_dir,FETA_param.outDir,normFunc,...
+                            res,IOD,FETA_param.lmSS,descFunc,...
+                            FETA_param.patch_size,v.save_norm_video,...
+                            v.save_fit_norm,v.save_norm_annotated);
+>>>>>>> bb3180fe5b7253d297603152932a23db850caa01
         end
         for i = 1 : video_cnt
             v = process_list(i);
@@ -118,6 +140,7 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
         for i = 1 : video_cnt 
             v = process_list(i);
             video_path = fullfile(video_dir,v.path);
+<<<<<<< HEAD
             % fet_process_single(video_path,'',ms3D,video_dir,fit_dir,...
             %     FETA_param.outDir,normFunc,res,IOD,FETA_param.lmSS,descFunc,...
             %     FETA_param.patch_size,v.save_norm_video,v.save_fit_norm,...
@@ -131,6 +154,9 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 
     if log_fid ~= -1
         fclose(log_fid);
+=======
+        end
+>>>>>>> bb3180fe5b7253d297603152932a23db850caa01
     end
 	
 end
