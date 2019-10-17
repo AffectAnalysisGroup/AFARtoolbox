@@ -17,21 +17,21 @@ function runZface(zface_param,video_dir,varargin)
     default_log_fn     = '';
     default_save_fit   = true;
     default_save_video = true;
-    default_multi_thread   = false;
+    default_parallel   = false;
     default_save_video_ext = '.avi';
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'log_fn',default_log_fn);
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
     addOptional(p,'save_video_ext',default_save_video_ext);
-    addOptional(p,'multi_thread',default_multi_thread);
+    addOptional(p,'parallel',default_parallel);
     parse(p,varargin{:});
-    verbose = p.Results.verbose;
-    log_fn  = p.Results.log_fn;
+    verbose  = p.Results.verbose;
+    log_fn   = p.Results.log_fn;
+    parallel = p.Results.parallel;
     global_save_fit   = p.Results.save_fit;
     global_save_video = p.Results.save_video;
     save_video_ext    = p.Results.save_video_ext;
-    multi_thread      = p.Results.multi_thread;
 
     % Check if the given video format for saved video is valid.
     valid_ext = [".avi",".mj2",".mp4",".m4v"];
@@ -97,7 +97,7 @@ function runZface(zface_param,video_dir,varargin)
     end
     
     % run zface on each video
-    if multi_thread
+    if parallel
         parfor video_index = 1 : length(process_list)
             v = process_list(video_index);
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
