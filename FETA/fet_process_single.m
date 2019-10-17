@@ -1,15 +1,36 @@
 function fet_process_single(fn,strFr,ms3D,trackingDir,fit_dir,out_dir,...
                             normFunc,res,IOD,lmSS,descFunc,patchSize,...
                             saveNormVideo,saveNormLandmarks,saveVideoLandmarks)
+% fet_process_single saves feta outputs with given original video and zface output.
+%   Input arguments:
+%   - fn: char array, original video path.
+%   - strFr: string, string of frames to process.
+%   - ms3D: matrix, ms3D loaded.
+%   - trackingDir: char array, original video directory. TODO: need to remove
+%   - fit_dir: char array, zface fit mat file directory.
+%   - out_dir: char array, output directory.
+%   - normFunc: char array, norm function.
+%   - res: double, resolution of output video.
+%   - IOD: double, IOD.
+%   - lmSS: char array, frame range. TODO: might need update
+%   - descFunc: char array, desc function.
+%   - patchSize: double, patch size.
+%   - saveNormVideo: bool, if save normalized videos.
+%   - saveNormLandmarks: bool, if save normalized landmarks.
+%   - saveVideoLandmarks: bool, if save annotated videos.
 
     descExt       = [];
     [~,fnName,~]  = fileparts(fn);    
     video_path    = fn;
 
     out_norm_dir      = fullfile(out_dir,'feta_norm_videos');
+    % normalized video directory
     out_annotated_dir = fullfile(out_dir,'feta_norm_annotated_videos');
+    % annotated video directory
     out_fitNorm_dir   = fullfile(out_dir,'feta_fit_norm');
+    % normalized fit directory
     out_feat_dir      = fullfile(out_dir,'feta_feat');
+    % feature mat file directory
 
     if ~isfile(video_path)
         fprintf(['skipped! can''t find video file: ' video_path '\n\n']);   
