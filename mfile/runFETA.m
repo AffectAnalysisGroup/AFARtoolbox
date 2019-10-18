@@ -5,8 +5,6 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
 %   - zface_param: zface_param struct, output from initOutDir().
 %   - FETA_param: FETA_param struct, output from initOutDir().
 %   - video_dir: char array, the absolute path of the videos.
-
-% TODO: add a non-parallel option
     
     p = inputParser;
     % FETA_out/feta_feat.mat is always saved.
@@ -101,10 +99,11 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
         for i = 1 : video_cnt 
             v = process_list(i);
             video_path = fullfile(video_dir,v.path);
-            f(i) = parfeval(p,@fet_process_single,0,video_path,'',ms3D,...
-                      fit_dir,FETA_param.outDir,normFunc,res,IOD,...
-                      FETA_param.lmSS,descFunc,FETA_param.patch_size,...
-                      v.save_norm_video,v.save_fit_norm,v.save_norm_annotated);
+            f(i) = parfeval(p,@runFetaSingleVideo,0,video_path,'',ms3D,...
+                fit_dir,FETA_param.outDir,normFunc,res,IOD,FETA_param.lmSS,...
+                descFunc,FETA_param.patch_size,v.save_norm_video,...
+                v.save_fit_norm,v.save_norm_annotated,'verbose',verbose,...
+                'log_fn',log_fn)
         end
         for i = 1 : video_cnt
             v = process_list(i);
