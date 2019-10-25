@@ -69,9 +69,11 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
     zfaceFitRange = cell2mat({zfaceFit(:).frame}');
     origVideoObj  = VideoReader(fn); % original video object
 
+    % TODO: fix bug: for some videos, videoObj.NumFrames is not available
+    origVideoFrameNum = length(zfaceFit);
     if isempty(strFr) % get frames range
         strFr = 'all frames';
-        fr = 1:origVideoObj.NumberOfFrames;
+        fr = 1:origVideoFrameNum;
     else
         fr = eval(strFr);
         strFr = ['frames ' strFr];        
