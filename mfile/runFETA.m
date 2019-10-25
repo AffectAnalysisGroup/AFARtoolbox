@@ -111,7 +111,7 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
             msg = sprintf(' -- %s done: %s \n',getMyTime(),...
                           correctPathFormat(v.path));
             printWrite(msg,log_fid);
-            display(f(completedNdx).Diary);
+            % display(f(completedNdx).Diary);
         end
     else
         for i = 1 : video_cnt 
