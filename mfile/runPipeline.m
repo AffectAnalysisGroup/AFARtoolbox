@@ -12,8 +12,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     %   run_AU_detector: bool, if run videos thru AU detector.
 
     p = inputParser;
-    default_verbose    = false;
-    default_save_log   = false;
+    default_verbose  = false;
+    default_save_log = false;
     default_zface_save_fit   = true;
     default_zface_save_video = false;
     default_zface_parallel   = false;
@@ -33,8 +33,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     addOptional(p,'feta_patch_size',default_feta_patch_size);
     addOptional(p,'au_meansub',default_au_meansub);
     parse(p,varargin{:});
-    verbose    = p.Results.verbose;
-    save_log   = p.Results.save_log;
+    verbose  = p.Results.verbose;
+    save_log = p.Results.save_log;
     % zface parameters
     zface_save_fit   = p.Results.zface_save_fit;
     zface_save_video = p.Results.zface_save_video;
@@ -45,7 +45,9 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     feta_IOD         = p.Results.feta_IOD;
     feta_patch_size  = p.Results.feta_patch_size;
     % AU parameters
-    au_meansub       = p.Results.au_meansub;
+    au_meansub = p.Results.au_meansub;
+
+    addpath(genpath('.'));
 
     if ~isfolder(output_dir)
         error('Given output folder is not valid.\n');
@@ -65,24 +67,20 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % video dir with no backslash(bs)
     video_dir_nobs = correctPathFormat(video_dir);
 
-    [zface_param,FETA_param,AU_param] = initOutDir(zface_folder,FETA_folder,...
-                                        AU_folder,output_dir);
-    addpath(genpath('.'));
-
     % ZFace module
     if run_zface
         if verbose
             printWrite(sprintf('\n%s Running Zface on %s\n',getMyTime(),...
                        video_dir_nobs),log_fid);
         end
-        runZface(zface_param,video_dir,'save_fit',zface_save_fit,...
+        runZface(video_dir,out_dir,'save_fit',zface_save_fit,...
                  'save_video',zface_save_video,'parallel',...
                  zface_parallel,'verbose',verbose,'log_fn',log_fn);
     end
     
-    % TODO: Add verbose option for FETA and AU detection.
     % FETA module
     load('ms3D_v1024_low_forehead.mat');
+    FETA_param = [];
     FETA_param.lmSS = ':';
     FETA_param.res  = feta_resolution;
     FETA_param.IOD  = feta_IOD;
@@ -96,12 +94,14 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
             printWrite(sprintf('\n%s Running FETA on %s\n',getMyTime(),...
                        video_dir_nobs),log_fid);
         end
-        runFETA(zface_param,FETA_param,video_dir,'verbose',verbose,...
+        runFETA(FETA_param,video_dir,output_dir,'verbose',verbose,...
                 'log_fn',log_fn,'parallel',feta_parallel);
     end
 
     % AU detection module
+    AU_param = [];
     AU_param.nAU     = 12;
+    AU_param.outDir  = output_dir;
     AU_param.meanSub = au_meansub;
     if run_AU_detector
         printWrite(sprintf('\n%s Running AU detector %s\n',getMyTime(),...
@@ -114,6 +114,5 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
         fclose(log_fid);
     end
 end
-
 
 

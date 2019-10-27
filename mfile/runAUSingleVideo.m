@@ -1,4 +1,4 @@
-function runAUSingleVideo(fname,FETA_param,AU_param,varargin)
+function runAUSingleVideo(FETA_param,AU_param,fname,varargin)
 
     p = inputParser;
     default_verbose = false;

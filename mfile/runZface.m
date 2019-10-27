@@ -1,9 +1,9 @@
-function runZface(zface_param,video_dir,varargin)
+function runZface(video_dir,out_dir,varargin)
 
 % runZface generates zface outputs of videos in the given directory.
 %   Input arguments: 
-%   - zface_param: zface_param struct, output from initOutDir()
 %   - video_dir: char array, the absolute path of the videos
+%   - out_dir: output directory of AFAR processing 
 %   Optional arguments:
 %   - save_fit: boolean, if or not to save fit file. Default is true.
 %   - save_video: boolean, if or not to save the tracked face video. 
@@ -48,51 +48,58 @@ function runZface(zface_param,video_dir,varargin)
         error(msg);
     end
 
-    old_zface_mat   = listDirItems(zface_param.matOut,'file_ext','.mat');
-    old_zface_video = listDirItems(zface_param.videoOut,'is_file',true,...
-                                   'is_dir',false);
+    % Check the existing zface outputs
+    old_zface_mat   = listDirItems(out_dir,'file_ext','.mat');
+    old_zface_video = listDirItems(out_dir,'is_file',true,'is_dir',false);
     video_dir_list  = dir(video_dir);
     [file_num, ~]   = size(video_dir_list);
-
+    % Save the mesh and alt2 path in zface_param struct
+    zface_param      = []
     zface_param.mesh = fullfile(zface_param.folder,'ZFace_models',...
                                 'zf_ctrl49_mesh512.dat');
     zface_param.alt2 = fullfile(zface_param.folder,...
                                 'haarcascade_frontalface_alt2.xml');
 
-    % Loop through each file in the given folder
+    % Loop through each video file in the given folder
     process_list = []; % the list of all videos need to process.
     for file_index = 1 : file_num
-
+        % Assign the bool values for each video processing same as
+        % caller's input
         save_video = global_save_video;
         save_fit   = global_save_fit;
 
     	video_name  = video_dir_list(file_index).name;
     	[~,fname,~] = fileparts(video_name);
     	video_path 	= fullfile(video_dir,video_name);
-        
+        % If the video is not valid, skip this iteration 
         if ~isVideoFile(video_path)
             continue
         end
 
         % Get full path and file names of outputs 
-    	fit_path         = fullfile(zface_param.matOut,[fname '_fit.mat']);
-	    zface_video_path = fullfile(zface_param.videoOut,...
-                                    [fname '_zface' save_video_ext]);
-        fit_fname_str   = convertCharsToStrings([fname '_fit.mat']);
-        video_fname_str = convertCharsToStrings([fname '_zface' save_video_ext]);
+    	fit_path         = fullfile(out_dir,[fname '_fit.mat']);
+	    zface_video_path = fullfile(out_dir,[fname '_zface' save_video_ext]);
+        fit_fname_str    = convertCharsToStrings([fname '_fit.mat']);
+        video_fname_str  = convertCharsToStrings([fname '_zface' save_video_ext]);
+        % Check if the output is already in the output folder. If it is, 
+        % overwrite the caller's save_fit/video bool value. Otherwise, don't
+        % process this video
         if (~isempty(old_zface_mat)) && ismember(fit_fname_str,old_zface_mat)
             save_fit = false;
         end
-        if (~isempty(old_zface_video)) && ismember(video_fname_str,old_zface_video)
+        if (~isempty(old_zface_video)) && ...
+           ismember(video_fname_str,old_zface_video)
             save_video = false;
         end
-        
+
+        % Save the fields used by runZfaceSingleVideo in each video struct
         video_info = [];
         video_info.path = video_path;
         video_info.fit  = fit_path;
         video_info.save_fit    = save_fit;
         video_info.save_video  = save_video;
         video_info.zface_video = zface_video_path;
+        % Append the video struct to process_list
         process_list = [process_list, video_info];
     end
     

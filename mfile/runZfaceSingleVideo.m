@@ -3,7 +3,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
 % runZfaceSingleVideo saves zface video/fit files of a given video.
 %   Input arguments:
-%   - zface_param: a struct containing mesh/alt2 path and other parameters.
+%   - zface_param: a struct containing mesh/alt2 path.
 %   - video_path: char array, the path of the video folder. 
 %   - zface_video_path: char array, the full path of the output zface video. 
 %   - fit_path: char array, the full path of the output zface fit file.

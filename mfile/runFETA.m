@@ -1,10 +1,10 @@
-function runFETA(zface_param,FETA_param,video_dir,varargin)
+function runFETA(FETA_param,video_dir,out_dir,varargin)
 
 % runFETA generates normalized outputs for AU detector.
 %   Input arguments:
-%   - zface_param: zface_param struct, output from initOutDir().
 %   - FETA_param: FETA_param struct, output from initOutDir().
 %   - video_dir: char array, the absolute path of the videos.
+%   - out_dir: char array, the absolute path of the AFAR outputs.
     
     p = inputParser;
     % FETA_out/feta_feat.mat is always saved.
@@ -86,7 +86,8 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
                    FETA_param.descFeature),log_fid);
     end
 
-    fit_dir      = zface_param.matOut;
+    fit_dir      = out_dir;
+    % TODO: getFetaProcessList needs update
     process_list = getFetaProcessList(tracking_dir,FETA_param);
     video_cnt    = length(process_list);
     if video_cnt == 0
@@ -100,7 +101,7 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
             v = process_list(i);
             video_path = fullfile(video_dir,v.path);
             f(i) = parfeval(p,@runFetaSingleVideo,0,video_path,'',ms3D,...
-                fit_dir,FETA_param.outDir,normFunc,res,IOD,FETA_param.lmSS,...
+                fit_dir,out_dir,normFunc,res,IOD,FETA_param.lmSS,...
                 descFunc,FETA_param.patch_size,v.save_norm_video,...
                 v.save_fit_norm,v.save_norm_annotated,'verbose',verbose,...
                 'log_fn',log_fn)
@@ -117,7 +118,7 @@ function runFETA(zface_param,FETA_param,video_dir,varargin)
         for i = 1 : video_cnt 
             v = process_list(i);
             video_path = fullfile(video_dir,v.path);
-            runFetaSingleVideo(video_path,'',ms3D,fit_dir,FETA_param.outDir,...
+            runFetaSingleVideo(video_path,'',ms3D,fit_dir,out_dir,...
                 normFunc,res,IOD,FETA_param.lmSS,descFunc,...
                 FETA_param.patch_size,v.save_norm_video,v.save_fit_norm,...
                 v.save_norm_annotated,'verbose',verbose,'log_fn',log_fn);

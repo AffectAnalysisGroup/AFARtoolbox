@@ -1,5 +1,15 @@
-function runAUdetector(FETA, AU, video_dir,varargin)
+function runAUdetector(feta_param,AU_param,video_dir,varargin)
+   
+% runAUdetector outputs action unit occurrence possibility of videos in 
+% the given folder.
+%   Input arguments:
+%   - feta_param: feta_param struct, containing fields of feta processing
+%                 parameters.
+%   - AU_param: AU detection struct, containing fields of AU detection 
+%               processing parameters.
+%   - video_dir: char array, the absolute path of the videos.
 
+    % Parsing optional arguments
     p = inputParser;
     default_verbose = false;
     default_log_fid = -1;
@@ -11,11 +21,6 @@ function runAUdetector(FETA, AU, video_dir,varargin)
 
 	video_dir_list = dir(video_dir);
 	[file_num,~]   = size(video_dir_list);
-
-    if file_num == 0
-        printWrite('Nothing to process.\n',log_fid);
-        return;
-    end
 
     f = waitbar(0,'Processing AU detection');
     pause(.5)
@@ -29,7 +34,7 @@ function runAUdetector(FETA, AU, video_dir,varargin)
         % waitbar_msg = sprintf('Running AU detection on %s',video_name);
         waitbar_msg = 'Running AU detection.';
         waitbar(n/file_num,f,waitbar_msg,'Interpreter','none');
-    	runAUSingleVideo(fname,FETA,AU,'verbose',verbose,'log_fid',log_fid);
+    	runAUSingleVideo(feta_param,AU_param,fname,'verbose',verbose,'log_fid',log_fid);
     end
     close(f)
 
