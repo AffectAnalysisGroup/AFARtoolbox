@@ -1,13 +1,12 @@
-function process_list = getFetaProcessList(video_dir,feta_param)
+function process_list = getFetaProcessList(video_dir,feta_param,out_dir)
 
 process_list = [];
 video_list   = listDirItems(video_dir,'is_file',true);
 
-old_feat_list     = listDirItems(feta_param.featOut,'file_ext','.mat');
-old_fit_norm_list = listDirItems(feta_param.fitNormOut,'file_ext','.mat');
-old_norm_video_list     = listDirItems(feta_param.normOut,'file_ext','.avi');
-old_norm_annotated_list = listDirItems(feta_param.annotatedOut,...
-                                       'file_ext','.avi');
+old_feat_list     = listDirItems(out_dir,'file_ext','.mat');
+old_fit_norm_list = listDirItems(out_dir,'file_ext','.mat');
+old_norm_video_list     = listDirItems(out_dir,'file_ext','.avi');
+old_norm_annotated_list = listDirItems(out_dir,'file_ext','.avi');
 
 for n = 1 : length(video_list)
     video_path_str  = video_list(n);

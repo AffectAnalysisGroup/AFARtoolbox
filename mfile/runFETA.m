@@ -87,8 +87,7 @@ function runFETA(FETA_param,video_dir,out_dir,varargin)
     end
 
     fit_dir      = out_dir;
-    % TODO: getFetaProcessList needs update
-    process_list = getFetaProcessList(tracking_dir,FETA_param);
+    process_list = getFetaProcessList(tracking_dir,FETA_param,out_dir);
     video_cnt    = length(process_list);
     if video_cnt == 0
         printWrite('Nothing to process for FETA.\n',log_fid);

@@ -1,4 +1,4 @@
-function runZface(video_dir,out_dir,varargin)
+function runZface(video_dir,out_dir,zface_folder,varargin)
 
 % runZface generates zface outputs of videos in the given directory.
 %   Input arguments: 
@@ -54,10 +54,11 @@ function runZface(video_dir,out_dir,varargin)
     video_dir_list  = dir(video_dir);
     [file_num, ~]   = size(video_dir_list);
     % Save the mesh and alt2 path in zface_param struct
-    zface_param      = []
-    zface_param.mesh = fullfile(zface_param.folder,'ZFace_models',...
+    zface_param = [];
+    zface_param.folder = zface_folder;
+    zface_param.mesh   = fullfile(zface_param.folder,'ZFace_models',...
                                 'zf_ctrl49_mesh512.dat');
-    zface_param.alt2 = fullfile(zface_param.folder,...
+    zface_param.alt2   = fullfile(zface_param.folder,...
                                 'haarcascade_frontalface_alt2.xml');
 
     % Loop through each video file in the given folder

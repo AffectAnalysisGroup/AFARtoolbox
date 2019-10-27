@@ -32,15 +32,6 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
     descExt    = [];
     video_path = fn;
 
-    out_norm_dir      = fullfile(out_dir,'feta_norm_videos');
-    % normalized video directory
-    out_annotated_dir = fullfile(out_dir,'feta_norm_annotated_videos');
-    % annotated video directory
-    out_fitNorm_dir   = fullfile(out_dir,'feta_fit_norm');
-    % normalized fit directory
-    out_feat_dir      = fullfile(out_dir,'feta_feat');
-    % feature mat file directory
-
     if ~isfile(video_path) % if the given original video file is not valid
         fprintf(['skipped! can''t find video file: ' video_path '\n\n']);   
         return
@@ -81,7 +72,7 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
 
     if saveNormVideo % if save normalized video
         out_video_fn = [fnName '_norm.avi'];
-        out_video_path = fullfile(out_norm_dir,out_video_fn);
+        out_video_path = fullfile(out_dir,out_video_fn);
         vwNorm = VideoWriter(out_video_path);
         vwNorm.FrameRate = origVideoObj.FrameRate;
         open(vwNorm);
@@ -89,7 +80,7 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
 
     if saveNormAnnotated % if save normalized annotated video
         out_annotated_fn   = [fnName '_norm_annotated.avi'];
-        out_annotated_path = fullfile(out_annotated_dir,out_annotated_fn); 
+        out_annotated_path = fullfile(out_dir,out_annotated_fn); 
         vwNormAnnotated    = VideoWriter(out_annotated_path);
         vwNormAnnotated.FrameRate = origVideoObj.FrameRate;
         open(vwNormAnnotated);
@@ -182,12 +173,12 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
 
     if saveFitNorm
         out_fit_norm_fn   = [fnName '_fitNorm.mat'];
-        out_fit_norm_path = fullfile(out_fitNorm_dir,out_fit_norm_fn);
+        out_fit_norm_path = fullfile(out_dir,out_fit_norm_fn);
         save(out_fit_norm_path,'fitNorm');
     end
 
     out_feat_fn   = [fnName '_feat.mat'];
-    out_feat_path = fullfile(out_feat_dir,out_feat_fn);
+    out_feat_path = fullfile(out_dir,out_feat_fn);
     save(out_feat_path,'feat');
 
     if verbose

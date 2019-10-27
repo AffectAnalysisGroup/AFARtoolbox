@@ -1,4 +1,4 @@
-function runAUSingleVideo(FETA_param,AU_param,fname,varargin)
+function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
 
     p = inputParser;
     default_verbose = false;
@@ -11,7 +11,7 @@ function runAUSingleVideo(FETA_param,AU_param,fname,varargin)
 
 	% fname is the one without extension.
 	norm_fn   = [fname '_norm.avi'];
-    norm_path = fullfile(FETA_param.normOut,norm_fn)
+    norm_path = fullfile(out_dir,norm_fn);
     norm_path_nobs = correctPathFormat(norm_path);
 
     if verbose
@@ -27,7 +27,7 @@ function runAUSingleVideo(FETA_param,AU_param,fname,varargin)
         net = importONNXNetwork('bp4d_ep10_no_meansub.onnx', 'OutputLayerType', 'regression');
     end
 
-    au_out_dir = AU_param.outDir;
+    au_out_dir = out_dir;
     video_name = norm_path; 
 
     v   = VideoReader(video_name);
