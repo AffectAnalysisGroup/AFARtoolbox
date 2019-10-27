@@ -31,7 +31,6 @@ function runAUdetector(feta_param,AU_param,video_dir,out_dir,varargin)
 			continue
 		end
 		[~,fname,ext] = fileparts(video_name);
-        % waitbar_msg = sprintf('Running AU detection on %s',video_name);
         waitbar_msg = 'Running AU detection.';
         waitbar(n/file_num,f,waitbar_msg,'Interpreter','none');
     	runAUSingleVideo(feta_param,AU_param,fname,out_dir,'verbose',...
