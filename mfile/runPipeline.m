@@ -103,7 +103,6 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     % TODO: au detector functions, add comments
     % TODO: runAUdetector, add checking existing outputs part
     AU_param = [];
-    AU_param.nAU     = 12;
     AU_param.folder  = AU_folder;
     AU_param.meanSub = au_meansub;
     if run_AU_detector

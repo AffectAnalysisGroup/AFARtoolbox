@@ -1,5 +1,13 @@
 function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
 
+% runAUSingleVideo returns outputs of action unit occurrence possibility
+% a given video.
+%   - FETA_param: struct, containing fields of feta processing parameters.
+%   - AU_param: struct, containing fields of AU detector processing parameters.
+%   - fname: char array, the name of the video to process.
+%   - out_dir: char array, output directory.
+
+    % Parsing optional arguments.
     p = inputParser;
     default_verbose = false;
     default_log_fid = -1;
@@ -9,8 +17,8 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
     verbose = p.Results.verbose;
     log_fid = p.Results.log_fid;
 
-	% fname is the one without extension.
-	norm_fn   = [fname '_norm.avi'];
+    % Get feta normalized video path.	
+	norm_fn   = [fname '_norm.avi']; % fname is the one without extension.
     norm_path = fullfile(out_dir,norm_fn);
     norm_path_nobs = correctPathFormat(norm_path);
 
@@ -19,22 +27,23 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
                    norm_path_nobs),log_fid);
     end
 
-
+    % Load different onnx network model based on the caller argument.
     if AU_param.meanSub
         net = importONNXNetwork('bp4d_ep10.onnx', 'OutputLayerType', ...
                                 'regression');
     else
         net = importONNXNetwork('bp4d_ep10_no_meansub.onnx', 'OutputLayerType', 'regression');
     end
-
+    
     au_out_dir = out_dir;
     video_name = norm_path; 
 
+    % load feta normalized video
     v   = VideoReader(video_name);
-    nAU = AU_param.nAU;
 
     sum_fr  = zeros(FETA_param.res,FETA_param.res);
     frame_cnt = 1;
+    % Loop through each frame
     while hasFrame(v)
         I = readFrame(v);
         if size(I,1) ~= FETA_param.res || size(I,2) ~= FETA_param.res
@@ -55,6 +64,7 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
         mean_video = mean(sum_fr(:))/frame_cnt;
     end
 
+    % Load the video again so that the frame count start from 1.
     v = VideoReader(video_name);
     all_outputs = [];
     frame_cnt = 0;
@@ -78,7 +88,7 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
     result = array2table(all_outputs, 'VariableNames', ...
                         {'AU1', 'AU2', 'AU4', 'AU6', 'AU7', 'AU10', 'AU12', ...
                          'AU14', 'AU15', 'AU17', 'AU23', 'AU24'});
-
+    % Save output mat file.
     au_out_fn   = [fname,'_au_out.mat'];
     au_out_path = fullfile(au_out_dir,au_out_fn);
     save(au_out_path, 'result');
