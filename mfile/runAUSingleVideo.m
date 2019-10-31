@@ -14,6 +14,7 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
     norm_path = fullfile(out_dir,norm_fn);
     norm_path_nobs = correctPathFormat(norm_path);
 
+
     if verbose
         printWrite(sprintf('%s Processing AU detection on %s.\n',getMyTime(),...
                    norm_path_nobs),log_fid);
@@ -27,14 +28,25 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
         net = importONNXNetwork('bp4d_ep10_no_meansub.onnx', 'OutputLayerType', 'regression');
     end
 
-    au_out_dir = out_dir;
-    video_name = norm_path; 
+    au_out_dir  = out_dir;
+    video_name  = norm_path; 
+    au_out_fn   = [fname,'_au_out.mat'];
+    au_out_path = fullfile(au_out_dir,au_out_fn);
+
+    if isfile(au_out_path)
+        % if the AU output already exists, return
+        printWrite(sprintf('%s Skipped. AU output %s already exists.\n',...
+                   getMyTime(),correctPathFormat(au_out_path)),log_fid,...
+                   'no_action',verbose);
+        return
+    end
 
     v   = VideoReader(video_name);
     nAU = AU_param.nAU;
 
-    sum_fr  = zeros(FETA_param.res,FETA_param.res);
+    sum_fr    = zeros(FETA_param.res,FETA_param.res);
     frame_cnt = 1;
+
     while hasFrame(v)
         I = readFrame(v);
         if size(I,1) ~= FETA_param.res || size(I,2) ~= FETA_param.res
@@ -75,14 +87,10 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
         all_outputs = [all_outputs;sample_output];
     end
 
-    result = array2table(all_outputs, 'VariableNames', ...
-                        {'AU1', 'AU2', 'AU4', 'AU6', 'AU7', 'AU10', 'AU12', ...
-                         'AU14', 'AU15', 'AU17', 'AU23', 'AU24'});
+    result = array2table(all_outputs,'VariableNames',{'AU1','AU2','AU4',...
+                'AU6','AU7','AU10','AU12','AU14','AU15','AU17','AU23','AU24'});
 
-    au_out_fn   = [fname,'_au_out.mat'];
-    au_out_path = fullfile(au_out_dir,au_out_fn);
     save(au_out_path, 'result');
-
     printWrite(sprintf('%s AU detection result saved as %s.\n',getMyTime(),...
                correctPathFormat(au_out_path)),log_fid,'no_action',verbose);
 
