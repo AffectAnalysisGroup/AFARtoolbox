@@ -1,14 +1,5 @@
 function plotAU(origVideoPath,auOutDir,normAnnotatedVideoDir,outDir,vargin)
     
-% Input args below:
-% auOutDir = '/Users/wanqiaod/workspace/pipeline/out/AU_detector_out/';
-% origVideoPath = '/Users/wanqiaod/workspace/pipeline/test_video/LeBlanc_short.mp4';
-% normAnnotatedVideoDir = '/Users/wanqiaod/workspace/pipeline/out/feta_out/feta_norm_annotated_videos/';
-% startFrame 
-% endFrame   
-
-% defaultOutDir = '/Users/wanqiaod/workspace/pipeline'
-
 window_x0 = 100;
 window_y0 = 100;
 window_w  = 1000;
