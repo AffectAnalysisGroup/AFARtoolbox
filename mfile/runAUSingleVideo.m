@@ -33,7 +33,8 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
         net = importONNXNetwork('bp4d_ep10.onnx', 'OutputLayerType', ...
                                 'regression');
     else
-        net = importONNXNetwork('bp4d_ep10_no_meansub.onnx', 'OutputLayerType', 'regression');
+        net = importONNXNetwork('bp4d_ep10_no_meansub_dr.onnx', ...
+                                'OutputLayerType', 'regression');
     end
 
     au_out_dir  = out_dir;
