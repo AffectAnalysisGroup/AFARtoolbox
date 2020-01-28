@@ -53,8 +53,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
         error('Given output folder is not valid.\n');
     end
     
+    log_fn = 'AFAR_process_log.txt';
     if save_log
-        log_fn = 'AFAR_process_log.txt';
         if isfile(log_fn)
             log_fid = fopen(log_fn,'a+');
         else
