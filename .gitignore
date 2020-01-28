@@ -5,6 +5,7 @@ mfile/test_functions/
 example/AFAR_example.m
 example/test_out
 example/tracking_list.txt
+example/AFAR_process_log.txt
 
 .gitignore
 zface/3rd_party/mexopencv/
