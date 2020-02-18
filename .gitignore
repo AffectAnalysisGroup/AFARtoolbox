@@ -8,7 +8,7 @@ example/tracking_list.txt
 example/AFAR_process_log.txt
 
 .gitignore
-zface/3rd_party/mexopencv/
+zface/3rd_party/mexopencv/*
 mfile/*.txt
 mfile/*.mat
 
