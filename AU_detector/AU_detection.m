@@ -19,7 +19,7 @@ mean_frame_subtraction = 0;
 if mean_frame_subtraction == 1
     net = importONNXNetwork('bp4d_ep10.onnx', 'OutputLayerType', 'regression');
 else
-    net = importONNXNetwork('bp4d_ep10_no_meansub.onnx', 'OutputLayerType', 'regression'); 
+    net = importONNXNetwork('bp4d_ep10_no_meansub_dr.onnx', 'OutputLayerType', 'regression'); 
 end
 nAU = 12;
 video_name = ‘sample_video.mp4'; %%% update this line with your own normalized video
