@@ -46,17 +46,22 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
     end
 
     % get the file ID of the log file.
-    log_fid = -1;
+    % log_fid = -1;
     if verbose
         if ~isempty(log_fn)
             log_fid = fopen(log_fn,'a+');
         end
         printWrite(sprintf('%s Processing feta on %s \n',getMyTime(),...
-                   correctPathFormat(origVideoDir)),log_fid);
+                   correctPathFormat(fn)),log_fid);
     end
 
     zfaceFit = load(fit_path);
     zfaceFit = zfaceFit.fit;
+    if isempty(zfaceFit)
+        printWrite(sprintf('%s Skipped. Zface tracks 0 frame in %s \n',...
+                   getMyTime(),correctPathFormat(fn)),log_fid);
+        return;
+    end
     zfaceFitRange = cell2mat({zfaceFit(:).frame}');
     origVideoObj  = VideoReader(fn); % original video object
 
@@ -183,7 +188,7 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
 
     if verbose
         printWrite(sprintf('%s %s tracking saved.\n',getMyTime(),...
-                   correctPathFormat(origVideoDir)),log_fid);
+                   correctPathFormat(fn)),log_fid);
         if ~isempty(log_fn)
             fclose(log_fid);
         end

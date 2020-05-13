@@ -86,9 +86,14 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
         frame_cnt = frame_cnt + 1;
         I  = readFrame(v);
         I2 = rgb2gray(I);
-        I2_conv = (double(I2)/255) - mean_video;
-        sample_output = predict(net,I2_conv,'ExecutionEnvironment','cpu');
-        sample_output = sigm(sample_output);
+
+        if sum(sum(I)) == 0 % check if the frame is empty.
+            sample_output = zeros(1,12);
+        else
+            I2_conv = (double(I2)/255) - mean_video;
+            sample_output = predict(net,I2_conv,'ExecutionEnvironment','cpu');
+            sample_output = sigm(sample_output);
+        end
 
         if mod(frame_cnt,500) == 0 && verbose
             msg = sprintf('%s -- %d frames predicted from %s\n',getMyTime(),...
