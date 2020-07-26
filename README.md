@@ -171,5 +171,19 @@ each module's folder is.
 to check and manually change the locations of 
 ZFace/FETA/AUDetector directory)
 
+## Using .mat files with python
+The mat files from AFAR summarize the results as tables. To the best of our knowledge, there is no python package that supports matlab tables. In order to read the files in python, convert the matlab table to array using `table2array()`. An example for reading a sample `sample.mat` is shown below
+```
+occurrence = table2array('sample.mat')
+save('output_filename.mat', occurrence)
+```
+
+Read this in python as 
+```
+import scipy.io as sio
+mat_file = sio.loadmat('output_filename.mat');
+occurrence = mat_file['occurrence'];
+```
+
 ## License
 AFAR is freely available for free non-commercial use, and may be redistributed under these conditions. Please, see the [license](LICENSE) for further details. Interested in a commercial license? Please contact [Jeffrey Cohn](http://www.jeffcohn.net/).
