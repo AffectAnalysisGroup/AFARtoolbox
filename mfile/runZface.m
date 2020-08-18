@@ -3,13 +3,17 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
 % runZface generates zface outputs of videos in the given directory.
 %   Input arguments: 
 %   - video_dir: char array, the absolute path of the videos
-%   - out_dir: output directory of AFAR processing 
+%   - out_dir: char array, output directory of AFAR processing 
+%   - zface_folder: char array, zface code
 %   Optional arguments:
+%   - verbose: boolean, verbose option
+%   - log_fn: boolean, verbose log file name 
 %   - save_fit: boolean, if or not to save fit file. Default is true.
 %   - save_video: boolean, if or not to save the tracked face video. 
 %     Default is true.
 %   - save_video_ext: the format of zface output video.(MATLAB can't write 
 %     .mp4 videos on Linux)
+%   - parallel: if run on parallel
 
     % Parse optional arguments
     p = inputParser;
@@ -57,9 +61,9 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
     zface_param = [];
     zface_param.folder = zface_folder;
     zface_param.mesh   = fullfile(zface_param.folder,'ZFace_models',...
-                                'zf_ctrl49_mesh512.dat');
+                                  'zf_ctrl49_mesh512.dat');
     zface_param.alt2   = fullfile(zface_param.folder,...
-                                'haarcascade_frontalface_alt2.xml');
+                                  'haarcascade_frontalface_alt2.xml');
 
     % Loop through each video file in the given folder
     process_list = []; % the list of all videos need to process.

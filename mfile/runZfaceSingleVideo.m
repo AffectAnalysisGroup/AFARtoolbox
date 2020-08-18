@@ -8,28 +8,37 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 %   - zface_video_path: char array, the full path of the output zface video. 
 %   - fit_path: char array, the full path of the output zface fit file.
 %   Optional input arguments:
+%   - verbose: boolean, verbose option
+%   - log_fn: char array, file name of the log that verbose writes to
 %   - save_fit: boolean, if not to save fit file. Default true.
 %   - save_video: boolean, if to save the tracked face video. Default true.
+%   - save_dynamics: boolean, if to save the head movement dynamics(head 
+%                    movement/diplacement), blink rate and mouth opening
+%   - start_frame: integer, start frame of tracking
+%   - end_frame: integer, end frame of tracking
 
     % Parse optional arguments
     p = inputParser;
     default_verbose  = false;
     default_log_fn   = '';
-    default_save_fit = true;
+    default_save_fit    = true;
     default_save_video  = false;
+    default_save_dynamics = true;
     default_start_frame = -1;
     default_end_frame   = -1;
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'log_fn',default_log_fn);
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
+    addOptional(p,'save_dynamics',default_save_dynamics);
     addOptional(p,'start_frame',default_start_frame);
     addOptional(p,'end_frame',default_end_frame);
     parse(p,varargin{:}); 
     verbose  = p.Results.verbose;   
     log_fn   = p.Results.log_fn;
-    save_fit = p.Results.save_fit;
+    save_fit    = p.Results.save_fit;
     save_video  = p.Results.save_video;
+    save_dynamics = p.Results.save_dynamics;
     start_frame = p.Results.start_frame;
     end_frame   = p.Results.end_frame;
 
@@ -38,13 +47,15 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         return
     end
 
-    log_fid = -1;
     if verbose
         if ~isempty(log_fn)
             log_fid = fopen(log_fn,'a+');
+        else
+            log_fid = -1; % provide an invalid fid if file name not provided
         end
         printWrite(sprintf('%s Processing zface on %s \n',getMyTime(),...
                    correctPathFormat(video_path)),log_fid);
+        % Print if fid is not valid. Write to the file if fid is valid
     end
 
     [~,video_fname,video_ext] = fileparts(video_path);
@@ -52,12 +63,12 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
  	mesh_path  = zface_param.mesh;
     alt2_path  = zface_param.alt2;
 
-    zf = CZFace(mesh_path,alt2_path);
-    vo = VideoReader(video_path);
+    zf = CZFace(mesh_path,alt2_path); % zface object
+    vo = VideoReader(video_path);     % video object(reader)
 
     if save_video
-        vw = VideoWriter(zface_video_path);
-        vw.FrameRate = vo.FrameRate;
+        vw = VideoWriter(zface_video_path); % vider writer
+        vw.FrameRate = vo.FrameRate; % match the frame rate
         open(vw);
     end
     
@@ -66,6 +77,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     vo.CurrentTime  = 0;
     frame_index     = 0;
     fit_frame_index = 0;
+
     while hasFrame(vo)
         % Track each frame
         I = readFrame(vo);
