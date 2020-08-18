@@ -49,20 +49,13 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     addpath(genpath('.'));
 
-    if ~isfolder(output_dir)
-        error('Given output folder is not valid.\n');
-    end
+    if ~isfolder(output_dir), error('Given output folder is not valid.\n'); end
     
     log_fn = 'AFAR_process_log.txt';
     if save_log
-        if isfile(log_fn)
-            log_fid = fopen(log_fn,'a+');
-        else
-            log_fid = fopen(log_fn,'w');
-        end
-    else
-        log_fid = -1;
-    end
+        if isfile(log_fn), log_fid = fopen(log_fn,'a+');
+        else, log_fid = fopen(log_fn,'w'); end
+    else, log_fid = -1; end
 
     % video dir with no backslash(bs)
     video_dir_nobs = correctPathFormat(video_dir);
