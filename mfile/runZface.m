@@ -122,5 +122,4 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
                                 log_fn);
         end
     end
-
 end

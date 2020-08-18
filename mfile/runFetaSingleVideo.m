@@ -22,11 +22,14 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
     p = inputParser;
     default_verbose = false;
     default_log_fn  = '';
+    default_saveFeat = false;
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'log_fn',default_log_fn);
+    addOptional(p,'saveFeat',default_saveFeat);
     parse(p,varargin{:}); 
     verbose = p.Results.verbose;   
     log_fn  = p.Results.log_fn;
+    saveFeat = p.Results.saveFeat;
 
     [origVideoDir,fnName,~] = fileparts(fn);    
     descExt    = [];
@@ -182,9 +185,11 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
         save(out_fit_norm_path,'fitNorm');
     end
 
-    out_feat_fn   = [fnName '_feat.mat'];
-    out_feat_path = fullfile(out_dir,out_feat_fn);
-    save(out_feat_path,'feat');
+    if saveFeat
+        out_feat_fn   = [fnName '_feat.mat'];
+        out_feat_path = fullfile(out_dir,out_feat_fn);
+        save(out_feat_path,'feat');
+    end
 
     if verbose
         printWrite(sprintf('%s %s tracking saved.\n',getMyTime(),...
