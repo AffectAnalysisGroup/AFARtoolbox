@@ -20,7 +20,7 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
     default_verbose    = false;
     default_log_fn     = '';
     default_save_fit   = true;
-    default_save_video = true;
+    default_save_video = false;
     default_parallel   = false;
     default_save_video_ext = '.avi';
     addOptional(p,'verbose',default_verbose);

@@ -1,0 +1,2 @@
+08/23/2020, 14:52:45 Processing zface on ~/workspace/pipeline/example/test_video/LeBlanc_short.mp4 
+08/23/2020, 14:59:22 Processing zface on ~/workspace/pipeline/example/test_video/LeBlanc_short.mp4 

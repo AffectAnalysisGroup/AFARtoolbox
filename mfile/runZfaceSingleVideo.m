@@ -42,11 +42,6 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     start_frame = p.Results.start_frame;
     end_frame   = p.Results.end_frame;
 
-    if (~save_fit && ~save_video)
-        % if not save fit or video, nothing to save, quit.
-        return
-    end
-
     if verbose
         if ~isempty(log_fn)
             log_fid = fopen(log_fn,'a+');
@@ -59,10 +54,15 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     end
 
     [~,video_fname,video_ext] = fileparts(video_path);
+    if (~save_fit && ~save_video)
+        % if not save fit or video, nothing to save, quit.
+        printWrite(sprintf('Zface output %s already exists, skipped.\n',...
+                   video_fname),log_fid);
+        return
+    end
 
  	mesh_path  = zface_param.mesh;
     alt2_path  = zface_param.alt2;
-
     zf = CZFace(mesh_path,alt2_path); % zface object
     vo = VideoReader(video_path);     % video object(reader)
 
