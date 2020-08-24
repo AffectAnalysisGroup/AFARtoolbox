@@ -67,7 +67,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     vo = VideoReader(video_path);     % video object(reader)
 
     if save_video
-        vw = VideoWriter(zface_video_path); % vider writer
+        vw = VideoWriter(zface_video_path); % video writer
         vw.FrameRate = vo.FrameRate; % match the frame rate
         open(vw);
     end
@@ -122,7 +122,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
             fit(fit_frame_index).headPose = [];
             fit(fit_frame_index).pdmPars  = [];
         end    
-        if mod(fit_frame_index,500) == 0 && verbose 
+        if mod(fit_frame_index,5) == 0 && verbose 
             msg = sprintf('%s -- %d frames tracked from %s\n',getMyTime(),...
                           fit_frame_index,video_fname);
             printWrite(msg,log_fid);

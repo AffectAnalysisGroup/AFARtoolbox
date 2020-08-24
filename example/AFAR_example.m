@@ -1,4 +1,3 @@
-mkdir 'test_out/';
 
 video_dir = './test_video';
 out_dir   = './test_out';
