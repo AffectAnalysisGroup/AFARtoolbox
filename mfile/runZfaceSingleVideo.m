@@ -23,24 +23,29 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     default_log_fn   = '';
     default_save_fit    = true;
     default_save_video  = false;
-    default_save_dynamics = true;
     default_start_frame = -1;
     default_end_frame   = -1;
+    default_save_dynamics = true;
+    default_de_identify   = false;
+
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'log_fn',default_log_fn);
     addOptional(p,'save_fit',default_save_fit);
     addOptional(p,'save_video',default_save_video);
-    addOptional(p,'save_dynamics',default_save_dynamics);
     addOptional(p,'start_frame',default_start_frame);
     addOptional(p,'end_frame',default_end_frame);
+    addOptional(p,'save_dynamics',default_save_dynamics);
+    addOptional(p,'de_identify',default_de_identify);
+
     parse(p,varargin{:}); 
-    verbose  = p.Results.verbose;   
-    log_fn   = p.Results.log_fn;
+    verbose = p.Results.verbose;   
+    log_fn  = p.Results.log_fn;
     save_fit    = p.Results.save_fit;
     save_video  = p.Results.save_video;
-    save_dynamics = p.Results.save_dynamics;
     start_frame = p.Results.start_frame;
     end_frame   = p.Results.end_frame;
+    de_identify = p.Results.de_identify;
+    save_dynamics = p.Results.save_dynamics;
 
     if verbose
         if ~isempty(log_fn)
@@ -82,7 +87,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         % Track each frame
         I = readFrame(vo);
         if frame_index == 0 && save_video % first frame
-            h = InitDisplay(zf,I);
+            h = DemoInitDisplay(zf,I);
         end
         frame_index = frame_index + 1;
         
@@ -103,7 +108,8 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
       [ ctrl2D, mesh2D, mesh3D, pars ] = zf.Fit( I, ctrl2D );
         if save_video
-            UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
+            %UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
+            DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars);
             F = getframe(h.fig);
             [X, Map] = frame2im(F);
             writeVideo(vw,X);

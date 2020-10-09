@@ -49,7 +49,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
 
     addpath(genpath('.'));
 
-    if ~isfolder(output_dir), error('Given output folder is not valid.\n'); end
+    if ~isfolder(output_dir), error('Given output folder is not valid.'); end
     
     log_fn = 'AFAR_process_log.txt';
     if save_log
