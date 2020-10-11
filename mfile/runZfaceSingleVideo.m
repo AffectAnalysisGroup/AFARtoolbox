@@ -47,6 +47,9 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     de_identify = p.Results.de_identify;
     save_dynamics = p.Results.save_dynamics;
 
+    display_img = true;
+    demo_mode   = true;
+
     if verbose
         if ~isempty(log_fn)
             log_fid = fopen(log_fn,'a+');
@@ -86,8 +89,10 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     while hasFrame(vo)
         % Track each frame
         I = readFrame(vo);
-        if frame_index == 0 && save_video % first frame
-            h = DemoInitDisplay(zf,I);
+        if frame_index == 0 && display_img% first frame
+            if demo_mode; h = DemoInitDisplay(zf,I);
+            else; h = InitDisplay(zf,I);
+            end
         end
         frame_index = frame_index + 1;
         
@@ -107,13 +112,21 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
 
       [ ctrl2D, mesh2D, mesh3D, pars ] = zf.Fit( I, ctrl2D );
-        if save_video
-            %UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
-            DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars);
-            F = getframe(h.fig);
+
+        if display_img
+            if demo_mode
+                DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars);
+                F = getframe(h.fig);
+            else
+                UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
+                F = getframe(h.fig);
+            end
             [X, Map] = frame2im(F);
-            writeVideo(vw,X);
+            if save_video
+                writeVideo(vw,X);
+            end
         end
+
         
         fit(fit_frame_index).frame     = frame_index;
         fit(fit_frame_index).isTracked = ~isempty(ctrl2D);
@@ -138,21 +151,19 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
     clear zf;
 
-    if save_video
+    if display_img
         close(h.fig);
-        close(vw);
+        if save_video
+            close(vw);
+        end
     end
 
-    if save_fit
-        save(fit_path,'fit');
-    end
+    if save_fit;save(fit_path,'fit');end
 
     if verbose
         printWrite(sprintf('%s %s tracking saved.\n',getMyTime(),...
                    correctPathFormat(video_path)),log_fid);
-        if ~isempty(log_fn)
-            fclose(log_fid);
-        end
+        if ~isempty(log_fn);fclose(log_fid);end
     end
 
 end

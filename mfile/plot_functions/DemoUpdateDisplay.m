@@ -13,12 +13,13 @@ function DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars )
         set(h.pts3Db,'xdata',Xb*200+100,'ydata',Yb*200+300,'zdata',Zb*200+100);
         set(h.pts3Dc,'xdata',Xc*200+100,'ydata',Yc*200+500,'zdata',Zc*200+100);
 
-        img_wh = [h.img.XData(2) h.img.YData(2)];
-        %bl = flipud(img_wh - mesh2D(246,:)); tr = flipud(img_wh - mesh2D(444,:));
-        bl = mesh2D(246,:); tr = mesh2D(444,:);
-        patch_x = [bl(1) tr(1) tr(1) bl(1)];
-        patch_y = [bl(2) bl(2) tr(2) tr(2)];
-        set(h.patch,'xdata',patch_x,'ydata',patch_y);
+        %bl = mesh2D(246,:); tr = mesh2D(444,:);
+        %patch_x = [bl(1) tr(1) tr(1) bl(1)];
+        %patch_y = [bl(2) bl(2) tr(2) tr(2)];
+        eyebrow_lcorner = ctrl2D(1,:);  eye_lcorner = ctrl2D(20,:);
+        eyebrow_rcorner = ctrl2D(10,:); eye_rcorner = ctrl2D(29,:);
+        [bar_x,bar_y] = getBarPos(eyebrow_lcorner,eyebrow_rcorner,eye_lcorner,eye_rcorner);
+        set(h.patch,'xdata',bar_x,'ydata',bar_y);
 
         fc = zf.GetFaceContour();
         for i = 1:length(fc)
