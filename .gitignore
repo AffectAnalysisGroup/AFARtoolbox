@@ -2,7 +2,7 @@
 mfile/test_functions/
 
 # ignore examples
-example/AFAR_example.m
+example/test_example.m
 example/test_out
 example/tracking_list.txt
 example/AFAR_process_log.txt

@@ -17,6 +17,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     default_zface_save_fit   = true;
     default_zface_save_video = false;
     default_zface_parallel   = false;
+    default_de_identify      = false;
     default_feta_parallel    = false;
     default_feta_resolution  = 200;
     default_feta_IOD         = 80;
@@ -27,6 +28,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     addOptional(p,'zface_save_fit',default_zface_save_fit);
     addOptional(p,'zface_save_video',default_zface_save_video);
     addOptional(p,'zface_parallel',default_zface_parallel);
+    addOptional(p,'de_identify',default_de_identify);
     addOptional(p,'feta_parallel',default_feta_parallel);
     addOptional(p,'feta_resolution',default_feta_resolution);
     addOptional(p,'feta_IOD',default_feta_IOD);
@@ -39,6 +41,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     zface_save_fit   = p.Results.zface_save_fit;
     zface_save_video = p.Results.zface_save_video;
     zface_parallel   = p.Results.zface_parallel;
+    de_identify      = p.Results.de_identify;
     % FETA parameters
     feta_parallel    = p.Results.feta_parallel;
     feta_resolution  = p.Results.feta_resolution;
@@ -68,7 +71,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
         end
         runZface(video_dir,output_dir,zface_folder,'save_fit',...
                  zface_save_fit,'save_video',zface_save_video,'parallel',...
-                 zface_parallel,'verbose',verbose,'log_fn',log_fn);
+                 zface_parallel,'verbose',verbose,'log_fn',log_fn,'de_identify',de_identify);
     end
     
     % FETA module
