@@ -8,8 +8,11 @@ run_zface = true;
 run_FETA  = true;
 run_AU    = true;
 
+de_identify = true;
+
 runPipeline(video_dir,out_dir,zface_dir,FETA_dir,AU_dir,run_zface,run_FETA,...
-            run_AU,'zface_save_video',true,'verbose',true);
+            run_AU,'zface_save_video',true,'verbose',true,...
+            'de_idenfity',de_identify);
 
 
 
