@@ -11,6 +11,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     %   run_feta: bool, if run videos thru feta.
     %   run_AU_detector: bool, if run videos thru AU detector.
 
+    % TODO: change the optional arg to a struct to pass between functions.
     p = inputParser;
     default_verbose  = false;
     default_save_log = false;

@@ -4,7 +4,9 @@ function DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars )
     if ~isempty(ctrl2D)
 
         set(h.pts2D,'xdata',mesh2D(:,1),'ydata',mesh2D(:,2));
+        set(h.pts2D,'visible','off')
 
+        % Plot the side views with different camera angles
         x = mesh3D(:,1); y = mesh3D(:,2); z = mesh3D(:,3);
         theta = -pi/6;
         Xb = x*cos(theta) + z*sin(theta);Yb = y;Zb = z*cos(theta) - x*sin(theta);
@@ -12,6 +14,14 @@ function DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars )
         set(h.pts3Da,'xdata',x*200+100,'ydata',y*200+100,'zdata',z*200+100);
         set(h.pts3Db,'xdata',Xb*200+100,'ydata',Yb*200+300,'zdata',Zb*200+100);
         set(h.pts3Dc,'xdata',Xc*200+100,'ydata',Yc*200+500,'zdata',Zc*200+100);
+        set(h.pts3Da,'visible','off');
+        set(h.pts3Db,'visible','off');
+        set(h.pts3Dc,'visible','off');
+        
+        x = (mesh2D(:,1)-mean(mesh2D(:,1)))*0.7+150;
+        y = (mesh2D(:,2)-mean(mesh2D(:,2)))*0.7+200; 
+        set(h.pts2Da,'xdata',x,'ydata',y);
+        set(h.pts2Da,'visible','off');
 
         %bl = mesh2D(246,:); tr = mesh2D(444,:);
         %patch_x = [bl(1) tr(1) tr(1) bl(1)];
@@ -25,6 +35,7 @@ function DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars )
         for i = 1:length(fc)
             ndx = fc{i};
             set(h.fc{i},'xdata',ctrl2D(ndx,1),'ydata',ctrl2D(ndx,2));
+            set(h.fc{i},'visible','off');
         end
         
 %         zlim([-100,100]);

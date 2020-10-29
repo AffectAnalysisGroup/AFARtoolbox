@@ -5,6 +5,7 @@ function h = DemoInitDisplay( zf, I )
     hold on;
 	tmp = zeros( zf.GetPdmN(),2 );    
     h.pts2D = plot(tmp(:,1),tmp(:,1),'bx' ); 
+    h.pts2Da = plot(tmp(:,1),tmp(:,1),'b.');
     h.pts3Da = scatter3(tmp(:,1),tmp(:,1),tmp(:,1),10,'blue','filled');
     h.pts3Db = scatter3(tmp(:,1),tmp(:,1),tmp(:,1),10,'blue','filled');
     h.pts3Dc = scatter3(tmp(:,1),tmp(:,1),tmp(:,1),10,'blue','filled');
