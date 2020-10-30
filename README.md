@@ -108,6 +108,10 @@ To test your dataset using frames and a .txt file containing the paths and names
 - Set your test_txt_file and test_txt_file_name
 - If you want to use the model trained on mean subtracted frames, (i) compute mean frames of each video, (ii) save them under a folder and (iii) set mean_image_path that contains the mean frames of videos in your dataset to that folder.
 
+Run the example code:
+- Make sure add the paths of Zface, Feta and AU detection.
+- For more information about flags of runPipeline, type help runPipeline in the MATLAB prompt
+
 ## Citation
 
 If you use any of the resources provided on this page, please cite the pipeline paper and papers relevant to the components you used:
