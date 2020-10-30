@@ -2,14 +2,40 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
                      run_zface,run_FETA,run_AU_detector,varargin)
     % runPipeline processes the videos in the given folder thru zface, feta
     % and AU detector on the choice of callers.
-    %   video_dir: the directory videos locate.
-    %   output_dir: the top directory where the outputs will be.
-    %   zface_folder: zface source code folder.
-    %   FETA_folder: feta source code folder.
-    %   AU_folder: au detector source code folder.
-    %   run_zface: bool, if run videos thru zface.
-    %   run_feta: bool, if run videos thru feta.
-    %   run_AU_detector: bool, if run videos thru AU detector.
+    %   Input arguments:
+    %       video_dir: the directory videos locate.
+    %       output_dir: the top directory where the outputs will be.
+    %       zface_folder: zface source code folder.
+    %       FETA_folder: feta source code folder.
+    %       AU_folder: au detector source code folder.
+    %       run_zface: bool, if run videos thru zface.
+    %       run_feta: bool, if run videos thru feta.
+    %       run_AU_detector: bool, if run videos thru AU detector.
+    %   Optional arguments:
+    %       verbose: bool, if set to true, processing log will be printed. 
+    %           Default set to false.
+    %       save_log: bool, if set to true, processing log will be saved in a 
+    %           txt file. Default set to false.
+    %       zface_save_fit: bool, if set to true, zface tracking results will be
+    %           saved as a mat file. Default set to true.
+    %       zface_save_video: bool, if set to true, zface result visualization 
+    %           videos will be saved. Default set to false.
+    %       zface_parallel: bool, if set to true, zface will run in parallel. 
+    %           Default set to false. Make sure you have the parallel toolbox
+    %           installed before running it. 
+    %       de_identify: bool, if set to true, zface visualization videos will
+    %           come with a bar masking the tracked target. Default set to 
+    %           false.
+    %       feta_parallel: bool, if set to true, feta will run in parallel. 
+    %           Default set to false.
+    %       feta_resolution: double, side length of the normalization window.
+    %           Default set to 200. (That means normalization result will be 
+    %           a video with size of 200 x 200 pixel)
+    %       feta_IOD: double, interocular distance. Default set to 80.
+    %       feta_patch_size: double, feta path size. Default set to 32.
+    %       au_meansub: bool, if set to true. AU occurrence detection will 
+    %           run with mean substraction. Default set to false.
+    %
 
     % TODO: change the optional arg to a struct to pass between functions.
     p = inputParser;
