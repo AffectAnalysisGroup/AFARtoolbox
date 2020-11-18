@@ -6,10 +6,19 @@ Automated measurement of face and head dynamics, detection of facial action unit
 ![afar_pipeline](https://user-images.githubusercontent.com/12033328/61708950-15539700-ad1c-11e9-85a7-23d1db0475ac.png)
 
 ## Required
-- [OpenCV](https://opencv.org/)
+- [OpenCV](https://opencv.org/) 3.4.1 or lower
 - [mexopencv](https://github.com/kyamagu/mexopencv)
 - MATLAB add-on:
-  - Deep Learning Toolbox Converter for ONNX Model Format
+  - [Deep Learning Toolbox Converter for ONNX Model Format](https://www.mathworks.com/matlabcentral/fileexchange/67296-deep-learning-toolbox-converter-for-onnx-model-format)
+  
+### Linux installation
+- Installing using conda or pip are not recommended.
+- If you are installing OpenCV on Linux, we recommend building from the source. Follow the instructions [here](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html) and replace `master` with `3.4.1` or lower(check mexopencv compatibility). You might need to disable CUDA because 3.4.1 might not support latest CUDA version.
+- When building the OpenCV source use the following command to make sure that you generate a `opencv.pc` file and customize the installation path `cmake -DWITH_CUDA=OFF -DPYTHON_DEFAULT_EXECUTABLE=$(which python) -DCMAKE_INSTALL_PREFIX=/home/<USER>/local/ -DOPENCV_GENERATE_PKGCONFIG=YES -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-3.4.1/modules ../opencv-3.4.1/`
+- Once you install OpenCV and opencv-contrib v3.4.1, run `make MATLABDIR="/usr/local/MATLAB/R2018a" all contrib` in the [mexopencv](https://github.com/kyamagu/mexopencv) dir to install mexopencv
+
+### Installing ONNX Add-On
+
  
 ## Modules
 
