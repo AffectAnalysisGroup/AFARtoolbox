@@ -11,15 +11,16 @@ Automated measurement of face and head dynamics, detection of facial action unit
 - MATLAB add-on:
   - [Deep Learning Toolbox Converter for ONNX Model Format](https://www.mathworks.com/matlabcentral/fileexchange/67296-deep-learning-toolbox-converter-for-onnx-model-format)
   
-### Linux installation
+#### Linux installation
 - Installing using conda or pip are not recommended.
 - If you are installing OpenCV on Linux, we recommend building from the source. Follow the instructions [here](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html) and replace `master` with `3.4.1` or lower(check mexopencv compatibility). You might need to disable CUDA because 3.4.1 might not support latest CUDA version.
-### Installing ONNX Add-On
+- When building the OpenCV source use the following command to make sure that you generate a `opencv.pc` file and customize the installation path `cmake -DWITH_CUDA=OFF -DPYTHON_DEFAULT_EXECUTABLE=$(which python) -DCMAKE_INSTALL_PREFIX=/home/<USER>/local/ -DOPENCV_GENERATE_PKGCONFIG=YES -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-3.4.1/modules ../opencv-3.4.1/`
+
+#### Installing ONNX Add-On
 - We found that MATLAB R2018a version has some difficulties with installing the Deep learning toolbox converter using the Add-Ons option. So it is suggested to make sure that you are able to install it the link mentioned above and then compile mexopencv.
 - The installation involves searching for the `Deep Learning Toolbox Converter for ONNX Model Format` in the Add-Ons and installing it(might require you to sign in with your the matlab account). We tested it on R2020b and it works on Ubuntu 18.04 LTS.
 
-### Compiling mexopencv
-- When building the OpenCV source use the following command to make sure that you generate a `opencv.pc` file and customize the installation path `cmake -DWITH_CUDA=OFF -DPYTHON_DEFAULT_EXECUTABLE=$(which python) -DCMAKE_INSTALL_PREFIX=/home/<USER>/local/ -DOPENCV_GENERATE_PKGCONFIG=YES -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-3.4.1/modules ../opencv-3.4.1/`
+#### Compiling mexopencv
 - Once you install OpenCV and opencv-contrib v3.4.1, run `make MATLABDIR="/usr/local/MATLAB/R2018a" all contrib` in the [mexopencv](https://github.com/kyamagu/mexopencv) dir to install mexopencv. Note that the matlab installation location on your system might be different.
  
 ## Modules
