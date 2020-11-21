@@ -1,7 +1,11 @@
 function h = DemoInitDisplay( zf, I )
 
     h.fig = figure('name','ZFace v1.1 Demo','NumberTitle','off');
-    h.img = imshow(I);
+    %h.img = imshow(I);
+    h.img = image(I);
+    set(gca,'YTick',[]);
+    set(gca,'XTick',[]);
+    set(gca, 'box', 'off');
     hold on;
 	tmp = zeros( zf.GetPdmN(),2 );    
     h.pts2D = plot(tmp(:,1),tmp(:,1),'bx' ); 

@@ -78,6 +78,10 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
         strFr = ['frames ' strFr];        
     end                        
 
+    if ~saveNromVideo && ~saveNormAnnotated
+        return
+    end
+
     if saveNormVideo % if save normalized video
         out_video_fn = [fnName '_norm.avi'];
         out_video_path = fullfile(out_dir,out_video_fn);

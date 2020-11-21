@@ -47,8 +47,8 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     de_identify = p.Results.de_identify;
     save_dynamics = p.Results.save_dynamics;
 
-    display_img = true;
-    demo_mode   = true;
+    display_img = false;
+    demo_mode   = false;
 
     if verbose
         if ~isempty(log_fn)
