@@ -113,7 +113,6 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     FETA_param.normFeature = '2D_similarity';
     FETA_param.descFeature = 'HOG_OpenCV';
     FETA_param.patch_size  = feta_patch_size;
-    % FETA_param.video_list  = getTrackingList(video_dir);
     if run_FETA
         if verbose
             printWrite(sprintf('\n%s Running FETA on %s\n',getMyTime(),...
@@ -124,7 +123,6 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     end
 
     % AU detection module
-    % TODO: au detector functions, add comments
     % TODO: runAUdetector, add checking existing outputs part
     AU_param = [];
     AU_param.folder  = AU_folder;

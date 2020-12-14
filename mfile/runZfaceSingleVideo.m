@@ -48,7 +48,8 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     save_dynamics = p.Results.save_dynamics;
 
     display_img = true;
-    demo_mode   = true;
+    % For demo mode, the tracked subject's eye is masked.
+    demo_mode   = de_identify;
 
     if verbose
         if ~isempty(log_fn)
