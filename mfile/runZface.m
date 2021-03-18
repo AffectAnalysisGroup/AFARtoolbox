@@ -117,6 +117,10 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
     % TODO: pass all of optional args to runZfaceSingleVideo
     if parallel
         parfor video_index = 1 : length(process_list)
+        %     curr_pool = gcp;
+        %     if curr_pool.NumWorkers < 15
+        %         error('Parallel workers dropped\n')
+        %     end
             v = process_list(video_index);
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,'save_video',...
