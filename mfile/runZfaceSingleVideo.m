@@ -25,7 +25,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     default_save_video  = false;
     default_start_frame = -1;
     default_end_frame   = -1;
-    default_save_dynamics = true;
+    % default_save_dynamics = true;
     default_de_identify   = false;
 
     addOptional(p,'verbose',default_verbose);
@@ -34,7 +34,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     addOptional(p,'save_video',default_save_video);
     addOptional(p,'start_frame',default_start_frame);
     addOptional(p,'end_frame',default_end_frame);
-    addOptional(p,'save_dynamics',default_save_dynamics);
+    % addOptional(p,'save_dynamics',default_save_dynamics);
     addOptional(p,'de_identify',default_de_identify);
 
     parse(p,varargin{:}); 
@@ -45,16 +45,13 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     start_frame = p.Results.start_frame;
     end_frame   = p.Results.end_frame;
     de_identify = p.Results.de_identify;
-    save_dynamics = p.Results.save_dynamics;
+    % save_dynamics = p.Results.save_dynamics;
 
-<<<<<<< HEAD
     display_img = true;
     % For demo mode, the tracked subject's eye is masked.
     demo_mode   = de_identify;
-=======
     display_img = false;
     demo_mode   = false;
->>>>>>> b78fd3034c9f2dee951713a5371ca3eac39bc933
 
     if verbose
         if ~isempty(log_fn)
