@@ -25,6 +25,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     default_save_video  = false;
     default_start_frame = -1;
     default_end_frame   = -1;
+    default_display_img = false;
     % default_save_dynamics = true;
     default_de_identify   = false;
 
@@ -34,6 +35,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     addOptional(p,'save_video',default_save_video);
     addOptional(p,'start_frame',default_start_frame);
     addOptional(p,'end_frame',default_end_frame);
+    addOptional(p,'display_img',default_display_img);
     % addOptional(p,'save_dynamics',default_save_dynamics);
     addOptional(p,'de_identify',default_de_identify);
 
@@ -45,13 +47,11 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     start_frame = p.Results.start_frame;
     end_frame   = p.Results.end_frame;
     de_identify = p.Results.de_identify;
+    display_img = p.Results.display_img;
     % save_dynamics = p.Results.save_dynamics;
 
-    display_img = true;
     % For demo mode, the tracked subject's eye is masked.
     demo_mode   = de_identify;
-    display_img = false;
-    demo_mode   = false;
 
     if verbose
         if ~isempty(log_fn)
@@ -64,7 +64,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         % Print if fid is not valid. Write to the file if fid is valid
     end
 
-    [~,video_fname,video_ext] = fileparts(video_path);
+    [~,video_fname,~] = fileparts(video_path);
     if (~save_fit && ~save_video)
         % if not save fit or video, nothing to save, quit.
         printWrite(sprintf('Zface output %s already exists, skipped.\n',...
@@ -124,7 +124,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
                 UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
                 F = getframe(h.fig);
             end
-            [X, Map] = frame2im(F);
+            [X, ~] = frame2im(F);
             if save_video
                 writeVideo(vw,X);
             end
