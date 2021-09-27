@@ -1,0 +1,3 @@
+[submodule "AU_intensity"]
+	path = AU_intensity
+	url = git@github.com:AffectAnalysisGroup/AU_intensity.git
