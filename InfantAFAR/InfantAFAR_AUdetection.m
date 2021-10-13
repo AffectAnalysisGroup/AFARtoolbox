@@ -5,7 +5,7 @@
 %%%% Resolution = 224
 %%%% Interocular distance = 80
 %%%%
-%%%% Output: AU probabilities of the following 12 AUs:
+%%%% Output: AU probabilities of the following 4 AUs:
 %%%% AU4, AU6, AU12, AU20
 %%%%
 %%%% Requirements: importONNXNetwork function requires Deep Learning Toolbox.
