@@ -112,6 +112,11 @@ Run the example code:
 - Make sure add the paths of Zface, Feta and AU detection.
 - For more information about flags of runPipeline, type help runPipeline in the MATLAB prompt
 
+
+### Visualization
+
+If you are looking for visualization of ZFace mesh overlaid on the input image, set the `zface_mesh_overlay`, `zface_demo_mode` flags to `true` in `run_Pipeline.m`. By default they are set to `false` for runtime performance.
+
 ## Citation
 
 If you use any of the resources provided on this page, please cite the pipeline paper and papers relevant to the components you used:

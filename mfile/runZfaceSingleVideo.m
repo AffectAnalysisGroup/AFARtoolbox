@@ -25,9 +25,10 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     default_save_video  = false;
     default_start_frame = -1;
     default_end_frame   = -1;
-    default_display_img = false;
-    % default_save_dynamics = true;
+    default_save_dynamics = true;
     default_de_identify   = false;
+    default_display_mesh = false;
+    default_demo_mode = false;
 
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'log_fn',default_log_fn);
@@ -35,9 +36,10 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     addOptional(p,'save_video',default_save_video);
     addOptional(p,'start_frame',default_start_frame);
     addOptional(p,'end_frame',default_end_frame);
-    addOptional(p,'display_img',default_display_img);
-    % addOptional(p,'save_dynamics',default_save_dynamics);
+    addOptional(p,'save_dynamics',default_save_dynamics);
     addOptional(p,'de_identify',default_de_identify);
+    addOptional(p,'display_mesh',default_display_mesh);
+    addOptional(p,'demo_mode',default_demo_mode);
 
     parse(p,varargin{:}); 
     verbose = p.Results.verbose;   
@@ -47,11 +49,13 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     start_frame = p.Results.start_frame;
     end_frame   = p.Results.end_frame;
     de_identify = p.Results.de_identify;
-    display_img = p.Results.display_img;
-    % save_dynamics = p.Results.save_dynamics;
+    save_dynamics = p.Results.save_dynamics;
+    display_img = p.Results.display_mesh;
+    demo_mode   = p.Results.demo_mode;
 
-    % For demo mode, the tracked subject's eye is masked.
-    demo_mode   = de_identify;
+% maneesh changed these lines
+%     display_img = true;
+%     demo_mode   = true;
 
     if verbose
         if ~isempty(log_fn)
@@ -64,7 +68,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         % Print if fid is not valid. Write to the file if fid is valid
     end
 
-    [~,video_fname,~] = fileparts(video_path);
+    [~,video_fname,video_ext] = fileparts(video_path);
     if (~save_fit && ~save_video)
         % if not save fit or video, nothing to save, quit.
         printWrite(sprintf('Zface output %s already exists, skipped.\n',...
@@ -90,6 +94,11 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     fit_frame_index = 0;
 
     while hasFrame(vo)
+
+        if frame_index == 2835
+            disp('debug');
+        end
+
         % Track each frame
         I = readFrame(vo);
         if frame_index == 0 && display_img% first frame
@@ -124,7 +133,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
                 UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
                 F = getframe(h.fig);
             end
-            [X, ~] = frame2im(F);
+            [X, Map] = frame2im(F);
             if save_video
                 writeVideo(vw,X);
             end

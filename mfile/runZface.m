@@ -24,6 +24,8 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
     default_parallel   = false;
     default_de_identify    = false; 
     default_save_video_ext = '.avi';
+    default_mesh_overlay = false;
+    default_demo_mode = false;
 
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'log_fn',default_log_fn);
@@ -32,7 +34,10 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
     addOptional(p,'save_video_ext',default_save_video_ext);
     addOptional(p,'parallel',default_parallel);
     addOptional(p,'de_identify',default_de_identify);
+    addOptional(p,'mesh_overlay',default_mesh_overlay);
+    addOptional(p,'demo_mode',default_demo_mode);
 
+    
     parse(p,varargin{:});
     verbose  = p.Results.verbose;
     log_fn   = p.Results.log_fn;
@@ -41,6 +46,8 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
     global_save_video = p.Results.save_video;
     save_video_ext    = p.Results.save_video_ext;
     de_identify       = p.Results.de_identify;
+    mesh_overlay = p.Results.mesh_overlay;
+    demo_mode = p.Results.demo_mode;
 
     % Check if the given video format for saved video is valid.
     valid_ext = [".avi",".mj2",".mp4",".m4v"];
@@ -125,7 +132,7 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,'save_video',...
                                 v.save_video,'verbose',verbose,'log_fn',...
-                                log_fn);
+                                log_fn, 'display_mesh', mesh_overlay, 'demo_mode', demo_mode);
         end
     else
         for video_index = 1 : length(process_list)
@@ -133,7 +140,7 @@ function runZface(video_dir,out_dir,zface_folder,varargin)
             runZfaceSingleVideo(zface_param,v.path,v.zface_video,v.fit,...
                                 'save_fit',v.save_fit,...
                                 'save_video',v.save_video,'de_identify',de_identify,...
-                                'verbose',verbose,'log_fn',log_fn);
+                                'verbose',verbose,'log_fn',log_fn, 'display_mesh', mesh_overlay, 'demo_mode', demo_mode);
         end
     end
 end

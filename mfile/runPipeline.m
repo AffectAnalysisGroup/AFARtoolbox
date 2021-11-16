@@ -44,12 +44,16 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     default_zface_save_fit   = true;
     default_zface_save_video = false;
     default_zface_parallel   = false;
+    default_zface_mesh_overlay = false;
     default_de_identify      = false;
     default_feta_parallel    = false;
     default_feta_resolution  = 200;
     default_feta_IOD         = 80;
     default_feta_patch_size  = 32;
     default_au_meansub       = false;
+    default_demo_mode = false;
+    
+    
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'save_log',default_save_log);
     addOptional(p,'zface_save_fit',default_zface_save_fit);
@@ -61,6 +65,11 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     addOptional(p,'feta_IOD',default_feta_IOD);
     addOptional(p,'feta_patch_size',default_feta_patch_size);
     addOptional(p,'au_meansub',default_au_meansub);
+    addOptional(p,'zface_mesh_overlay',default_zface_mesh_overlay);
+    addOptional(p,'zface_demo_mode',default_demo_mode);
+
+    
+    
     parse(p,varargin{:});
     verbose  = p.Results.verbose;
     save_log = p.Results.save_log;
@@ -69,6 +78,8 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     zface_save_video = p.Results.zface_save_video;
     zface_parallel   = p.Results.zface_parallel;
     de_identify      = p.Results.de_identify;
+    zface_mesh_overlay = p.Results.zface_mesh_overlay;
+    zface_demo_mode = p.Results.zface_demo_mode;
     % FETA parameters
     feta_parallel    = p.Results.feta_parallel;
     feta_resolution  = p.Results.feta_resolution;
@@ -99,7 +110,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
         runZface(video_dir,output_dir,zface_folder,'save_fit',...
                  zface_save_fit,'save_video',zface_save_video,'parallel',...
                  zface_parallel,'verbose',verbose,'log_fn',log_fn,...
-                 'de_identify',de_identify);
+                 'de_identify',de_identify, 'mesh_overlay', zface_mesh_overlay, 'demo_mode', zface_demo_mode);
     end
     
     % FETA module
@@ -113,6 +124,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     FETA_param.normFeature = '2D_similarity';
     FETA_param.descFeature = 'HOG_OpenCV';
     FETA_param.patch_size  = feta_patch_size;
+    % FETA_param.video_list  = getTrackingList(video_dir);
     if run_FETA
         if verbose
             printWrite(sprintf('\n%s Running FETA on %s\n',getMyTime(),...
@@ -123,6 +135,7 @@ function runPipeline(video_dir,output_dir,zface_folder,FETA_folder,AU_folder,...
     end
 
     % AU detection module
+    % TODO: au detector functions, add comments
     % TODO: runAUdetector, add checking existing outputs part
     AU_param = [];
     AU_param.folder  = AU_folder;
