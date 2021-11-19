@@ -78,7 +78,7 @@ function runFetaSingleVideo(fn,strFr,ms3D,fit_dir,out_dir,normFunc,res,IOD,...
         strFr = ['frames ' strFr];        
     end                        
 
-    if ~saveNromVideo && ~saveNormAnnotated
+    if ~saveNormVideo && ~saveNormAnnotated
         return
     end
 

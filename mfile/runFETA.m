@@ -12,7 +12,7 @@ function runFETA(FETA_param,video_dir,out_dir,varargin)
     default_log_fn   = '';
     default_parallel = false;
     default_save_norm_video     = true;  % FETA_out/feta_norm_videos
-    default_save_fit_norm       = false; % FETA_out/feta_fit_norm
+    default_save_fit_norm       = true; % FETA_out/feta_fit_norm
     default_save_norm_annotated = false; % FETA_out/feta_norm_annotated.
     addOptional(p,'verbose',default_verbose);
     addOptional(p,'log_fn',default_log_fn);

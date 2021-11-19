@@ -89,10 +89,11 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
 
         if sum(sum(I)) == 0 % check if the frame is empty.
             sample_output = zeros(1,12);
+            pre_sigmoid_score = ones(1, 12)*Inf;
         else
             I2_conv = (double(I2)/255) - mean_video;
-            sample_output = predict(net,I2_conv,'ExecutionEnvironment','cpu');
-            sample_output = sigm(sample_output);
+            pre_sigmoid_score = predict(net,I2_conv,'ExecutionEnvironment','cpu');
+            sample_output = sigm(pre_sigmoid_score);
         end
 
         if mod(frame_cnt,500) == 0 && verbose
@@ -101,11 +102,14 @@ function runAUSingleVideo(FETA_param,AU_param,fname,out_dir,varargin)
             printWrite(msg,log_fid);
         end
 
-        all_outputs = [all_outputs;sample_output];
+        all_outputs = [all_outputs;[pre_sigmoid_score, sample_output]];
     end
 
-    result = array2table(all_outputs,'VariableNames',{'AU1','AU2','AU4',...
-                'AU6','AU7','AU10','AU12','AU14','AU15','AU17','AU23','AU24'});
+    result = array2table(all_outputs,'VariableNames',{'AU1_score', 'AU2_score','AU4_score',...
+                    'AU6_score','AU7_score','AU10_score', 'AU12_score','AU14_score','AU15_score',...
+                    'AU17_score','AU23_score', 'AU24_score', 'AU1_prob','AU2_prob','AU4_prob',...
+                    'AU6_prob','AU7_prob','AU10_prob','AU12_prob','AU14_prob','AU15_prob','AU17_prob'...
+                    ,'AU23_prob','AU24_prob'});
 
     % Save output mat file.
     save(au_out_path, 'result');

@@ -79,16 +79,26 @@ if ~isempty(ctrl2D)
     set(h.A2,'visible','on');
     set(h.A3,'visible','on');
 else
-%     [h] = ResetDisplay(h, zf, 'remove_annotations', true);
+%     [h] = ResetDisplay(h, zf);
     set(h.pts2D,'xdata',zeros(zf.GetPdmN(),1),'ydata',zeros(zf.GetPdmN(),1));
     fc = zf.GetFaceContour();
     for i = 1:length(fc)
         cn = length(fc{i});
         set(h.fc{i},'xdata',zeros(cn,1),'ydata',zeros(cn,1));
         set(h.fc{i},'visible','off');
-        set(h.primaryPts2D{i}, 'xdata',zeros(cn,1),'ydata',zeros(cn,1));
+        set(h.primaryPts2D{i}, 'xdata',zeros(cn,1),'ydata',zeros(cn,2));
         set(h.primaryPts2D{i}, 'visible', 'off');
     end
+    
+    for i = 1:length(fc)
+        ndx = fc{i};
+        set(h.primaryPts2D{i}, 'xdata',zeros(ndx,1),'ydata',zeros(ndx,2));
+        set(h.primaryPts2D{i}, 'visible', 'off');
+        % join landmarks from 49 primary keypoints
+%             set(h.fc{i},'xdata',ctrl2D(ndx,1),'ydata',ctrl2D(ndx,2));
+%             set(h.fc{i},'visible','on');
+    end
+
     
     set(h.A1,'visible','off');
     set(h.A2,'visible','off');

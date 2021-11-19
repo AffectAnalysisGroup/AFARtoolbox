@@ -27,7 +27,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     default_end_frame   = -1;
     default_save_dynamics = true;
     default_de_identify   = false;
-    default_display_mesh = false;
+    default_display_dense_mesh = false;
     default_demo_mode = false;
 
     addOptional(p,'verbose',default_verbose);
@@ -38,7 +38,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     addOptional(p,'end_frame',default_end_frame);
     addOptional(p,'save_dynamics',default_save_dynamics);
     addOptional(p,'de_identify',default_de_identify);
-    addOptional(p,'display_mesh',default_display_mesh);
+    addOptional(p,'display_dense_mesh',default_display_dense_mesh);
     addOptional(p,'demo_mode',default_demo_mode);
 
     parse(p,varargin{:}); 
@@ -50,7 +50,8 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     end_frame   = p.Results.end_frame;
     de_identify = p.Results.de_identify;
     save_dynamics = p.Results.save_dynamics;
-    display_img = p.Results.display_mesh;
+    display_img = p.Results.verbose;
+    display_mesh = p.Results.display_dense_mesh;
     demo_mode   = p.Results.demo_mode;
 
 % maneesh changed these lines
@@ -95,10 +96,6 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
     while hasFrame(vo)
 
-        if frame_index == 2835
-            disp('debug');
-        end
-
         % Track each frame
         I = readFrame(vo);
         if frame_index == 0 && display_img% first frame
@@ -107,6 +104,10 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
             end
         end
         frame_index = frame_index + 1;
+        
+        if(frame_index==132)
+            disp('debug');
+        end
         
         if (start_frame < 0 && end_frame < 0)
         % If input arg doesn't specify the start/end frame, use frame_index.
@@ -127,7 +128,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
 
         if display_img
             if demo_mode
-                DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars);
+                DemoUpdateDisplay(h,zf,I,ctrl2D,mesh2D,mesh3D,pars, 'dense_mesh', display_mesh, 'de_identify', de_identify);
                 F = getframe(h.fig);
             else
                 UpdateDisplay( h, zf, I, ctrl2D, mesh2D, pars );
