@@ -54,9 +54,8 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
     display_mesh = p.Results.display_dense_mesh;
     demo_mode   = p.Results.demo_mode;
 
-% maneesh changed these lines
-%     display_img = true;
-%     demo_mode   = true;
+     display_img = display_mesh | demo_mode;
+     demo_mode   = true;
 
     if verbose
         if ~isempty(log_fn)
@@ -67,7 +66,9 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
         printWrite(sprintf('%s Processing zface on %s \n',getMyTime(),...
                    correctPathFormat(video_path)),log_fid);
         % Print if fid is not valid. Write to the file if fid is valid
-    end
+    else
+        log_fid = -1;
+  end
 
     [~,video_fname,video_ext] = fileparts(video_path);
     if (~save_fit && ~save_video)
