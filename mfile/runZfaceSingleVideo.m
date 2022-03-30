@@ -104,11 +104,7 @@ function runZfaceSingleVideo(zface_param,video_path,zface_video_path,...
             end
         end
         frame_index = frame_index + 1;
-        
-        if(frame_index==132)
-            disp('debug');
-        end
-        
+                
         if (start_frame < 0 && end_frame < 0)
         % If input arg doesn't specify the start/end frame, use frame_index.
         % Otherwise, check if current frame_index is within the given range.
