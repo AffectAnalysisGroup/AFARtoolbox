@@ -44,7 +44,7 @@ for i = 1:numel(aus)
     all_au_outputs = [all_au_outputs all_outputs];
 end
 
-result = array2table(all_au_outputs, 'VariableNames', {'AU4', 'AU6', 'AU12', 'AU20'});
+result = array2table(all_au_outputs, 'VariableNames', {'AU1', 'AU2', 'AU3', 'AU4', 'AU6', 'AU9', 'AU12', 'AU20', 'AU28'});
 save_name = strsplit(video_name, '.');
 save([save_name{1} '_results.mat'], 'result');
 
