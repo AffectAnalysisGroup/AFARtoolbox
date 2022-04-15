@@ -16,8 +16,7 @@ aus = [1, 2, 3, 4, 6, 9, 12, 20, 28];
 all_au_outputs = [];
 for i = 1:numel(aus)
     fprintf('Running AU%d\n',aus(i))
-    net = importONNXNetwork(['onnx_files/infantAFAR_AU' num2str(aus(i)) '.onnx'], ...
-                             'OutputLayerType', 'regression');
+    net = importONNXNetwork(['onnx_files/infantAFAR_AU' num2str(aus(i)) '.onnx'], 'OutputLayerType', 'regression');
     video_name = 'sample_video.mp4'; %%% update this line with your own normalized video
     v = VideoReader(video_name);
 
