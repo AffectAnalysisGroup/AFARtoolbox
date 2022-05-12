@@ -6,10 +6,22 @@ Automated measurement of face and head dynamics, detection of facial action unit
 ![afar_pipeline](https://user-images.githubusercontent.com/12033328/136648105-4f1c89e4-fbb0-4c2b-8908-d36fc3736aa4.png)
 
 ## Required
-- [OpenCV](https://opencv.org/)
+- [OpenCV](https://opencv.org/) 3.4.1 or lower
 - [mexopencv](https://github.com/kyamagu/mexopencv)
 - MATLAB add-on:
-  - Deep Learning Toolbox Converter for ONNX Model Format
+  - [Deep Learning Toolbox Converter for ONNX Model Format](https://www.mathworks.com/matlabcentral/fileexchange/67296-deep-learning-toolbox-converter-for-onnx-model-format)
+  
+#### Linux installation
+- Installing using conda or pip are not recommended.
+- If you are installing OpenCV on Linux, we recommend building from the source. Follow the instructions [here](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html) and replace `master` with `3.4.1` or lower(check mexopencv compatibility). You might need to disable CUDA because 3.4.1 might not support latest CUDA version.
+- When building the OpenCV source use the following command to make sure that you generate a `opencv.pc` file and customize the installation path `cmake -DWITH_CUDA=OFF -DPYTHON_DEFAULT_EXECUTABLE=$(which python) -DCMAKE_INSTALL_PREFIX=/home/<USER>/local/ -DOPENCV_GENERATE_PKGCONFIG=YES -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-3.4.1/modules ../opencv-3.4.1/`
+
+#### Installing ONNX Add-On
+- We found that MATLAB R2018a version has some difficulties with installing the Deep learning toolbox converter using the Add-Ons option. So it is suggested to make sure that you are able to install it the link mentioned above and then compile mexopencv.
+- The installation involves searching for the `Deep Learning Toolbox Converter for ONNX Model Format` in the Add-Ons and installing it(might require you to sign in with your the matlab account). We tested it on R2020b and it works on Ubuntu 18.04 LTS.
+
+#### Compiling mexopencv
+- Once you install OpenCV and opencv-contrib v3.4.1, run `make MATLABDIR="/usr/local/MATLAB/R2018a" all contrib` in the [mexopencv](https://github.com/kyamagu/mexopencv) dir to install mexopencv. Note that the matlab installation location on your system might be different.
  
 ## Modules
 
@@ -174,6 +186,20 @@ each module's folder is.
 (That's the default module location. Otherwise you have 
 to check and manually change the locations of 
 ZFace/FETA/AUDetector directory)
+
+## Using .mat files with python
+The mat files from AFAR summarize the results as tables. To the best of our knowledge, there is no python package that supports matlab tables. In order to read the files in python, convert the matlab table to array using `table2array()`. An example for reading a sample `sample.mat` is shown below
+```
+occurrence = table2array('sample.mat')
+save('output_filename.mat', occurrence)
+```
+
+Read this in python as 
+```
+import scipy.io as sio
+mat_file = sio.loadmat('output_filename.mat');
+occurrence = mat_file['occurrence'];
+```
 
 ## License
 AFAR is freely available for free non-commercial use, and may be redistributed under these conditions. Please, see the [license](LICENSE) for further details. Interested in a commercial license? Please contact [Jeffrey Cohn](http://www.jeffcohn.net/).
