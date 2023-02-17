@@ -10,6 +10,15 @@ Automated measurement of face and head dynamics, detection of facial action unit
 - [mexopencv](https://github.com/kyamagu/mexopencv)
 - MATLAB add-on:
   - Deep Learning Toolbox Converter for ONNX Model Format
+
+### Last validated system configuration
+- Windows 10
+- MATLAB 2020b (later versions of matlab break AFAR due to its updated deeplearning toolbox)
+- Visual Studio 2015
+- OpenCV 3.4.1
+
+Run `sample_afar_v1.m` to validate the end-to-end working of the toolbox. Makesure to set the paths to include AFARtoolbox and mexopencv dependencies before you run.
+
  
 ## Modules
 
