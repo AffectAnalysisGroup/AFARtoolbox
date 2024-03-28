@@ -1,5 +1,7 @@
 # Update :exclamation:
-### <span style="color:blue">AFAR is still functional, however, we recommend using our :new: , faster and dependency-free GUI version-[PyAFAR](https://affectanalysisgroup.github.io/PyAFAR/). Thank you for using AFARtoolbox, we hope to hear from you about your experience with [PyAFAR](https://affectanalysisgroup.github.io/PyAFAR/).</span>
+### <span style="color:blue">AFAR is still functional, however, we recommend using our :new: , faster and dependency-free GUI version-[PyAFAR](https://affectanalysisgroup.github.io/PyAFAR/). 
+
+Thank you for using AFARtoolbox, we hope to hear about your experience with [PyAFAR](https://affectanalysisgroup.github.io/PyAFAR/).</span>
 
 
 # Automated Facial Affect Recognition (AFAR)
