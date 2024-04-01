@@ -1,9 +1,10 @@
 # Update :exclamation:
-### Try our :new: , improved, faster and dependency-free GUI version-[PyAFAR](https://affectanalysisgroup.github.io/PyAFAR/). 
 
-Thank you for using AFAR, we hope to hear about your experience with [PyAFAR](https://affectanalysisgroup.github.io/PyAFAR/).
+This version of AFAR uses MATLAB, a newer version for python is now available. The python version is named [PyAFAR](https://affectanalysisgroup.github.io/PyAFAR/). 
 
-AFAR is still functional, however, it is no longer being maintained. 
+### Try our new, improved, faster and dependency-free GUI version-[PyAFAR](https://affectanalysisgroup.github.io/PyAFAR/). 
+
+MATLAB AFAR is still functional, however, MATLAB AFAR is **no longer being maintained**. PyAFAR replaces MATLAB AFAR. 
 
 ___
 
