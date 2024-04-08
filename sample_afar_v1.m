@@ -18,6 +18,15 @@ zface_dir = '<PATH TO AFARTOOLBOX>/zface/';
 FETA_dir  = '<PATH TO AFARTOOLBOX>/FETA/';
 AU_dir    = '<PATH TO AFARTOOLBOX>/AU_detector/';
 
+
+% add all modules to matlab environment 
+
+addpath(genpath(zface_dir))
+addpath(genpath(FETA_dir))
+addpath(genpath(AU_dir))
+
+
+
 % Your directory of videos that need to be processed and where they should be saved
 video_dir = './test_video';
 out_dir   = './test_out';
